@@ -1,4 +1,3 @@
-import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -6,24 +5,29 @@ public class Evento {
 
     private String titulo;
     private String descripcion;
-    private LocalDateTime fechaYHoraInicial;
-    private LocalDateTime fechaYHoraFinal;
+    private LocalDate fecha;
+    private LocalTime horaInicial;
+    private LocalTime horaFinal;
     private boolean esDeDiaCompleto;
     public Evento(String titulo, String descripcion) {
         this.titulo = titulo;
         this.descripcion = descripcion;
 
         //Dejo inicializado por ahora
-        this.fechaYHoraInicial = LocalDateTime.of(LocalDate.now(), LocalTime.of(8,0));
-        this.fechaYHoraFinal = LocalDateTime.of(LocalDate.now(),LocalTime.of(9,0));
+        this.fecha = LocalDate.now();
+        this.horaInicial = LocalTime.of(8,0);
+        this.horaFinal = LocalTime.of(9,0);
     }
-
     public String getTitulo() {
         return this.titulo;
     }
 
     public String getDescripcion() {
         return this.descripcion;
+    }
+
+    public boolean esEsDeDiaCompleto() {
+        return esDeDiaCompleto;
     }
 
     public void setTitulo(String titulo) {
@@ -33,15 +37,19 @@ public class Evento {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-    public void setFechaYHoraInicial(LocalDateTime fechaYHoraInicial) {
-        this.fechaYHoraInicial = fechaYHoraInicial;
-    }
-
-    public void setFechaYHoraFinal(LocalDateTime fechaYHoraFinal) {
-        this.fechaYHoraFinal = fechaYHoraFinal;
-    }
     public void setEsDeDiaCompleto(boolean esDeDiaCompleto) {
         this.esDeDiaCompleto = esDeDiaCompleto;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public void setHoraInicial(LocalTime horaInicial) {
+        this.horaInicial = horaInicial;
+    }
+
+    public void setHoraFinal(LocalTime horaFinal) {
+        this.horaFinal = horaFinal;
     }
 }
