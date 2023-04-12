@@ -14,6 +14,7 @@ public class Evento {
         this.descripcion = descripcion;
 
         //Dejo inicializado por ahora
+        this.esDeDiaCompleto = false;
         this.fechaYHoraInicial = LocalDateTime.of(LocalDate.now(), LocalTime.of(8,0));
         this.fechaYHoraFinal = LocalDateTime.of(LocalDate.now(),LocalTime.of(9,0));
     }
@@ -43,5 +44,17 @@ public class Evento {
     }
     public void setEsDeDiaCompleto(boolean esDeDiaCompleto) {
         this.esDeDiaCompleto = esDeDiaCompleto;
+    }
+
+    public LocalDateTime getFechaYHoraInicial() {
+        return fechaYHoraInicial;
+    }
+
+    public LocalDateTime getFechaYHoraFinal() {
+        return fechaYHoraFinal;
+    }
+
+    public boolean isEsDeDiaCompleto() {
+        return esDeDiaCompleto;
     }
 }
