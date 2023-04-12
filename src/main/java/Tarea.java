@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 public class Tarea {
 
@@ -12,10 +13,13 @@ public class Tarea {
     private boolean esDeDiaCompleto;
     private LocalDateTime vencimiento;
 
+    private ArrayList<Alarma> alarmas;
+
     public Tarea(String titulo, String descripcion) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.completado = false;
+        this.alarmas = new ArrayList<>();
 
         //igual que en evento, dejo inicializado asi por ahora
         // en google calendar se trunca media hora, no la hora completa

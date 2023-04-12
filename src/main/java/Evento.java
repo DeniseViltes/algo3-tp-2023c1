@@ -1,6 +1,7 @@
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class Evento {
 
@@ -9,14 +10,20 @@ public class Evento {
     private LocalDateTime fechaYHoraInicial;
     private LocalDateTime fechaYHoraFinal;
     private boolean esDeDiaCompleto;
+    private ArrayList<Alarma> alarmas;
+
+    private Repeticion repeticion;
+
     public Evento(String titulo, String descripcion) {
         this.titulo = titulo;
         this.descripcion = descripcion;
+        this.alarmas = new ArrayList<>();
 
         //Dejo inicializado por ahora
         this.esDeDiaCompleto = false;
         this.fechaYHoraInicial = LocalDateTime.of(LocalDate.now(), LocalTime.of(8,0));
         this.fechaYHoraFinal = LocalDateTime.of(LocalDate.now(),LocalTime.of(9,0));
+        this.repeticion = new Repeticion(Repeticion.Frecuencia.NOREPITE); //REVISAR
     }
 
     public String getTitulo() {
