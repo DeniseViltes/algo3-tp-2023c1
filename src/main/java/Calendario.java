@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 public class Calendario {
 
+
     private final ArrayList<Evento> eventos;
     private final ArrayList<Tarea> tareas;
     public Calendario() {
@@ -33,8 +34,24 @@ public class Calendario {
         var evento = new Evento(titulo,descripcion);
         evento.setEsDeDiaCompleto(true);
         evento.setFechaYHoraInicial(dia.toLocalDate().atStartOfDay());
-        evento.setFechaYHoraFinal(dia.toLocalDate().atTime(23,0));
+        evento.setFechaYHoraFinal(dia.toLocalDate().atTime(23,59)); //o mejor queda en null?
         this.eventos.add(evento);
     }
+
+
+    public void eliminarEvento(Evento evento){
+        //por string o directo el evento??
+        eventos.remove(evento);
+    }
+
+    // dejo estos getters para poder hacer algunas pruebas simples
+    public ArrayList<Evento> getEventos() {
+        return eventos;
+    }
+
+    public ArrayList<Tarea> getTareas() {
+        return tareas;
+    }
+
 
 }
