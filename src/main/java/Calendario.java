@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Calendario {
@@ -14,8 +15,26 @@ public class Calendario {
         this.tareas.add(tarea);
     }
 
+
+    // default crearEvento?
     public void crearEvento(String titulo, String descripcion){
         Evento evento = new Evento(titulo, descripcion);
         this.eventos.add(evento);
     }
+    public void crearEvento(String titulo,
+                            String descripcion,
+                            LocalDateTime inicio, LocalDateTime fin){
+        var evento = new Evento(titulo,descripcion);
+        evento.setFechaYHoraFinal(inicio);
+        evento.setFechaYHoraFinal(fin);
+        this.eventos.add(evento);
+    }
+    public void crearEvento(String titulo, String descripcion, LocalDateTime dia){
+        var evento = new Evento(titulo,descripcion);
+        evento.setEsDeDiaCompleto(true);
+        evento.setFechaYHoraInicial(dia.toLocalDate().atStartOfDay());
+        evento.setFechaYHoraFinal(dia.toLocalDate().atTime(23,0));
+        this.eventos.add(evento);
+    }
+
 }
