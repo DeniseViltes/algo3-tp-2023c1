@@ -27,9 +27,10 @@ public class Repeticion {
         this.frecuencia = frecuencia;
         if(frecuencia == Frecuencia.DIARIA && intervaloDiario == null)
             intervaloDiario = 1;
-        if(frecuencia == Frecuencia.SEMANAL && dias == null)
+        if(frecuencia == Frecuencia.SEMANAL && dias == null) {
             dias = new ArrayList<>();
             dias.add(LocalDateTime.now().getDayOfWeek());
+        }
     }
 
 
