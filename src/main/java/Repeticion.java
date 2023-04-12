@@ -3,7 +3,8 @@ import java.time.DayOfWeek;
 import java.util.ArrayList;
 
 public class Repeticion {
-    public enum Frecuencia {NOREPITE,DIARIA, SEMANAL, MENSUAL, ANUAL};
+    public enum Frecuencia {NOREPITE,DIARIA, SEMANAL, MENSUAL, ANUAL}
+
     private Frecuencia frecuencia;
     private Integer intervaloDiario;
 
@@ -33,5 +34,11 @@ public class Repeticion {
         }
     }
 
+    public Integer getIntervaloDiario() {
+        return intervaloDiario;
+    }
 
+    public ArrayList<DayOfWeek> getDias() {
+        return dias;
+    }
 }
