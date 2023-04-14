@@ -1,5 +1,7 @@
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
@@ -58,7 +60,26 @@ public class Evento {
     if (esDeDiaCompleto) {
         this.duration = duracion.truncatedTo(ChronoUnit.DAYS);
     }
-
     this.duration = duracion;
+    }
+
+    public LocalDate getFechaInicial(){
+        return LocalDate.from(this.fechaYHoraInicial);
+    }
+
+    public  LocalTime getHoraInical(){
+        return  LocalTime.from(this.fechaYHoraInicial);
+    }
+
+    public LocalDateTime getFechaYHoraFinal(){
+        return fechaYHoraInicial.plus(duration);
+    }
+
+
+
+    public boolean iniciaEntreLasFechas(LocalDateTime inicio, LocalDateTime fin){
+        if (fechaYHoraInicial.isBefore(inicio) || fechaYHoraInicial.isAfter(fin))
+                return false;
+        return true;
     }
 }

@@ -9,7 +9,7 @@ public class Tarea {
     private String titulo;
     private String descripcion;
     private boolean completado;
-
+    //Corsi dijo que se podia hacer subclases para diferenciar los tipos de tares, vale la pena??
     private boolean esDeDiaCompleto;
     private LocalDateTime vencimiento;
 
@@ -23,8 +23,9 @@ public class Tarea {
 
         //igual que en evento, dejo inicializado asi por ahora
         // en google calendar se trunca media hora, no la hora completa
+        var horaActualTruncada = LocalTime.now().truncatedTo(ChronoUnit.HOURS);
         this.esDeDiaCompleto = false;
-        this.vencimiento = LocalDateTime.of(LocalDate.now(),LocalTime.now().truncatedTo(ChronoUnit.HOURS).plusMinutes(60));
+        this.vencimiento = LocalDateTime.of(LocalDate.now(),horaActualTruncada.plusHours(1));
     }
 
     public String getTitulo() {
