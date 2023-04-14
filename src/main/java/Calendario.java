@@ -6,6 +6,7 @@ public class Calendario {
 
     private final ArrayList<Evento> eventos;
     private final ArrayList<Tarea> tareas;
+
     public Calendario() {
         this.eventos = new ArrayList<>();
         this.tareas = new ArrayList<>();
@@ -17,40 +18,19 @@ public class Calendario {
     }
 
 
-    // default crearEvento?
-    public void crearEvento(String titulo, String descripcion){
-        Evento evento = new Evento(titulo, descripcion);
-        this.eventos.add(evento);
-    }
-    public void crearEvento(String titulo,
-                            String descripcion,
-                            LocalDateTime inicio, LocalDateTime fin){
-        var evento = new Evento(titulo,descripcion);
-        evento.setFechaYHoraFinal(inicio);
-        evento.setFechaYHoraFinal(fin);
-        this.eventos.add(evento);
-    }
-    public void crearEvento(String titulo, String descripcion, LocalDateTime dia){
-        var evento = new Evento(titulo,descripcion);
-        evento.setEsDeDiaCompleto(true);
-        evento.setFechaYHoraInicial(dia.toLocalDate().atStartOfDay());
-        evento.setFechaYHoraFinal(dia.toLocalDate().atTime(23,59)); //o mejor queda en null?
+    // default crearEvento? Es necesario poner el titulo? En google calendar no es necesario
+    public void crearEvento(String titulo){
+        Evento evento = new Evento();
+        if (titulo!=null)
+            evento.setTitulo(titulo);
         this.eventos.add(evento);
     }
 
+    // Hay que repetir modificar, crear y eliminar para tarea, hay que revisar esto
 
     public void eliminarEvento(Evento evento){
         //por string o directo el evento??
         eventos.remove(evento);
-    }
-
-    // dejo estos getters para poder hacer algunas pruebas simples
-    public ArrayList<Evento> getEventos() {
-        return eventos;
-    }
-
-    public ArrayList<Tarea> getTareas() {
-        return tareas;
     }
 
 

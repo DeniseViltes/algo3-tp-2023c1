@@ -1,28 +1,27 @@
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class Evento {
 
     private String titulo;
     private String descripcion;
-    private LocalDateTime fechaYHoraInicial;
-    private LocalDateTime fechaYHoraFinal;
-    private boolean esDeDiaCompleto;
-    private ArrayList<Alarma> alarmas;
 
+    private LocalDateTime fechaYHoraInicial;
+    private Duration duration; //o fecha?
+    private boolean esDeDiaCompleto;
+    private final ArrayList<Alarma> alarmas;
     private Repeticion repeticion;
 
-    public Evento(String titulo, String descripcion) {
-        this.titulo = titulo;
-        this.descripcion = descripcion;
+    public Evento() {
+        //Dejo asi inicializado por ahora
+        this.titulo = "My Event";
+        this.descripcion = null;
         this.alarmas = new ArrayList<>();
-
-        //Dejo inicializado por ahora
-        this.esDeDiaCompleto = false;
-        this.fechaYHoraInicial = LocalDateTime.of(LocalDate.now(), LocalTime.of(8,0));
-        this.fechaYHoraFinal = LocalDateTime.of(LocalDate.now(),LocalTime.of(9,0));
+        var horaActualTruncada = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+        this.fechaYHoraInicial = horaActualTruncada.plusHours(1);
+        this.duration = Duration.ofHours(1);
         this.repeticion = new Repeticion(Repeticion.Frecuencia.NOREPITE); //REVISAR
     }
 
@@ -37,31 +36,29 @@ public class Evento {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
+    public void setEsDeDiaCompleto(boolean esDeDiaCompleto) {
+        this.esDeDiaCompleto = true;
+        this.fechaYHoraInicial = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        this.duration = Duration.ofDays(1);
+    }
+
+
     public void setFechaYHoraInicial(LocalDateTime fechaYHoraInicial) {
+        if (esDeDiaCompleto)
+            this.fechaYHoraInicial = fechaYHoraInicial.truncatedTo(ChronoUnit.DAYS); //probar
         this.fechaYHoraInicial = fechaYHoraInicial;
     }
 
-    public void setFechaYHoraFinal(LocalDateTime fechaYHoraFinal) {
-        this.fechaYHoraFinal = fechaYHoraFinal;
-    }
-    public void setEsDeDiaCompleto(boolean esDeDiaCompleto) {
-        this.esDeDiaCompleto = esDeDiaCompleto;
-    }
-
-    public LocalDateTime getFechaYHoraInicial() {
-        return fechaYHoraInicial;
+    public void setDuration(Duration duracion ) {
+    //long, String, Duration?-> ver funcior parse
+    if (esDeDiaCompleto) {
+        this.duration = duracion.truncatedTo(ChronoUnit.DAYS);
     }
 
-    public LocalDateTime getFechaYHoraFinal() {
-        return fechaYHoraFinal;
-    }
-
-    public boolean isEsDeDiaCompleto() {
-        return esDeDiaCompleto;
+    this.duration = duracion;
     }
 }

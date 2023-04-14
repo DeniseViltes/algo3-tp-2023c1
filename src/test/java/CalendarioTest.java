@@ -12,7 +12,7 @@ public class CalendarioTest {
     public void crearEventoDefault() {
         var calendario = new Calendario();
 
-        calendario.crearEvento("Evento nuevo",null);
+        calendario.crearEvento(null);
         var e = calendario.getEventos().get(0);
         Assert.assertEquals(e.getTitulo(),"Evento nuevo");
         assertNull(e.getDescripcion());
