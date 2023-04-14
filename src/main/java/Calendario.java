@@ -1,9 +1,8 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Calendario {
-
-
     private final ArrayList<Evento> eventos;
     private final ArrayList<Tarea> tareas;
 
@@ -32,6 +31,13 @@ public class Calendario {
         //por string o directo el evento??
         eventos.remove(evento);
     }
-
+    public ArrayList<Evento> eventosDeLaFecha(LocalDate fecha){
+        var eventosdDelDia = new ArrayList<Evento>();
+        for (Evento i : eventos){
+            if (i.getFechaInicial().equals(fecha))
+                eventosdDelDia.add(i);
+        }
+        return eventosdDelDia;
+    }
 
 }
