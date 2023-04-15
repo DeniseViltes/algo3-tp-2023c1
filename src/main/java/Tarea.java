@@ -9,50 +9,60 @@ public class Tarea {
     private String titulo;
     private String descripcion;
     private boolean completado;
-    //Corsi dijo que se podia hacer subclases para diferenciar los tipos de tares, vale la pena??
-    private boolean esDeDiaCompleto;
     private LocalDateTime vencimiento;
+
+    //Corsi dijo que se podia hacer subclases para diferenciar los tipos de tares, vale la pena??
+    // No se, quizas es mas prolijo hacerlo con subclases, por ahora yo seguiria con el boolean
+    // Y en un futuro, vemos.
+    private boolean esDeDiaCompleto;
+
+
 
     private ArrayList<Alarma> alarmas;
 
-    public Tarea(String titulo, String descripcion) {
-        this.titulo = titulo;
-        this.descripcion = descripcion;
+    public Tarea(LocalDateTime vencimiento) {
+        this.titulo = null;
+        this.descripcion = null;
         this.completado = false;
-        this.alarmas = new ArrayList<>();
+        this.vencimiento = vencimiento;
+        this.esDeDiaCompleto = false;
 
+
+        this.alarmas = new ArrayList<>();
         //igual que en evento, dejo inicializado asi por ahora
         // en google calendar se trunca media hora, no la hora completa
-        var horaActualTruncada = LocalTime.now().truncatedTo(ChronoUnit.HOURS);
-        this.esDeDiaCompleto = false;
-        this.vencimiento = LocalDateTime.of(LocalDate.now(),horaActualTruncada.plusHours(1));
+        //var horaActualTruncada = LocalTime.now().truncatedTo(ChronoUnit.HOURS);
+        //this.vencimiento = LocalDateTime.of(LocalDate.now(),horaActualTruncada.plusHours(1));
     }
 
-    public String getTitulo() {
-        return this.titulo;
+    public void setTitulo(String titulo) { this.titulo = titulo; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public void setEsDeDiaCompleto(boolean esDeDiaCompleto) {
+        this.esDeDiaCompleto = esDeDiaCompleto;
     }
-
-    public String getDescripcion() {
-        return this.descripcion;
-    }
-
-    public void completarTarea() {
-        this.completado = true;
-    }
-
-    public LocalDateTime getVencimiento() {
-        return vencimiento;
-    }
-
+    public void setEstado(boolean completado) { this.completado = completado; }
     public void setVencimiento(LocalDateTime vencimiento) {
         this.vencimiento = vencimiento;
     }
 
-    public boolean isEsDeDiaCompleto() {
+    // Funcion a implementar en un futuro
+    public void setAlarma(boolean alarma) {}
+
+
+
+    public boolean EsDeDiaCompleto() {
         return esDeDiaCompleto;
     }
 
-    public void setEsDeDiaCompleto(boolean esDeDiaCompleto) {
-        this.esDeDiaCompleto = esDeDiaCompleto;
-    }
+
+
+    // Comento los getters de momento
+//    public String getTitulo() { return this.titulo; }
+//    public String getDescripcion() {
+//        return this.descripcion;
+//    }
+//    public LocalDateTime getVencimiento() {
+//        return vencimiento;
+//    }
+
 }
