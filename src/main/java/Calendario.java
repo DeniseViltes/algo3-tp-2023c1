@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class Calendario {
@@ -12,8 +13,9 @@ public class Calendario {
     }
 
     // default crearEvento solo necesita la fecha del evento y la duracion default es de 1 hora
-    public void crearEvento(LocalDateTime inicioEvento){
-        Evento evento = new Evento(inicioEvento);
+    public void crearEvento(){
+        var horaActualTruncada = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+        Evento evento = new Evento(horaActualTruncada);
         this.eventos.add(evento);
     }
 
@@ -39,7 +41,7 @@ public class Calendario {
     }
 
     public void modificarTipoEvento(Evento evento, boolean diaCompleto){
-        if (evento != null && diaCompleto != null)
+        if (evento != null && diaCompleto != false)
             evento.setEsDeDiaCompleto(diaCompleto);
     }
 
@@ -53,8 +55,9 @@ public class Calendario {
     }
 
     // default crearTarea solo necesita el vencimiento
-    public void crearTarea(LocalDateTime vencimiento){
-        Tarea tarea = new Tarea(vencimiento);
+    public void crearTarea(){
+        var horaActualTruncada = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+        Tarea tarea = new Tarea(horaActualTruncada);
         this.tareas.add(tarea);
     }
 
@@ -68,7 +71,7 @@ public class Calendario {
             tarea.setDescripcion(descripcion);
     }
     public void modificarTipoTarea(Tarea tarea, boolean diaCompleto){
-        if (tarea != null && diaCompleto != null)
+        if (tarea != null)
             tarea.setEsDeDiaCompleto(diaCompleto);
     }
 
@@ -77,11 +80,14 @@ public class Calendario {
             tarea.setVencimiento(vencimiento);
     }
 
-    public void modificarEstadoTarea(Tarea tarea, boolean completada){
-        if (tarea != null && completada != null)
-            tarea.setEstado(completada);
+    public void marcarTareaCompleta(Tarea tarea){
+        if (tarea != null)
+            tarea.setEstado(true);
     }
-
+    public void marcarTareaIncompleta(Tarea tarea){
+        if (tarea != null)
+            tarea.setEstado(false);
+    }
     // Hay que ver como implementamos la repeticion
     public void modificarAlarmaTarea(Tarea tarea, boolean repeticion){
     }
@@ -89,12 +95,11 @@ public class Calendario {
         tareas.remove(tarea);
     }
 
-
-
     public ArrayList<Evento> eventosDeLaFecha(LocalDate fecha){
         var eventosdDelDia = new ArrayList<Evento>();
+        var dia = fecha.atStartOfDay();
         for (Evento i : eventos){
-            if (i.getFechaInicial().equals(fecha))
+            if (i.iniciaEntreLasFechas(dia, dia.plusDays(1)))
                 eventosdDelDia.add(i);
         }
         return eventosdDelDia;
