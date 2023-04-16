@@ -1,5 +1,4 @@
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public abstract class Repeticion {
     private LocalDateTime vencimiento;
@@ -28,7 +27,7 @@ public abstract class Repeticion {
         return cantidadRepeticiones;
     }
 
-    public abstract ArrayList<LocalDateTime> Repetir(LocalDateTime inicio);
+    public abstract LocalDateTime Repetir(LocalDateTime inicio);
 
 }
 

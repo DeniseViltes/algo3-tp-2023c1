@@ -13,16 +13,18 @@ public class Calendario {
     }
 
     // default crearEvento solo necesita la fecha del evento y la duracion default es de 1 hora
-    public void crearEvento(){
+    public Evento crearEvento(){
         var horaActualTruncada = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
         Evento evento = new Evento(horaActualTruncada);
         this.eventos.add(evento);
+        return evento;
     }
 
     //Habria que ver como manejamos los errores
-    public void modificarTituloEvento(Evento evento, String titulo){
+    public Evento modificarTituloEvento(Evento evento, String titulo){
         if (evento != null && titulo != null)
             evento.setTitulo(titulo);
+            return evento;
     }
 
     public void modificarDescripcionEvento(Evento evento, String descripcion){
@@ -41,18 +43,23 @@ public class Calendario {
     }
 
     public void modificarTipoEvento(Evento evento, boolean diaCompleto){
-        if (evento != null && diaCompleto != false)
+        if (evento != null)
             evento.setEsDeDiaCompleto(diaCompleto);
     }
 
     //Funciones a completar en un futuro cuando tengamos implementado repeticion y alarma
-    public void modificarRepeticionEvento(Evento evento, boolean repeticion){
+
+    //tendria que recibir una repeticion?
+    public void modificarRepeticionEvento(Evento evento, Repeticion repeticion){
     }
     public void modificarAlarmaEvento(Evento evento, boolean alarma){
     }
     public void eliminarEvento(Evento evento){
         eventos.remove(evento);
     }
+
+
+
 
     // default crearTarea solo necesita el vencimiento
     public void crearTarea(){
@@ -95,6 +102,10 @@ public class Calendario {
         tareas.remove(tarea);
     }
 
+
+
+
+
     public ArrayList<Evento> eventosDeLaFecha(LocalDate fecha){
         var eventosdDelDia = new ArrayList<Evento>();
         var dia = fecha.atStartOfDay();
@@ -104,5 +115,14 @@ public class Calendario {
         }
         return eventosdDelDia;
     }
+    public ArrayList<Evento> eventosEntre (LocalDateTime inicio, LocalDateTime fin){
+        var listadoEventos = new ArrayList<Evento>();
+        for (Evento i : eventos){
+            while (i.iniciaEntreLasFechas(inicio,fin)){
+                listadoEventos.add(i);
+            }
+        }
+        return listadoEventos;
 
+    }
 }

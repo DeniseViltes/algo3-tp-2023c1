@@ -1,4 +1,5 @@
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -53,7 +54,23 @@ public class Evento {
 
 
     public boolean iniciaEntreLasFechas(LocalDateTime inicio, LocalDateTime fin){
-        return !fechaYHoraInicial.isBefore(inicio) && !fechaYHoraInicial.isAfter(fin);
+        //varifica si la fecha inicial del evento está entre las fechas dadas
+        if(!fechaYHoraInicial.isBefore(inicio) && !fechaYHoraInicial.isAfter(fin)){
+            return true;
+        }
+        LocalDateTime i = inicio;
+        //verifica si alguna de las repeticiones empieza entre las fechas
+        //LocalDateTime es inmutable
+        while (inicio.isBefore(fin)){
+            var Repeticion = repeticion.Repetir(i);
+            if(!fechaYHoraInicial.isBefore(Repeticion) && !fechaYHoraInicial.isAfter(Repeticion))
+                return true;
+            i.adjustInto(i.plusDays(1));//
+        }
+        return  false;
     }
 
+    public LocalDate getFechaInicial() {
+        return fechaYHoraInicial.toLocalDate();
+    }
 }
