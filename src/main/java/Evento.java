@@ -1,11 +1,13 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Evento {
+public class Evento implements ElementoCalendario {
 
     private String titulo;
     private String descripcion;
     private LocalDateTime fechaYHoraInicial;
+
+    //creo que al final para la repeticion es más facil teniendo la duracion, pero por ahora funciona la fecha final
     private LocalDateTime fechaYHoraFinal;
     private boolean esDeDiaCompleto;
     private Repeticion repeticion;
@@ -27,7 +29,7 @@ public class Evento {
         this.titulo = titulo;
     }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
-    public void setInicio(LocalDateTime inicioEvento){ this.fechaYHoraInicial = inicioEvento; }
+    public void setFecha(LocalDateTime inicioEvento){ this.fechaYHoraInicial = inicioEvento; }
     public void setFinal(LocalDateTime finalEvento){ this.fechaYHoraFinal = finalEvento; }
     public void setEsDeDiaCompleto(boolean diaCompleto){
         this.esDeDiaCompleto = diaCompleto;

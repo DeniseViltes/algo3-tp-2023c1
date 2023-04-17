@@ -1,10 +1,7 @@
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
-public class Tarea {
+public class Tarea implements ElementoCalendario{
 
     private String titulo;
     private String descripcion;
@@ -41,7 +38,7 @@ public class Tarea {
         this.esDeDiaCompleto = esDeDiaCompleto;
     }
     public void setEstado(boolean completado) { this.completado = completado; }
-    public void setVencimiento(LocalDateTime vencimiento) {
+    public void setFecha(LocalDateTime vencimiento) {
         this.vencimiento = vencimiento;
     }
 

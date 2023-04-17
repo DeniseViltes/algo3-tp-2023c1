@@ -21,30 +21,31 @@ public class Calendario {
     }
 
     //Habria que ver como manejamos los errores
-    public Evento modificarTituloEvento(Evento evento, String titulo) {
-        if (evento != null && titulo != null)
-            evento.setTitulo(titulo);
-        return evento;
+    public void modificarTitulo(ElementoCalendario elemento, String titulo) {
+        if (elemento != null && titulo != null)
+            elemento.setTitulo(titulo);
     }
 
-    public void modificarDescripcionEvento(Evento evento, String descripcion) {
-        if (evento != null && descripcion != null)
-            evento.setDescripcion(descripcion);
+    public void modificarDescripcion(ElementoCalendario elemento, String descripcion) {
+        if (elemento != null && descripcion != null)
+            elemento.setDescripcion(descripcion);
     }
 
-    public void modificarInicioEvento(Evento evento, LocalDateTime inicioEvento) {
-        if (evento != null && inicioEvento != null)
-            evento.setInicio(inicioEvento);
+    //En el caso de ser una tarea setea la fecha de vencimiento, y si es un evento, setea el inicio
+    public void modificarInicio(ElementoCalendario elemento, LocalDateTime inicioEvento) {
+        if (elemento != null && inicioEvento != null)
+            elemento.setFecha(inicioEvento);
     }
 
-    public void modificarFinalEvento(Evento evento, LocalDateTime finalEvento) {
+    //solo los eventos tienen final/duracion
+    public void modificarFinal(Evento evento, LocalDateTime finalEvento) {
         if (evento != null && finalEvento != null)
             evento.setFinal(finalEvento);
     }
 
-    public void modificarTipoEvento(Evento evento, boolean diaCompleto) {
-        if (evento != null)
-            evento.setEsDeDiaCompleto(diaCompleto);
+    public void modificarTipo(ElementoCalendario elemento, boolean diaCompleto) {
+        if (elemento != null)
+            elemento.setEsDeDiaCompleto(diaCompleto);
     }
 
     //Funciones a completar en un futuro cuando tengamos implementado repeticion y alarma
@@ -69,26 +70,6 @@ public class Calendario {
         this.tareas.add(tarea);
     }
 
-    public void modificarTituloTarea(Tarea tarea, String titulo) {
-        if (tarea != null && titulo != null)
-            tarea.setTitulo(titulo);
-    }
-
-    public void modificarDescripcionTarea(Tarea tarea, String descripcion) {
-        if (tarea != null && descripcion != null)
-            tarea.setDescripcion(descripcion);
-    }
-
-    public void modificarTipoTarea(Tarea tarea, boolean diaCompleto) {
-        if (tarea != null)
-            tarea.setEsDeDiaCompleto(diaCompleto);
-    }
-
-    public void modificarVencimientoTarea(Tarea tarea, LocalDateTime vencimiento) {
-        if (tarea != null && vencimiento != null)
-            tarea.setVencimiento(vencimiento);
-    }
-
     public void marcarTareaCompleta(Tarea tarea) {
         if (tarea != null)
             tarea.setEstado(true);
@@ -99,28 +80,11 @@ public class Calendario {
             tarea.setEstado(false);
     }
 
-    // Hay que ver como implementamos la repeticion
-    public void modificarAlarmaTarea(Tarea tarea, boolean repeticion) {
-    }
-
     public void eliminarTarea(Tarea tarea) {
         tareas.remove(tarea);
     }
 
     //el calendario almacena eventos, pero solo devuelve instancias de eventos, no el evento en si
-
-    public ArrayList<InstanciaEvento> eventosDeLaFecha(LocalDate fecha) {
-        var eventosdDelDia = new ArrayList<InstanciaEvento>();
-        var dia = fecha.atStartOfDay();
-        for (Evento i : eventos) {
-            if (i.iniciaEntreLosHorarios(dia, dia.plusDays(1)))
-
-                eventosdDelDia.add(new InstanciaEvento(i));
-        }
-        return eventosdDelDia;
-    }
-
-
     public ArrayList<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
         var listadoEventos = new ArrayList<InstanciaEvento>();
         for (Evento i : eventos) {
