@@ -18,6 +18,11 @@ public abstract class Repeticion {
         this.vencimiento = null;
     }
 
+    public void setRepeticionInfinita(){
+        this.vencimiento = null;
+        this.cantidadRepeticiones = null;
+    }
+
     //no quiero que desde calendario se obtenga esto, solo quiero acceder a esto desde las subclases de repeticion
     protected LocalDateTime getVencimiento() {
         return vencimiento;
