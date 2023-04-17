@@ -1,8 +1,7 @@
 import java.time.LocalDateTime;
 
 public class RepeticionAnual extends Repeticion {
-    //otra forma de hacerlo sin un contador?
-    private int contador = 0;
+
     public RepeticionAnual() {
         super();
     }
@@ -13,17 +12,26 @@ public class RepeticionAnual extends Repeticion {
         var vencimiento = getVencimiento();
         var cantidadRepeciones = getCantidadRepeticiones();
 
-        if (vencimiento!=null && repeticion.isBefore(vencimiento))
+        if(cantidadRepeciones == null && vencimiento == null)
             return repeticion;
 
-        if (cantidadRepeciones!=null && contador< cantidadRepeciones) {
-            contador++;
+        if (vencimiento!=null && (repeticion.isBefore(vencimiento) || repeticion.equals(vencimiento)))
+            return repeticion;
+
+        if(cantidadRepeciones ==null)
+                return null;
+        var fechaRepeticionFinal = horarioFinalSegunCantidadRepeticiones(inicio, cantidadRepeciones);
+
+        if (repeticion.isBefore(fechaRepeticionFinal) || repeticion.equals(fechaRepeticionFinal)) {
             return repeticion;
         }
 
-        if(cantidadRepeciones==null && vencimiento == null)
-            return repeticion;
 
         return null;
     }
+
+    private LocalDateTime horarioFinalSegunCantidadRepeticiones(LocalDateTime inicio,int cantidad){
+        return inicio.plusYears(cantidad);
+    }
+
 }
