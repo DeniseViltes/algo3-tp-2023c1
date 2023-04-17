@@ -54,8 +54,8 @@ public class CalendarioTest {
         repeticionAnual.setRepeticionInfinita();
 
         calendario.modificarRepeticionEvento(evento,repeticionAnual);
-        var horaActualTruncada = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-        var listadoDeEventos = calendario.eventosEntreFechas(horaActualTruncada,horaActualTruncada.plusYears(1).plusHours(1));
+        var horaEvento = evento.getFechaInicial();
+        var listadoDeEventos = calendario.eventosEntreFechas(horaEvento,horaEvento.plusYears(1));
         //arreglar esto para que no queden numeros random (sumo una hora por como se crea el evento default)
 
         Assert.assertEquals(2,listadoDeEventos.size());

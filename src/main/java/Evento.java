@@ -46,7 +46,7 @@ public class Evento implements ElementoCalendario {
 
     public boolean iniciaEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin){
         //varifica si la fecha inicial del evento está entre las fechas dadas
-        return !fechaYHoraInicial.isBefore(inicio) && !fechaYHoraInicial.isAfter(fin);
+        return esIgualOEstaEntre(inicio,fin,this.fechaYHoraInicial);
     }
 
     public boolean tieneRepeticionEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin){
@@ -55,7 +55,11 @@ public class Evento implements ElementoCalendario {
         var fechaRepeticion = repeticion.Repetir(inicio);
         if(fechaRepeticion == null)
             return  false;
-        return fechaRepeticion.isAfter(inicio) && fechaRepeticion.isBefore(fin);
+        return esIgualOEstaEntre(inicio,fin,fechaRepeticion);
+    }
+
+    private boolean esIgualOEstaEntre(LocalDateTime inicio, LocalDateTime fin, LocalDateTime t){
+        return (t.equals(inicio) || t.isAfter(inicio)) && (t.equals(fin) || t.isBefore(fin));
     }
 
 

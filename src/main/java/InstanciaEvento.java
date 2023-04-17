@@ -5,16 +5,9 @@ public class InstanciaEvento {
 
     private LocalDateTime fecha;
 
-    public InstanciaEvento(Evento evento) {
+    public InstanciaEvento(Evento evento,LocalDateTime fecha) {
         this.evento = evento;
-        this.fecha = evento.getFechaInicial();
-    }
-
-    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 
-    public Evento getEvento() {
-        return evento;
-    }
 }

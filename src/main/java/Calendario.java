@@ -84,18 +84,15 @@ public class Calendario {
         tareas.remove(tarea);
     }
 
-    //el calendario almacena eventos, pero solo devuelve instancias de eventos, no el evento en si
+    //el calendario almacena eventos, pero solo muestra instancias de eventos, no el evento en si
     public ArrayList<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
         var listadoEventos = new ArrayList<InstanciaEvento>();
         for (Evento i : eventos) {
             if (i.iniciaEntreLosHorarios(inicio, fin))
-                listadoEventos.add( new InstanciaEvento(i));
+                listadoEventos.add( new InstanciaEvento(i,i.getFechaInicial()));
             var j = inicio;
             while (i.tieneRepeticionEntreLosHorarios(j,fin)){
-                var instancia = new InstanciaEvento(i);
-                instancia.setFecha(i.proximaRepeticion(j));
-                listadoEventos.add(instancia);
-
+                listadoEventos.add(new InstanciaEvento(i,j));
                 j = i.proximaRepeticion(j);
             }
         }
