@@ -1,5 +1,4 @@
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 // Estas irian en otro archivo pero estamos viendo todavia como lo implementamos
 public class RepeticionDiaria extends Repeticion {
@@ -13,7 +12,7 @@ public class RepeticionDiaria extends Repeticion {
     }
 
     @Override
-    public ArrayList<LocalDateTime> Repetir(LocalDateTime inicio) {
+    public LocalDateTime Repetir(LocalDateTime inicio) {
         return null;
     }
 }

@@ -11,7 +11,7 @@ public class RepeticionSemanal extends Repeticion {
     }
 
     @Override
-    public ArrayList<LocalDateTime> Repetir(LocalDateTime inicio) {
+    public LocalDateTime Repetir(LocalDateTime inicio) {
         return null;
     }
 }
