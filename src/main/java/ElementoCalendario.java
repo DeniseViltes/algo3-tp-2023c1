@@ -4,11 +4,17 @@ import java.time.LocalDateTime;
 public interface ElementoCalendario {
 
     void setTitulo(String titulo);
+
     void setDescripcion(String descripcion);
 
     void setFecha(LocalDateTime inicioEvento);
 
     void setEsDeDiaCompleto(boolean diaCompleto);
 
-    void setAlarma(boolean alarma);
+    //creo que el evento viene con una alarma default siempre
+    void agregarAlarma(LocalDateTime horarioAlarma, Alarma.Efecto efecto);
+
+    void eliminarAlarma(Alarma alarma);
+
+    Alarma proximaAlarma(LocalDateTime dateTime);
 }

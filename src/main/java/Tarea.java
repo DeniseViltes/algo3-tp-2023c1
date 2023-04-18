@@ -1,5 +1,5 @@
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class Tarea implements ElementoCalendario{
 
@@ -8,14 +8,8 @@ public class Tarea implements ElementoCalendario{
     private boolean completado;
     private LocalDateTime vencimiento;
 
-    //Corsi dijo que se podia hacer subclases para diferenciar los tipos de tares, vale la pena??
-    // No se, quizas es mas prolijo hacerlo con subclases, por ahora yo seguiria con el boolean
-    // Y en un futuro, vemos.
     private boolean esDeDiaCompleto;
-
-
-
-    private ArrayList<Alarma> alarmas;
+    private TreeMap<LocalDateTime,Alarma> alarmas;
 
     public Tarea(LocalDateTime vencimiento) {
         this.titulo = null;
@@ -24,12 +18,7 @@ public class Tarea implements ElementoCalendario{
         this.vencimiento = vencimiento;
         this.esDeDiaCompleto = false;
 
-
-        this.alarmas = new ArrayList<>();
-        //igual que en evento, dejo inicializado asi por ahora
-        // en google calendar se trunca media hora, no la hora completa
-        //var horaActualTruncada = LocalTime.now().truncatedTo(ChronoUnit.HOURS);
-        //this.vencimiento = LocalDateTime.of(LocalDate.now(),horaActualTruncada.plusHours(1));
+        this.alarmas = new TreeMap<>();
     }
 
     public void setTitulo(String titulo) { this.titulo = titulo; }
@@ -37,29 +26,34 @@ public class Tarea implements ElementoCalendario{
     public void setEsDeDiaCompleto(boolean esDeDiaCompleto) {
         this.esDeDiaCompleto = esDeDiaCompleto;
     }
+
+    @Override
+    public void agregarAlarma(LocalDateTime horarioAlarma, Alarma.Efecto efecto) {
+
+    }
+
+
+    @Override
+    public void eliminarAlarma(Alarma alarma) {
+
+    }
+
+    @Override
+    public Alarma proximaAlarma(LocalDateTime dateTime) {
+
+        return null;
+    }
+
     public void setEstado(boolean completado) { this.completado = completado; }
     public void setFecha(LocalDateTime vencimiento) {
         this.vencimiento = vencimiento;
     }
 
     // Funcion a implementar en un futuro
-    public void setAlarma(boolean alarma) {}
-
 
 
     public boolean EsDeDiaCompleto() {
         return esDeDiaCompleto;
     }
-
-
-
-    // Comento los getters de momento
-//    public String getTitulo() { return this.titulo; }
-//    public String getDescripcion() {
-//        return this.descripcion;
-//    }
-//    public LocalDateTime getVencimiento() {
-//        return vencimiento;
-//    }
 
 }
