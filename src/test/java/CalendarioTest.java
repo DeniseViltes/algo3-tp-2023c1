@@ -57,7 +57,27 @@ public class CalendarioTest {
         var horaEvento = evento.getFechaInicial();
         var listadoDeEventos = calendario.eventosEntreFechas(horaEvento,horaEvento.plusYears(1));
         //arreglar esto para que no queden numeros random (sumo una hora por como se crea el evento default)
-
         Assert.assertEquals(2,listadoDeEventos.size());
+    }
+    @Test
+    public void eliminarEventoConUnaRepeticionAnual() {
+        var calendario = new Calendario();
+        var evento = calendario.crearEvento();
+        var repeticionAnual = new RepeticionAnual();
+        repeticionAnual.setRepeticionInfinita();
+
+        calendario.modificarRepeticionEvento(evento,repeticionAnual);
+        var horaEvento = evento.getFechaInicial();
+        var listado = calendario.eventosEntreFechas(horaEvento,horaEvento.plusYears(3));
+
+
+        Assert.assertEquals(4, listado.size());
+
+        calendario.eliminarEvento(evento);
+
+        listado = calendario.eventosEntreFechas(horaEvento,horaEvento.plusYears(3));
+
+        Assert.assertEquals(0, listado.size());
+
     }
 }
