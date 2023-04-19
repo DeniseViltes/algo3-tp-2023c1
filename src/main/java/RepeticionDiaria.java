@@ -12,7 +12,17 @@ public class RepeticionDiaria extends Repeticion {
     }
 
     @Override
+    public void setCantidadRepeticiones(LocalDateTime inicio, Integer cantidadRepeticiones) {
+        this.vencimiento = inicio.plusDays((cantidadRepeticiones-1)*intervalo);
+    }
+
+    @Override
     public LocalDateTime Repetir(LocalDateTime inicio) {
-        return null;
+        var fechaRepeticion = inicio.plusDays(intervalo);
+
+        if(!estaVencida(fechaRepeticion))
+            return fechaRepeticion;
+        else
+            return null;
     }
 }

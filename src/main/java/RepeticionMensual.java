@@ -7,7 +7,17 @@ public class RepeticionMensual extends Repeticion {
     }
 
     @Override
+    public void setCantidadRepeticiones(LocalDateTime inicio, Integer cantidadRepeticiones) {
+        this.vencimiento = inicio.plusMonths(cantidadRepeticiones-1);
+    }
+
+    @Override
     public LocalDateTime Repetir(LocalDateTime inicio) {
-        return null;
+        var fechaRepeticion = inicio.plusMonths(1);
+
+        if(!estaVencida(fechaRepeticion))
+            return fechaRepeticion;
+        else
+            return null;
     }
 }

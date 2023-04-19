@@ -1,16 +1,20 @@
+import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class Calendario {
-    private final ArrayList<Evento> eventos;
+    private static ArrayList<Evento> eventos;
     private final ArrayList<Tarea> tareas;
 
     public Calendario() {
         this.eventos = new ArrayList<>();
         this.tareas = new ArrayList<>();
     }
+
 
     // default crearEvento solo necesita la fecha del evento y la duracion default es de 1 hora
     public Evento crearEvento() {
@@ -32,15 +36,16 @@ public class Calendario {
     }
 
     //En el caso de ser una tarea setea la fecha de vencimiento, y si es un evento, setea el inicio
-    public void modificarInicio(ElementoCalendario elemento, LocalDateTime inicioEvento) {
+    public void modificarFecha(ElementoCalendario elemento, LocalDateTime inicioEvento) {
         if (elemento != null && inicioEvento != null)
             elemento.setFecha(inicioEvento);
     }
 
-    //solo los eventos tienen final/duracion
-    public void modificarFinal(Evento evento, LocalDateTime finalEvento) {
-        if (evento != null && finalEvento != null)
-            evento.setFinal(finalEvento);
+    //solo los eventos tienen final/duracion Lo pongo en Duration porque tiene mas sentido como habias dicho
+    // Manejemoslo en minutos que es la unidad mas pequeña
+    public void modificarDuracion(Evento evento, Duration duracionMinutos) {
+        if (evento != null && duracionMinutos != null)
+            evento.setDuracion(duracionMinutos);
     }
 
     public void modificarTipo(ElementoCalendario elemento, boolean diaCompleto) {
@@ -51,9 +56,9 @@ public class Calendario {
     //Funciones a completar en un futuro cuando tengamos implementado repeticion y alarma
 
     //tendria que recibir una repeticion?
-    public void modificarRepeticionEvento(Evento evento, Repeticion repeticion) {
-        evento.setRepeticion(repeticion);
-    }
+//    public void modificarRepeticionEvento(Evento evento, Repeticion repeticion) {
+//        evento.setRepeticion(repeticion);
+//    }
 
     public void modificarAlarmaEvento(Evento evento, boolean alarma) {
     }
@@ -85,15 +90,15 @@ public class Calendario {
     }
 
     //el calendario almacena eventos, pero solo muestra instancias de eventos, no el evento en si
-    public ArrayList<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
+    public static ArrayList<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
         var listadoEventos = new ArrayList<InstanciaEvento>();
         for (Evento i : eventos) {
             if (i.iniciaEntreLosHorarios(inicio, fin))
                 listadoEventos.add( new InstanciaEvento(i,i.getFechaInicial()));
-            var j = inicio;
+            var j = i.getFechaInicial();
             while (i.tieneRepeticionEntreLosHorarios(j,fin)){
-                listadoEventos.add(new InstanciaEvento(i,j));
                 j = i.proximaRepeticion(j);
+                listadoEventos.add(new InstanciaEvento(i,j));
             }
         }
         return listadoEventos;

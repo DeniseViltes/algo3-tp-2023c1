@@ -1,3 +1,4 @@
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class InstanciaEvento {
@@ -9,5 +10,6 @@ public class InstanciaEvento {
         this.evento = evento;
         this.fecha = fecha;
     }
+
 
 }

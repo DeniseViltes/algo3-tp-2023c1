@@ -1,4 +1,7 @@
+import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class Evento implements ElementoCalendario {
@@ -8,7 +11,7 @@ public class Evento implements ElementoCalendario {
     private LocalDateTime fechaYHoraInicial;
 
     //creo que al final para la repeticion es más facil teniendo la duracion, pero por ahora funciona la fecha final
-    private LocalDateTime fechaYHoraFinal;
+    private Duration duracionMinutos;
     private boolean esDeDiaCompleto;
     private Repeticion repeticion;
     private final TreeMap<LocalDateTime,Alarma> alarmas;
@@ -31,8 +34,9 @@ public class Evento implements ElementoCalendario {
         this.titulo = null;
         this.descripcion = null;
         this.fechaYHoraInicial = inicioEvento;
-        this.fechaYHoraFinal = inicioEvento.plusHours(1);
+        this.duracionMinutos=  Duration.ofHours(1);
         this.repeticion = null;
+        this.esDeDiaCompleto = false;
 
         this.alarmas = new TreeMap<>();
         //ordeno las alarmas segun el horario en el que suenan?
@@ -45,7 +49,7 @@ public class Evento implements ElementoCalendario {
     }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
     public void setFecha(LocalDateTime inicioEvento){ this.fechaYHoraInicial = inicioEvento; }
-    public void setFinal(LocalDateTime finalEvento){ this.fechaYHoraFinal = finalEvento; }
+    public void setDuracion(Duration duracionMinutos){ this.duracionMinutos = duracionMinutos; }
     public void setEsDeDiaCompleto(boolean diaCompleto){
         this.esDeDiaCompleto = diaCompleto;
     }
@@ -67,9 +71,27 @@ public class Evento implements ElementoCalendario {
         return par.getValue();
     }
 
-    //Funciones a implementar en un futuro cuando tengamos implementado repeticiones y alarmas
-    public void setRepeticion(Repeticion tipo){
-        this.repeticion = tipo;
+    public void setRepeticionDiaria(Integer intervalo){
+        this.repeticion = new RepeticionDiaria(intervalo);
+    }
+    public void setRepeticionSemanal(Set<DayOfWeek> dias){
+        this.repeticion = new RepeticionSemanal(dias);
+    }
+    public void setRepeticionMensual(){
+        this.repeticion = new RepeticionMensual();
+    }
+    public void setRepeticionAnual(){
+        this.repeticion = new RepeticionAnual();
+    }
+
+    public void setRepeticionVencimiento(LocalDateTime vencimiento){
+        this.repeticion.setVencimiento(vencimiento);
+    }
+    public void setRepeticionCantidad(Integer cantidadRepeticiones){
+        this.repeticion.setCantidadRepeticiones(fechaYHoraInicial, cantidadRepeticiones);
+    }
+    public void setRepeticionInfinita(){
+        this.repeticion.setRepeticionInfinita();
     }
 
 
