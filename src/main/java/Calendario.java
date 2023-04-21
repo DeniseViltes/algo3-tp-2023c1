@@ -53,14 +53,30 @@ public class Calendario {
             elemento.setEsDeDiaCompleto(diaCompleto);
     }
 
-    //Funciones a completar en un futuro cuando tengamos implementado repeticion y alarma
+    public void modificarAlarmaIntervalo(ElementoCalendario elemento,Alarma alarma,Duration intervalo) {
+        elemento.modificarIntervaloAlarma(alarma,intervalo);
+    }
 
-    //tendria que recibir una repeticion?
-//    public void modificarRepeticionEvento(Evento evento, Repeticion repeticion) {
-//        evento.setRepeticion(repeticion);
-//    }
+    public void modificarAlarmaFechaAbsoluta(ElementoCalendario elemento, Alarma alarma, LocalDateTime fechaYhora){
+        elemento.modificarFechaAbsolutaAlarma(alarma,fechaYhora);
+    }
 
-    public void modificarAlarmaEvento(Evento evento, boolean alarma) {
+    public void eliminarAlarma(ElementoCalendario elemento, Alarma alarma){
+        elemento.eliminarAlarma(alarma);
+    }
+    public void  agregarRepeticionEvento (Evento evento, Repeticion repeticion){
+        evento.setRepeticion(repeticion);
+    }
+    public void modificarCantidadRepeticiones(Evento evento,int cantidad){
+        evento.setRepeticionCantidad(cantidad);
+    }
+
+    public void modificarVencimientoRepeticion (Evento evento, LocalDateTime vencimiento){
+        evento.setRepeticionVencimiento(vencimiento);
+    }
+
+    public void eliminarRepeticion(Evento evento){
+        evento.eliminarRepeticion();
     }
 
     public void eliminarEvento(Evento evento) {
