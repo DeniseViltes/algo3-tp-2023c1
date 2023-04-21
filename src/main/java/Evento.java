@@ -13,7 +13,6 @@ public class Evento implements ElementoCalendario {
     private Duration duracion;
     private boolean esDeDiaCompleto;
     private Repeticion repeticion;
-
     private final TreeMap<LocalDateTime,Alarma> alarmas;
         /*
         no puede haber alarmas repetidas, o mejor dicho que suenen al mismo horario?
@@ -56,12 +55,15 @@ public class Evento implements ElementoCalendario {
     }
     public void setEsDeDiaCompleto(boolean diaCompleto){
         //las alarmas de dia completo suenan un dia antes a las 9 de la mañana?
-        this.fechaYHoraInicial = this.fechaYHoraInicial.truncatedTo(ChronoUnit.DAYS);
         this.esDeDiaCompleto = diaCompleto;
-        //hay que actualizar todos los horarios de las alarmas?????
+        //En google calendar directamente elimina TODAS las alarmas cuando se modifica esto
+        this.alarmas.clear();
     }
 
 
+    public int cantidadDeAlarmas(){
+        return alarmas.size();
+    }
 
     @Override
     public void agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, Alarma.Efecto efecto) {
@@ -85,6 +87,8 @@ public class Evento implements ElementoCalendario {
     @Override
     public Alarma proximaAlarma(LocalDateTime dateTime) {
         var par = this.alarmas.ceilingEntry(dateTime);
+        if(par == null)
+                return  null;
         return par.getValue();
     }
 
@@ -106,11 +110,6 @@ public class Evento implements ElementoCalendario {
     public void modificarAlarmaEfecto(Alarma alarma, Alarma.Efecto efecto) {
         alarma.setEfecto(efecto);
     }
-/*
-
-       Comento esto por ahora asi no tenemos que hacer una modificación (en Calendario) para cada tipo,
-       sino que se reciba el tipo de repeticion y se maneje con polimorfismo, no se si es la mejor opcion,
-        pero va a quedar mejor desde calendario.
 
 
     public void setRepeticionDiaria(Integer intervalo){
@@ -124,7 +123,7 @@ public class Evento implements ElementoCalendario {
     }
     public void setRepeticionAnual(){
         this.repeticion = new RepeticionAnual();
-    }*/
+    }
 
 
     public void setRepeticion(Repeticion tipo){
