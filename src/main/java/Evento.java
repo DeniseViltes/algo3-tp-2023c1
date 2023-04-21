@@ -1,6 +1,7 @@
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -9,20 +10,16 @@ public class Evento implements ElementoCalendario {
     private String titulo;
     private String descripcion;
     private LocalDateTime fechaYHoraInicial;
-
-    //creo que al final para la repeticion es más facil teniendo la duracion, pero por ahora funciona la fecha final
-    private Duration duracionMinutos;
+    private Duration duracion;
     private boolean esDeDiaCompleto;
     private Repeticion repeticion;
+
     private final TreeMap<LocalDateTime,Alarma> alarmas;
         /*
         no puede haber alarmas repetidas, o mejor dicho que suenen al mismo horario?
         en calendar si se puede poner dos alarmas al mismo horario (con distintos efectos),
          pero por lo que estuve lo que  estuve leyendo en Slack, si llamas a proxima alarma
          te devuelve una alarma
-
-        treeMap, hashMap???? Depende de si se aceptan horarios repetidos
-        pongo treeMap porque las ordena, asi que supongo que va a simplificar buscar la prox alarma
 
         https://guava.dev/releases/23.0/api/docs/com/google/common/collect/TreeMultimap.html
          un TreeMap que acepta keys duplicadas? por lo que vi en la documentacion no habría problema
@@ -34,30 +31,50 @@ public class Evento implements ElementoCalendario {
         this.titulo = null;
         this.descripcion = null;
         this.fechaYHoraInicial = inicioEvento;
-        this.duracionMinutos=  Duration.ofHours(1);
+        this.duracion =  Duration.ofHours(1);
         this.repeticion = null;
         this.esDeDiaCompleto = false;
 
         this.alarmas = new TreeMap<>();
-        //ordeno las alarmas segun el horario en el que suenan?
-        var alarmaDefault = new Alarma(inicioEvento.minusMinutes(10), Alarma.Efecto.NOTIFICACION);
-        this.alarmas.put(alarmaDefault.getFechaYHora(), alarmaDefault);
+        var alarmaDefault = new Alarma(inicioEvento);
+        this.alarmas.put(alarmaDefault.getFechaYHora(),alarmaDefault);
     }
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
+    public void setDuracion(Duration duracionMinutos){
+        this.duracion = duracionMinutos;
+    }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
-    public void setFecha(LocalDateTime inicioEvento){ this.fechaYHoraInicial = inicioEvento; }
-    public void setDuracion(Duration duracionMinutos){ this.duracionMinutos = duracionMinutos; }
+
+
+
+
+    public void setFecha(LocalDateTime inicioEvento){
+        this.fechaYHoraInicial = inicioEvento;
+    }
     public void setEsDeDiaCompleto(boolean diaCompleto){
+        //las alarmas de dia completo suenan un dia antes a las 9 de la mañana?
+        this.fechaYHoraInicial = this.fechaYHoraInicial.truncatedTo(ChronoUnit.DAYS);
         this.esDeDiaCompleto = diaCompleto;
+        //hay que actualizar todos los horarios de las alarmas?????
     }
 
+
+
     @Override
-    public void agregarAlarma(LocalDateTime horarioAlarma, Alarma.Efecto efecto) {
-        var nueva = new Alarma(horarioAlarma,efecto);
-        alarmas.put(horarioAlarma,nueva);
+    public void agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, Alarma.Efecto efecto) {
+        var nueva = new Alarma(this.fechaYHoraInicial);
+        nueva.setAlarmaAbsoluta(horarioAlarma);
+        alarmas.put(horarioAlarma, nueva);
+    }
+    @Override
+    public Alarma agregarAlarma(Duration intervalo, Alarma.Efecto efecto) {
+        var nueva = new Alarma(this.fechaYHoraInicial);
+        nueva.setIntervalo(intervalo);
+        alarmas.put(nueva.getFechaYHora(),nueva);
+        return nueva;
     }
 
     @Override
@@ -71,6 +88,31 @@ public class Evento implements ElementoCalendario {
         return par.getValue();
     }
 
+    @Override
+    public void modificarIntervaloAlarma(Alarma alarma, Duration intervalo) {
+        alarmas.remove(alarma.getFechaYHora());
+        alarma.setIntervalo(intervalo);
+        alarmas.put(alarma.getFechaYHora(), alarma);
+    }
+
+    @Override
+    public void modificarFechaAbsolutaAlarma(Alarma alarma, LocalDateTime fecha) {
+        alarmas.remove(alarma.getFechaYHora());
+        alarma.setAlarmaAbsoluta(fecha);
+        alarmas.put(alarma.getFechaYHora(), alarma);
+    }
+
+    @Override
+    public void modificarAlarmaEfecto(Alarma alarma, Alarma.Efecto efecto) {
+        alarma.setEfecto(efecto);
+    }
+/*
+
+       Comento esto por ahora asi no tenemos que hacer una modificación (en Calendario) para cada tipo,
+       sino que se reciba el tipo de repeticion y se maneje con polimorfismo, no se si es la mejor opcion,
+        pero va a quedar mejor desde calendario.
+
+
     public void setRepeticionDiaria(Integer intervalo){
         this.repeticion = new RepeticionDiaria(intervalo);
     }
@@ -82,11 +124,18 @@ public class Evento implements ElementoCalendario {
     }
     public void setRepeticionAnual(){
         this.repeticion = new RepeticionAnual();
+    }*/
+
+
+    public void setRepeticion(Repeticion tipo){
+        this.repeticion = tipo;
     }
 
     public void setRepeticionVencimiento(LocalDateTime vencimiento){
         this.repeticion.setVencimiento(vencimiento);
     }
+
+    // me parece que es un poco peligroso poner cantidad como Integer
     public void setRepeticionCantidad(Integer cantidadRepeticiones){
         this.repeticion.setCantidadRepeticiones(fechaYHoraInicial, cantidadRepeticiones);
     }
@@ -94,9 +143,11 @@ public class Evento implements ElementoCalendario {
         this.repeticion.setRepeticionInfinita();
     }
 
+    public void eliminarRepeticion (){
+        this.repeticion = null;
+    }
 
     public boolean iniciaEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin){
-        //varifica si la fecha inicial del evento está entre las fechas dadas
         return esIgualOEstaEntre(inicio,fin,this.fechaYHoraInicial);
     }
 
@@ -118,11 +169,11 @@ public class Evento implements ElementoCalendario {
         return fechaYHoraInicial;
     }
 
-    public boolean tieneRepeticion(){
-        return repeticion != null;
-    }
-
     public  LocalDateTime proximaRepeticion (LocalDateTime inicio){
         return repeticion.Repetir(inicio);
+    }
+
+    public TreeMap<LocalDateTime, Alarma> getAlarmas() {
+        return alarmas;
     }
 }
