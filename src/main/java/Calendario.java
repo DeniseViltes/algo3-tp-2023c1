@@ -48,10 +48,10 @@ public class Calendario {
             evento.setDuracion(duracionMinutos);
     }
 
-    public void modificarTipo(ElementoCalendario elemento, boolean diaCompleto) {
+ /*   public void modificarTipo(ElementoCalendario elemento, boolean diaCompleto) {
         if (elemento != null)
             elemento.setEsDeDiaCompleto(diaCompleto);
-    }
+    }*/
 
     public void modificarAlarmaIntervalo(ElementoCalendario elemento,Alarma alarma,Duration intervalo) {
         elemento.modificarIntervaloAlarma(alarma,intervalo);

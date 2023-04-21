@@ -1,6 +1,7 @@
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import java.util.TreeMap;
@@ -27,7 +28,7 @@ public class Evento implements ElementoCalendario {
 
 
     public Evento(LocalDateTime inicioEvento) {
-        this.titulo = null;
+        this.titulo = "My Event";  //le pongo esto asi queda un poco más lindo
         this.descripcion = null;
         this.fechaYHoraInicial = inicioEvento;
         this.duracion =  Duration.ofHours(1);
@@ -48,16 +49,47 @@ public class Evento implements ElementoCalendario {
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
 
-
+    public LocalDateTime getFechaYHoraFinal(){
+        return this.fechaYHoraInicial.plus(this.duracion);
+    }
 
     public void setFecha(LocalDateTime inicioEvento){
         this.fechaYHoraInicial = inicioEvento;
     }
-    public void setEsDeDiaCompleto(boolean diaCompleto){
+    public void AsignarDeDiaCompleto(){
         //las alarmas de dia completo suenan un dia antes a las 9 de la mañana?
-        this.esDeDiaCompleto = diaCompleto;
+        this.esDeDiaCompleto = true;
+        var nuevaInicial = this.fechaYHoraInicial.toLocalDate();
+        //esto lo pongo asi por ahora, por lo que parece cuando se guarda crea el evento ya no te
+        //guarda la hora en la que estaba antes, solo se mantienen las fechas
+        //además así nos aseguramos de que cumpla el horario que tiene que durar un día completo
+        this.fechaYHoraInicial = nuevaInicial.atStartOfDay();
+        if (duracion.compareTo(Duration.ofDays(1))<0)
+            this.duracion = Duration.ofHours(23).plusMinutes(59);
+        else this.duracion = this.duracion.truncatedTo(ChronoUnit.DAYS);
         //En google calendar directamente elimina TODAS las alarmas cuando se modifica esto
         this.alarmas.clear();
+    }
+    public void AsignarDeFechaArbitraria(){
+        this.esDeDiaCompleto = false;
+        var horaInicial = LocalTime.of(8,0);
+        var nuevaInicial = LocalDateTime.of(this.fechaYHoraInicial.toLocalDate(),horaInicial);
+        this.fechaYHoraInicial = nuevaInicial;
+
+        //google calendar saca todas las alarmas y deja una de 10 min;
+        this.alarmas.clear();
+        var nuevaAlarma = new Alarma(nuevaInicial);
+        this.alarmas.put(nuevaAlarma.getFechaYHora(),nuevaAlarma);
+    }
+
+    @Override
+    public String getTitulo() {
+        return this.titulo;
+    }
+
+    @Override
+    public String getDescripcion() {
+        return this.descripcion;
     }
 
 
