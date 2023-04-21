@@ -1,5 +1,6 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class Alarma {
 
@@ -21,25 +22,31 @@ public class Alarma {
         this.intervalo = Duration.ofMinutes(10); //intervalo default 10 min;
         this.efecto = Efecto.NOTIFICACION; //efecto default del tipo notificación
         this.referencia = fechaReferencia;
-        this.fechaYHora = fechaASonar(fechaReferencia);
+        fechaASonar();
     }
 
-    private LocalDateTime fechaASonar(LocalDateTime inicio){
-        return inicio.minus(this.intervalo);
+    private void fechaASonar(){
+
+       this.fechaYHora = this.referencia.minus(this.intervalo);
     }
 
     public void setReferencia(LocalDateTime referencia) {
         this.referencia = referencia;
-        this.fechaYHora = fechaASonar(referencia);
+        fechaASonar();
     }
 
-    public void setFechaYHora(LocalDateTime fechaYHora) {
-        this.fechaYHora = fechaYHora;
-    }
+    public void setDiaCompleto (LocalDateTime dia){
+        var diaTruncado = dia.truncatedTo(ChronoUnit.DAYS);
+        var horaDefault = 9; // no se especifica en los requerimientos, asi que fijo una hora
+        this.referencia = diaTruncado.withHour(horaDefault);
+        var cantidadDias = 1;
+        this.intervalo = Duration.ofDays(cantidadDias);
+        fechaASonar();
 
+    }
     public void setIntervalo(Duration intervalo) {
         this.intervalo = intervalo;
-        this.fechaYHora = fechaASonar(referencia);
+        fechaASonar();
     }
 
     public void setAlarmaAbsoluta(LocalDateTime fechaYHora){
