@@ -106,7 +106,7 @@ public class Calendario {
     }
 
     //el calendario almacena eventos, pero solo muestra instancias de eventos, no el evento en si
-    public static ArrayList<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
+    public ArrayList<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
         var listadoEventos = new ArrayList<InstanciaEvento>();
         for (Evento i : eventos) {
             if (i.iniciaEntreLosHorarios(inicio, fin))
