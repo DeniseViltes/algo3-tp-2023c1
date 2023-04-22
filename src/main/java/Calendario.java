@@ -2,10 +2,7 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Calendario {
     //todos los evetos se crean con new, asi que son distintos, y creo que no conviene tener repetidos
@@ -137,19 +134,28 @@ public class Calendario {
         return listadoTareas;
     }
 
-    public  Set<ElementoCalendario> elementosEntreFechas(LocalDateTime inicio, LocalDateTime fin){
-            var todos = new TreeSet<ElementoCalendario>((new OrdenarElementosPorHorario()));
-            todos.addAll(tareasEntreFechas(inicio,fin));
-            todos.addAll(eventosEntreFechas(inicio,fin));
-            return todos;
+    public TreeSet<ElementoCalendario> elementosEntreFechas(LocalDateTime inicio, LocalDateTime fin){
+        var todos = new TreeSet<ElementoCalendario>((new OrdenarElementosPorHorario()));
+        todos.addAll(tareasEntreFechas(inicio,fin));
+        todos.addAll(eventosEntreFechas(inicio,fin));
+        return todos;
     }
 
     //se puede hacer sin fecha final?
     public EfectoAlarma sonarProximaAlarma(LocalDateTime fechaYHora, LocalDateTime fin){
-
-
-
-        return null;
+        var elementos = elementosEntreFechas(fechaYHora,fin);
+        if(elementos == null)
+            return null;
+        EfectoAlarma efecto = null;
+        LocalDateTime date = fin;
+        for (ElementoCalendario i : elementos){
+            var horarioAlarma = i.proximaAlarma(fechaYHora);
+            if (!horarioAlarma.isAfter(date)){
+                date = horarioAlarma;
+                efecto = i.sonarProximaAlarma(horarioAlarma);
+            }
+        }
+        return efecto;
     }
 
 }
