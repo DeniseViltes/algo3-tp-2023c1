@@ -10,11 +10,7 @@ public abstract class Repeticion {
     public void setVencimiento(LocalDateTime vencimiento){
         this.vencimiento = vencimiento;
     }
-    public abstract void setCantidadRepeticiones(LocalDateTime inicio, Integer cantidadRepeticiones);
-
-    public void setRepeticionInfinita(){
-        this.vencimiento = null;
-    }
+    public abstract void setCantidadRepeticiones(LocalDateTime inicio, int cantidadRepeticiones);
 
     protected boolean estaVencida(LocalDateTime fecha){
         if(vencimiento == null)

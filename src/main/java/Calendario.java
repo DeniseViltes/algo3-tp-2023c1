@@ -41,8 +41,6 @@ public class Calendario {
             elemento.setFecha(inicioEvento);
     }
 
-    //solo los eventos tienen final/duracion Lo pongo en Duration porque tiene mas sentido como habias dicho
-    // Manejemoslo en minutos que es la unidad mas pequeña
     public void modificarDuracion(Evento evento, Duration duracionMinutos) {
         if (evento != null && duracionMinutos != null)
             evento.setDuracion(duracionMinutos);
@@ -64,13 +62,23 @@ public class Calendario {
     public void eliminarAlarma(ElementoCalendario elemento, Alarma alarma){
         elemento.eliminarAlarma(alarma);
     }
-    public void  agregarRepeticionEvento (Evento evento, Repeticion repeticion){
-        evento.setRepeticion(repeticion);
+    public void  agregarRepeticionAnualEvento (Evento evento){
+        evento.setRepeticionAnual();
+    }
+    public void  agregarRepeticionMensuakEvento (Evento evento){
+        evento.setRepeticionMensual();
+    }
+    public void  agregarRepeticionSemanalEvento (Evento evento, Set<DayOfWeek> dias){
+        evento.setRepeticionSemanal(dias);
+    }
+    public void  agregarRepeticionDiariaEvento (Evento evento, int intervalo){
+        evento.setRepeticionDiaria(intervalo);
     }
     public void modificarCantidadRepeticiones(Evento evento,int cantidad){
         evento.setRepeticionCantidad(cantidad);
     }
 
+    // Para modificar a repeticion infinita, vencimiento debe ser null.
     public void modificarVencimientoRepeticion (Evento evento, LocalDateTime vencimiento){
         evento.setRepeticionVencimiento(vencimiento);
     }

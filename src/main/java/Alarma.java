@@ -14,13 +14,11 @@ public class Alarma {
     private  LocalDateTime fechaYHora;
     private Duration intervalo;
     private LocalDateTime referencia;
-    public enum Efecto{NOTIFICACION, SONIDO, MAIL}; //tendria que ser una clase aparte?
-
-    private Efecto efecto;
+    private EfectoAlarma efecto;
 
     public Alarma(LocalDateTime fechaReferencia) {
         this.intervalo = Duration.ofMinutes(10); //intervalo default 10 min;
-        this.efecto = Efecto.NOTIFICACION; //efecto default del tipo notificación
+        this.efecto = EfectoAlarma.NOTIFICACION; //efecto default del tipo notificación
         this.referencia = fechaReferencia;
         fechaASonar();
     }
@@ -53,7 +51,7 @@ public class Alarma {
         this.intervalo = Duration.ZERO;
         this.fechaYHora = fechaYHora;
     }
-    public void setEfecto(Efecto efecto) {
+    public void setEfecto(EfectoAlarma efecto) {
         this.efecto = efecto;
     }
 
@@ -61,7 +59,7 @@ public class Alarma {
         return fechaYHora;
     }
 
-    public Efecto sonar(LocalDateTime actual){
+    public EfectoAlarma sonar(LocalDateTime actual){
         if (actual.equals(this.fechaYHora))
             return efecto; //supongo que esto pasa cuando suena la alarma????
         return null;//se puede devolver null?

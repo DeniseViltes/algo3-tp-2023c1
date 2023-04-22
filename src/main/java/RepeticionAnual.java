@@ -7,7 +7,7 @@ public class RepeticionAnual extends Repeticion {
     }
 
     @Override
-    public void setCantidadRepeticiones(LocalDateTime inicio, Integer cantidadRepeticiones){
+    public void setCantidadRepeticiones(LocalDateTime inicio, int cantidadRepeticiones){
         this.vencimiento = inicio.plusYears(cantidadRepeticiones-1);
     }
 

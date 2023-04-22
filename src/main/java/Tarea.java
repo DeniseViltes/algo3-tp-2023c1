@@ -28,7 +28,7 @@ public class Tarea implements ElementoCalendario{
     }
 
     @Override
-    public void agregarAlarma(LocalDateTime horarioAlarma, Alarma.Efecto efecto) {
+    public Alarma agregarAlarma(LocalDateTime horarioAlarma, EfectoAlarma efecto) {
 
     }
 

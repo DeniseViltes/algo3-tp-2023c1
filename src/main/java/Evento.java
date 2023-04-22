@@ -98,13 +98,13 @@ public class Evento implements ElementoCalendario {
     }
 
     @Override
-    public void agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, Alarma.Efecto efecto) {
+    public void agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, EfectoAlarma efecto) {
         var nueva = new Alarma(this.fechaYHoraInicial);
         nueva.setAlarmaAbsoluta(horarioAlarma);
         alarmas.put(horarioAlarma, nueva);
     }
     @Override
-    public Alarma agregarAlarma(Duration intervalo, Alarma.Efecto efecto) {
+    public Alarma agregarAlarma(Duration intervalo, EfectoAlarma efecto) {
         var nueva = new Alarma(this.fechaYHoraInicial);
         nueva.setIntervalo(intervalo);
         alarmas.put(nueva.getFechaYHora(),nueva);
@@ -139,7 +139,7 @@ public class Evento implements ElementoCalendario {
     }
 
     @Override
-    public void modificarAlarmaEfecto(Alarma alarma, Alarma.Efecto efecto) {
+    public void modificarAlarmaEfecto(Alarma alarma, EfectoAlarma efecto) {
         alarma.setEfecto(efecto);
     }
 
@@ -157,21 +157,13 @@ public class Evento implements ElementoCalendario {
         this.repeticion = new RepeticionAnual();
     }
 
-
-    public void setRepeticion(Repeticion tipo){
-        this.repeticion = tipo;
-    }
-
     public void setRepeticionVencimiento(LocalDateTime vencimiento){
         this.repeticion.setVencimiento(vencimiento);
     }
 
     // me parece que es un poco peligroso poner cantidad como Integer
-    public void setRepeticionCantidad(Integer cantidadRepeticiones){
+    public void setRepeticionCantidad(int cantidadRepeticiones){
         this.repeticion.setCantidadRepeticiones(fechaYHoraInicial, cantidadRepeticiones);
-    }
-    public void setRepeticionInfinita(){
-        this.repeticion.setRepeticionInfinita();
     }
 
     public void eliminarRepeticion (){

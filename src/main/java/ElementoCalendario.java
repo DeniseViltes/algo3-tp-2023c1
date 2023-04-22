@@ -13,8 +13,8 @@ public interface ElementoCalendario {
     String getDescripcion ();
 
 
-    void agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, Alarma.Efecto efecto);
-    Alarma agregarAlarma(Duration intervalo, Alarma.Efecto efecto);
+    void agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, EfectoAlarma efecto);
+    Alarma agregarAlarma(Duration intervalo, EfectoAlarma efecto);
     void eliminarAlarma(Alarma alarma);
     Alarma proximaAlarma(LocalDateTime dateTime);
 
@@ -22,5 +22,5 @@ public interface ElementoCalendario {
 
     void modificarFechaAbsolutaAlarma(Alarma alarma, LocalDateTime fecha);
 
-    void modificarAlarmaEfecto (Alarma alarma, Alarma.Efecto efecto);
+    void modificarAlarmaEfecto (Alarma alarma, EfectoAlarma efecto);
 }

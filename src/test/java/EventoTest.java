@@ -24,9 +24,9 @@ public class EventoTest {
     @Test
     public void modificarADiaCompleto() {
         var evento = new Evento(ahoraTruncado);
-        var alarma = evento.agregarAlarma(Duration.ofMinutes(10), Alarma.Efecto.NOTIFICACION);
-        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(20), Alarma.Efecto.SONIDO);
-        var alarma3 = evento.agregarAlarma(Duration.ofMinutes(30), Alarma.Efecto.SONIDO);
+        var alarma = evento.agregarAlarma(Duration.ofMinutes(10), EfectoAlarma.NOTIFICACION);
+        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(20), EfectoAlarma.SONIDO);
+        var alarma3 = evento.agregarAlarma(Duration.ofMinutes(30), EfectoAlarma.SONIDO);
         Assert.assertEquals(3,evento.cantidadDeAlarmas());
 
         evento.AsignarDeDiaCompleto();

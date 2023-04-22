@@ -16,7 +16,7 @@ public class RepeticionSemanal extends Repeticion {
 
 
     @Override
-    public void setCantidadRepeticiones(LocalDateTime inicio, Integer cantidadRepeticiones) {
+    public void setCantidadRepeticiones(LocalDateTime inicio, int cantidadRepeticiones) {
         var semanas = (int)(cantidadRepeticiones-1)/dias.size();
         var diasSumar = 0;
         var resto = cantidadRepeticiones-1-(semanas*dias.size());
