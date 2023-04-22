@@ -1,16 +1,7 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 public class Alarma {
-
-    /*
-    -Una fecha y hora absoluta
-    -Un intervalo de tiempo relativo a la fecha y hora del evento/tarea (ej: “30 minutos antes”).
-
-    como manejamos esto??
-    */
-
     private  LocalDateTime fechaYHora;
     private Duration intervalo;
     private LocalDateTime referencia;
@@ -33,15 +24,6 @@ public class Alarma {
         fechaASonar();
     }
 
-    public void setDiaCompleto (LocalDateTime dia){
-        var diaTruncado = dia.truncatedTo(ChronoUnit.DAYS);
-        var horaDefault = 9; // no se especifica en los requerimientos, asi que fijo una hora
-        this.referencia = diaTruncado.withHour(horaDefault);
-        var cantidadDias = 1;
-        this.intervalo = Duration.ofDays(cantidadDias);
-        fechaASonar();
-
-    }
     public void setIntervalo(Duration intervalo) {
         this.intervalo = intervalo;
         fechaASonar();
