@@ -114,12 +114,12 @@ public class Calendario {
     }
 
     //el calendario almacena eventos, pero solo muestra instancias de eventos, no el evento en si
-    public List<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
-        var listadoEventos = new ArrayList<InstanciaEvento>();
+    private Set<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
+        var listadoEventos = new TreeSet<InstanciaEvento>(new OrdenarElementosPorHorario());
         for (Evento i : eventos) {
-            if (i.iniciaEntreLosHorarios(inicio, fin))
-                listadoEventos.add( new InstanciaEvento(i,i.getFecha()));
             var j = i.getFecha();
+            if (i.iniciaEntreLosHorarios(inicio, fin))
+                listadoEventos.add( new InstanciaEvento(i,j));
             while (i.tieneRepeticionEntreLosHorarios(j,fin)){
                 j = i.proximaRepeticion(j);
                 listadoEventos.add(new InstanciaEvento(i,j));
@@ -128,12 +128,26 @@ public class Calendario {
         return listadoEventos;
     }
 
-    public Set<Tarea>  tareasEntreFechas(LocalDateTime inicio, LocalDateTime fin){
-        return  null;
+    private Set<Tarea>  tareasEntreFechas(LocalDateTime inicio, LocalDateTime fin){
+        var listadoTareas = new TreeSet<Tarea>(new OrdenarElementosPorHorario());
+        for(Tarea i : tareas){
+            if(i.estaEntreLosHorarios(inicio,fin))
+                listadoTareas.add(i);
+        }
+        return listadoTareas;
+    }
+
+    public  Set<ElementoCalendario> elementosEntreFechas(LocalDateTime inicio, LocalDateTime fin){
+            var todos = new TreeSet<ElementoCalendario>((new OrdenarElementosPorHorario()));
+            todos.addAll(tareasEntreFechas(inicio,fin));
+            todos.addAll(eventosEntreFechas(inicio,fin));
+            return todos;
     }
 
     //se puede hacer sin fecha final?
     public EfectoAlarma sonarProximaAlarma(LocalDateTime fechaYHora, LocalDateTime fin){
+
+
 
         return null;
     }
