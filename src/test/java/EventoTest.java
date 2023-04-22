@@ -54,13 +54,14 @@ public class EventoTest {
     public void modificarFechaDeEventoConAlarmas(){
         var evento = new Evento(ahoraTruncado);
         var alarma = evento.agregarAlarma(Duration.ofMinutes(10), EfectoAlarma.NOTIFICACION);
+        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(30), EfectoAlarma.NOTIFICACION);
 
         var magnana = ahoraTruncado.plusDays(1);
         evento.setFecha(ahoraTruncado.plusDays(1));
 
-        var proxAlarma = evento.proximaAlarma(ahoraTruncado.plusHours(4));
+        var proxAlarma = evento.proximaAlarma(ahoraTruncado.plusHours(12));
 
-        Assert.assertEquals(magnana.minusMinutes(10),proxAlarma.getFechaYHora());
+        Assert.assertEquals(magnana.minusMinutes(30),proxAlarma.getFechaYHora());
 
     }
 
