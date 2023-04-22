@@ -5,6 +5,8 @@ import java.util.TreeMap;
 public class InstanciaEvento implements ElementoCalendario {
 
     //tendria que implementar ElementoCalendario??
+    // Estaria bueno pero complica demasiado las cosas porque las repeticiones no tienen alarmas propias
+    // Entonces no tiene sentido que implemente un monton de metodos que estan en ElementoCalendario asi que lo saco
     private final Evento evento;
 
     private LocalDateTime fecha;
@@ -45,29 +47,19 @@ public class InstanciaEvento implements ElementoCalendario {
     }
 
     @Override
-    public String getTitulo() {
-        return evento.getTitulo();
-    }
-
-    @Override
-    public String getDescripcion() {
-        return evento.getDescripcion();
-    }
-
-    @Override
     public LocalDateTime getFecha() {
         return fecha;
     }
 
     @Override
-    public Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, EfectoAlarma efecto) {
-        return  evento.agregarAlarmaAbsoluta(horarioAlarma,efecto);
+    public Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma) {
+        return  evento.agregarAlarmaAbsoluta(horarioAlarma);
     }
 
     @Override
-    public Alarma agregarAlarma(Duration intervalo, EfectoAlarma efecto) {
-        var alarma = evento.agregarAlarma(intervalo,efecto);
-       cargarAlarmas();  //????
+    public Alarma agregarAlarma(Duration intervalo) {
+        var alarma = evento.agregarAlarma(intervalo);
+        cargarAlarmas();
         return alarma;
     }
 
@@ -90,16 +82,34 @@ public class InstanciaEvento implements ElementoCalendario {
 
     @Override
     public void modificarIntervaloAlarma(Alarma alarma, Duration intervalo) {
+        alarmasInstancia.remove(alarma.getFechaYHora());
+        alarma.setIntervalo(intervalo);
+        alarmasInstancia.put(alarma.getFechaYHora(), alarma);
 
     }
 
     @Override
     public void modificarFechaAbsolutaAlarma(Alarma alarma, LocalDateTime fecha) {
+        alarmasInstancia.remove(alarma.getFechaYHora());
+        alarma.setAlarmaAbsoluta(fecha);
+        alarmasInstancia.put(alarma.getFechaYHora(), alarma);
 
     }
 
     @Override
     public void modificarAlarmaEfecto(Alarma alarma, EfectoAlarma efecto) {
+        alarmasInstancia.remove(alarma.getFechaYHora());
+        alarma.setEfecto(efecto);
+        alarmasInstancia.put(alarma.getFechaYHora(), alarma);
 
+    }
+
+    @Override
+    public boolean iniciaEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin) {
+        return esIgualOEstaEntre(inicio,fin,this.fecha);
+    }
+
+    private boolean esIgualOEstaEntre(LocalDateTime inicio, LocalDateTime fin, LocalDateTime t){
+        return (t.equals(inicio) || t.isAfter(inicio)) && (t.equals(fin) || t.isBefore(fin));
     }
 }

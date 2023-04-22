@@ -24,9 +24,12 @@ public class EventoTest {
     @Test
     public void modificarADiaCompleto() {
         var evento = new Evento(ahoraTruncado);
-        var alarma = evento.agregarAlarma(Duration.ofMinutes(10), EfectoAlarma.NOTIFICACION);
-        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(20), EfectoAlarma.SONIDO);
-        var alarma3 = evento.agregarAlarma(Duration.ofMinutes(30), EfectoAlarma.SONIDO);
+        var alarma = evento.agregarAlarma(Duration.ofMinutes(10));
+        evento.modificarAlarmaEfecto(alarma, EfectoAlarma.NOTIFICACION);
+        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(20));
+        evento.modificarAlarmaEfecto(alarma2, EfectoAlarma.SONIDO);
+        var alarma3 = evento.agregarAlarma(Duration.ofMinutes(30));
+        evento.modificarAlarmaEfecto(alarma3, EfectoAlarma.SONIDO);
         Assert.assertEquals(3,evento.cantidadDeAlarmas());
 
         evento.AsignarDeDiaCompleto();
@@ -39,9 +42,12 @@ public class EventoTest {
         var evento = new Evento(ahoraTruncado);
         var variosDias = Duration.ofDays(5).plusHours(5);
         evento.setDuracion(variosDias);
-        var alarma = evento.agregarAlarma(Duration.ofMinutes(10), EfectoAlarma.NOTIFICACION);
-        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(20), EfectoAlarma.SONIDO);
-        var alarma3 = evento.agregarAlarma(Duration.ofMinutes(30), EfectoAlarma.SONIDO);
+        var alarma = evento.agregarAlarma(Duration.ofMinutes(10));
+        evento.modificarAlarmaEfecto(alarma, EfectoAlarma.NOTIFICACION);
+        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(20));
+        evento.modificarAlarmaEfecto(alarma2, EfectoAlarma.SONIDO);
+        var alarma3 = evento.agregarAlarma(Duration.ofMinutes(30));
+        evento.modificarAlarmaEfecto(alarma3, EfectoAlarma.SONIDO);
 
 
         evento.AsignarDeDiaCompleto();
@@ -53,8 +59,10 @@ public class EventoTest {
     @Test
     public void modificarFechaDeEventoConAlarmas(){
         var evento = new Evento(ahoraTruncado);
-        var alarma = evento.agregarAlarma(Duration.ofMinutes(10), EfectoAlarma.NOTIFICACION);
-        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(30), EfectoAlarma.NOTIFICACION);
+        var alarma = evento.agregarAlarma(Duration.ofMinutes(10));
+        evento.modificarAlarmaEfecto(alarma, EfectoAlarma.NOTIFICACION);
+        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(30));
+        evento.modificarAlarmaEfecto(alarma2, EfectoAlarma.NOTIFICACION);
 
         var magnana = ahoraTruncado.plusDays(1);
         evento.setFecha(ahoraTruncado.plusDays(1));
@@ -71,9 +79,12 @@ public class EventoTest {
         var variosDias = Duration.ofDays(5).plusHours(5);
         evento.setDuracion(variosDias);
         evento.AsignarDeDiaCompleto();
-        var alarma = evento.agregarAlarma(Duration.ofMinutes(10), EfectoAlarma.NOTIFICACION);
-        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(20), EfectoAlarma.SONIDO);
-        var alarma3 = evento.agregarAlarma(Duration.ofMinutes(30), EfectoAlarma.SONIDO);
+        var alarma = evento.agregarAlarma(Duration.ofMinutes(10));
+        evento.modificarAlarmaEfecto(alarma, EfectoAlarma.NOTIFICACION);
+        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(20));
+        evento.modificarAlarmaEfecto(alarma2, EfectoAlarma.SONIDO);
+        var alarma3 = evento.agregarAlarma(Duration.ofMinutes(30));
+        evento.modificarAlarmaEfecto(alarma3, EfectoAlarma.SONIDO);
 
 
         evento.AsignarDeFechaArbitraria();
@@ -87,7 +98,8 @@ public class EventoTest {
     public void agregarAlarmasFechaAbs() {
         var evento = new Evento(ahoraTruncado);
         var magnana = ahoraTruncado.plusDays(1);
-        var alarma = evento.agregarAlarmaAbsoluta(magnana, EfectoAlarma.NOTIFICACION);
+        var alarma = evento.agregarAlarmaAbsoluta(magnana);
+        evento.modificarAlarmaEfecto(alarma, EfectoAlarma.NOTIFICACION);
 
         Assert.assertEquals(magnana,alarma.getFechaYHora());
 

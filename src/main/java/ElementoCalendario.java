@@ -9,12 +9,9 @@ public interface ElementoCalendario {
 
     void setFecha(LocalDateTime inicioEvento);
 
-    String getTitulo ();
-    String getDescripcion ();
-
     LocalDateTime getFecha();
-    Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, EfectoAlarma efecto);
-    Alarma agregarAlarma(Duration intervalo, EfectoAlarma efecto);
+    Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma);
+    Alarma agregarAlarma(Duration intervalo);
     void eliminarAlarma(Alarma alarma);
     Alarma proximaAlarma(LocalDateTime dateTime);
 
@@ -23,4 +20,7 @@ public interface ElementoCalendario {
     void modificarFechaAbsolutaAlarma(Alarma alarma, LocalDateTime fecha);
 
     void modificarAlarmaEfecto (Alarma alarma, EfectoAlarma efecto);
+
+    boolean iniciaEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin);
+
 }

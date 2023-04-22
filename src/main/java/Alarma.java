@@ -33,15 +33,6 @@ public class Alarma {
         fechaASonar();
     }
 
-    public void setDiaCompleto (LocalDateTime dia){
-        var diaTruncado = dia.truncatedTo(ChronoUnit.DAYS);
-        var horaDefault = 9; // no se especifica en los requerimientos, asi que fijo una hora
-        this.referencia = diaTruncado.withHour(horaDefault);
-        var cantidadDias = 1;
-        this.intervalo = Duration.ofDays(cantidadDias);
-        fechaASonar();
-
-    }
     public void setIntervalo(Duration intervalo) {
         this.intervalo = intervalo;
         fechaASonar();

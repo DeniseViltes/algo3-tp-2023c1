@@ -131,7 +131,7 @@ public class Calendario {
     private Set<Tarea>  tareasEntreFechas(LocalDateTime inicio, LocalDateTime fin){
         var listadoTareas = new TreeSet<Tarea>(new OrdenarElementosPorHorario());
         for(Tarea i : tareas){
-            if(i.estaEntreLosHorarios(inicio,fin))
+            if(i.iniciaEntreLosHorarios(inicio,fin))
                 listadoTareas.add(i);
         }
         return listadoTareas;
