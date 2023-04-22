@@ -1,5 +1,6 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Alarma {
     private  LocalDateTime fechaYHora;
@@ -15,7 +16,6 @@ public class Alarma {
     }
 
     private void fechaASonar(){
-
        this.fechaYHora = this.referencia.minus(this.intervalo);
     }
 
@@ -51,4 +51,19 @@ public class Alarma {
         return intervalo.isZero();
     }
 
+    /*
+    defino que dos alarmas son iguales cuando tienen el mismo intervalo, suenan a la misma hora
+    y tinen el mismo efecto
+    */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Alarma alarma)) return false;
+        return Objects.equals(fechaYHora, alarma.fechaYHora) && Objects.equals(intervalo, alarma.intervalo) && Objects.equals(referencia, alarma.referencia) && efecto == alarma.efecto;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fechaYHora, intervalo, referencia, efecto);
+    }
 }
