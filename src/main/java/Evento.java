@@ -54,7 +54,12 @@ public class Evento implements ElementoCalendario {
     }
 
     public void setFecha(LocalDateTime inicioEvento){
+        var al = new TreeMap<>(alarmas);
+        alarmas.clear();
         this.fechaYHoraInicial = inicioEvento;
+        for (Alarma i : al.values() ){
+            modificarReferenciaAlarma(i,inicioEvento);
+        }
     }
     public void AsignarDeDiaCompleto(){
         //las alarmas de dia completo suenan un dia antes a las 9 de la mañana?
@@ -98,10 +103,11 @@ public class Evento implements ElementoCalendario {
     }
 
     @Override
-    public void agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, EfectoAlarma efecto) {
+    public Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, EfectoAlarma efecto) {
         var nueva = new Alarma(this.fechaYHoraInicial);
         nueva.setAlarmaAbsoluta(horarioAlarma);
         alarmas.put(horarioAlarma, nueva);
+        return nueva;
     }
     @Override
     public Alarma agregarAlarma(Duration intervalo, EfectoAlarma efecto) {
@@ -122,6 +128,11 @@ public class Evento implements ElementoCalendario {
         if(par == null)
                 return  null;
         return par.getValue();
+    }
+    private void modificarReferenciaAlarma (Alarma alarma, LocalDateTime referncia){
+        alarmas.remove(alarma.getFechaYHora());
+        alarma.setReferencia(referncia);
+        alarmas.put(alarma.getFechaYHora(), alarma);
     }
 
     @Override
