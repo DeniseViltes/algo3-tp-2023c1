@@ -1,3 +1,4 @@
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.TreeMap;
 
@@ -27,21 +28,48 @@ public class Tarea implements ElementoCalendario{
         this.esDeDiaCompleto = esDeDiaCompleto;
     }
 
-    @Override
-    public Alarma agregarAlarma(LocalDateTime horarioAlarma, EfectoAlarma efecto) {
-
+    public boolean iniciaEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin){
+        return esIgualOEstaEntre(inicio,fin,this.vencimiento);
     }
 
+    private boolean esIgualOEstaEntre(LocalDateTime inicio, LocalDateTime fin, LocalDateTime t){
+        return (t.equals(inicio) || t.isAfter(inicio)) && (t.equals(fin) || t.isBefore(fin));
+    }
 
     @Override
     public void eliminarAlarma(Alarma alarma) {
-
+        alarmas.remove(alarma.getFechaYHora());
     }
 
     @Override
     public Alarma proximaAlarma(LocalDateTime dateTime) {
+        var par = this.alarmas.ceilingEntry(dateTime);
+        if(par == null)
+            return  null;
+        return par.getValue();
+    }
 
-        return null;
+    @Override
+    public void modificarIntervaloAlarma(Alarma alarma, Duration intervalo) {
+        alarmas.remove(alarma.getFechaYHora());
+        alarma.setIntervalo(intervalo);
+        alarmas.put(alarma.getFechaYHora(), alarma);
+
+    }
+
+    @Override
+    public void modificarFechaAbsolutaAlarma(Alarma alarma, LocalDateTime fecha) {
+        alarmas.remove(alarma.getFechaYHora());
+        alarma.setAlarmaAbsoluta(fecha);
+        alarmas.put(alarma.getFechaYHora(), alarma);
+
+    }
+
+    @Override
+    public void modificarAlarmaEfecto(Alarma alarma, EfectoAlarma efecto) {
+        alarmas.remove(alarma.getFechaYHora());
+        alarma.setEfecto(efecto);
+        alarmas.put(alarma.getFechaYHora(), alarma);
     }
 
     public void setEstado(boolean completado) { this.completado = completado; }
@@ -49,8 +77,26 @@ public class Tarea implements ElementoCalendario{
         this.vencimiento = vencimiento;
     }
 
-    // Funcion a implementar en un futuro
+    @Override
+    public LocalDateTime getFecha() {
+        return this.vencimiento;
+    }
 
+    @Override
+    public Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma) {
+        var nueva = new Alarma(this.vencimiento);
+        nueva.setAlarmaAbsoluta(horarioAlarma);
+        alarmas.put(horarioAlarma, nueva);
+        return nueva;
+    }
+
+    @Override
+    public Alarma agregarAlarma(Duration intervalo) {
+        var nueva = new Alarma(this.vencimiento);
+        nueva.setIntervalo(intervalo);
+        alarmas.put(nueva.getFechaYHora(),nueva);
+        return nueva;
+    }
 
     public boolean EsDeDiaCompleto() {
         return esDeDiaCompleto;

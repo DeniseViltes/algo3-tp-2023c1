@@ -87,12 +87,12 @@ public class Evento implements ElementoCalendario {
         this.alarmas.put(nuevaAlarma.getFechaYHora(),nuevaAlarma);
     }
 
-    @Override
+
     public String getTitulo() {
         return this.titulo;
     }
 
-    @Override
+
     public String getDescripcion() {
         return this.descripcion;
     }
@@ -103,14 +103,14 @@ public class Evento implements ElementoCalendario {
     }
 
     @Override
-    public Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, EfectoAlarma efecto) {
+    public Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma) {
         var nueva = new Alarma(this.fechaYHoraInicial);
         nueva.setAlarmaAbsoluta(horarioAlarma);
         alarmas.put(horarioAlarma, nueva);
         return nueva;
     }
     @Override
-    public Alarma agregarAlarma(Duration intervalo, EfectoAlarma efecto) {
+    public Alarma agregarAlarma(Duration intervalo) {
         var nueva = new Alarma(this.fechaYHoraInicial);
         nueva.setIntervalo(intervalo);
         alarmas.put(nueva.getFechaYHora(),nueva);
@@ -151,7 +151,10 @@ public class Evento implements ElementoCalendario {
 
     @Override
     public void modificarAlarmaEfecto(Alarma alarma, EfectoAlarma efecto) {
+        alarmas.remove(alarma.getFechaYHora());
         alarma.setEfecto(efecto);
+        alarmas.put(alarma.getFechaYHora(), alarma);
+
     }
 
 
