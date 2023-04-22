@@ -2,7 +2,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.TreeMap;
 
-public class InstanciaEvento implements ElementoCalendario{
+public class InstanciaEvento implements ElementoCalendario {
 
     //tendria que implementar ElementoCalendario??
     private final Evento evento;
@@ -55,6 +55,11 @@ public class InstanciaEvento implements ElementoCalendario{
     }
 
     @Override
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    @Override
     public Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, EfectoAlarma efecto) {
         return  evento.agregarAlarmaAbsoluta(horarioAlarma,efecto);
     }
@@ -62,18 +67,25 @@ public class InstanciaEvento implements ElementoCalendario{
     @Override
     public Alarma agregarAlarma(Duration intervalo, EfectoAlarma efecto) {
         var alarma = evento.agregarAlarma(intervalo,efecto);
-       // cargarAlarmas();  ????
+       cargarAlarmas();  //????
         return alarma;
     }
 
+    //Quedo medio horrible esto, no tengo forma de ratrear la alarma original.
+    //Tenemos que chusmear el patron observer para la proxima entrega
     @Override
     public void eliminarAlarma(Alarma alarma) {
         evento.eliminarAlarma(alarma);
+        cargarAlarmas();  //??
+
     }
 
     @Override
     public Alarma proximaAlarma(LocalDateTime dateTime) {
-        return null;
+        var par = this.alarmasInstancia.ceilingEntry(dateTime);
+        if(par == null)
+            return  null;
+        return par.getValue();
     }
 
     @Override

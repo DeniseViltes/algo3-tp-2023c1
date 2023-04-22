@@ -1,22 +1,27 @@
 import java.time.DayOfWeek;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Calendario {
-    private static ArrayList<Evento> eventos;
-    private final ArrayList<Tarea> tareas;
+    //todos los evetos se crean con new, asi que son distintos, y creo que no conviene tener repetidos
+    //y depaso quedan ordenados
+    private static TreeSet<Evento> eventos;
+
+    private final TreeSet<Tarea> tareas;
 
     public Calendario() {
-        this.eventos = new ArrayList<>();
-        this.tareas = new ArrayList<>();
+        this.eventos = new TreeSet<>(new OrdenarElementosPorHorario());
+        this.tareas = new TreeSet<>(new OrdenarElementosPorHorario());
     }
 
 
     // default crearEvento solo necesita la fecha del evento y la duracion default es de 1 hora
+    //Esta bien que devuelva Evento?? o habria que devolver instanciaEvento
     public Evento crearEvento() {
         var horaActualTruncada = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
         Evento evento = new Evento(horaActualTruncada.plusHours(1));
@@ -24,7 +29,6 @@ public class Calendario {
         return evento;
     }
 
-    //Habria que ver como manejamos los errores
     public void modificarTitulo(ElementoCalendario elemento, String titulo) {
         if (elemento != null && titulo != null)
             elemento.setTitulo(titulo);
@@ -46,10 +50,6 @@ public class Calendario {
             evento.setDuracion(duracionMinutos);
     }
 
- /*   public void modificarTipo(ElementoCalendario elemento, boolean diaCompleto) {
-        if (elemento != null)
-            elemento.setEsDeDiaCompleto(diaCompleto);
-    }*/
 
     public void modificarAlarmaIntervalo(ElementoCalendario elemento,Alarma alarma,Duration intervalo) {
         elemento.modificarIntervaloAlarma(alarma,intervalo);
@@ -114,18 +114,28 @@ public class Calendario {
     }
 
     //el calendario almacena eventos, pero solo muestra instancias de eventos, no el evento en si
-    public ArrayList<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
+    public List<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
         var listadoEventos = new ArrayList<InstanciaEvento>();
         for (Evento i : eventos) {
             if (i.iniciaEntreLosHorarios(inicio, fin))
-                listadoEventos.add( new InstanciaEvento(i,i.getFechaInicial()));
-            var j = i.getFechaInicial();
+                listadoEventos.add( new InstanciaEvento(i,i.getFecha()));
+            var j = i.getFecha();
             while (i.tieneRepeticionEntreLosHorarios(j,fin)){
                 j = i.proximaRepeticion(j);
                 listadoEventos.add(new InstanciaEvento(i,j));
             }
         }
         return listadoEventos;
+    }
+
+    public Set<Tarea>  tareasEntreFechas(LocalDateTime inicio, LocalDateTime fin){
+        return  null;
+    }
+
+    //se puede hacer sin fecha final?
+    public EfectoAlarma sonarProximaAlarma(LocalDateTime fechaYHora, LocalDateTime fin){
+
+        return null;
     }
 
 }

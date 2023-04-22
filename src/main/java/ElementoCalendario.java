@@ -12,7 +12,7 @@ public interface ElementoCalendario {
     String getTitulo ();
     String getDescripcion ();
 
-
+    LocalDateTime getFecha();
     Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma, EfectoAlarma efecto);
     Alarma agregarAlarma(Duration intervalo, EfectoAlarma efecto);
     void eliminarAlarma(Alarma alarma);

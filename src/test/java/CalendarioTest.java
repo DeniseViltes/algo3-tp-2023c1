@@ -10,10 +10,10 @@ public class CalendarioTest {
 
     //Eventos
     @Test
-    public void crearEventoDefault() {
+    public void crearEvento() {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
-        //despues agregar algunos getters para verificar que se creo bien
+
 
 
 
@@ -24,7 +24,6 @@ public class CalendarioTest {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
         evento.setRepeticionMensual();
-        evento.setRepeticionInfinita();
 
         LocalDateTime fechaActual = LocalDate.now().atStartOfDay();
         var listadoDeEventosPlusDias = calendario.eventosEntreFechas(fechaActual,fechaActual.plusDays(2));
@@ -58,7 +57,7 @@ public class CalendarioTest {
 
 
     @Test
-    public void eventoConUnaRepeticionAnual() {//tarda mucho este test
+    public void eventoConUnaRepeticionAnual() {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
         evento.setRepeticionAnual();
@@ -86,12 +85,10 @@ public class CalendarioTest {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
         var repeticionAnual = new RepeticionAnual();
-        repeticionAnual.setRepeticionInfinita();
 
         evento.setRepeticionAnual();
-        var horaEvento = evento.getFechaInicial();
+        var horaEvento = evento.getFecha();
         var listadoDeEventos = calendario.eventosEntreFechas(horaEvento,horaEvento.plusYears(1));
-        //arreglar esto para que no queden numeros random (sumo una hora por como se crea el evento default)
         Assert.assertEquals(2,listadoDeEventos.size());
     }
     @Test
@@ -99,10 +96,9 @@ public class CalendarioTest {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
         var repeticionAnual = new RepeticionAnual();
-        repeticionAnual.setRepeticionInfinita();
 
         evento.setRepeticionAnual();
-        var horaEvento = evento.getFechaInicial();
+        var horaEvento = evento.getFecha();
         var listado = calendario.eventosEntreFechas(horaEvento,horaEvento.plusYears(3));
 
 

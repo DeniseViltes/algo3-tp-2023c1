@@ -199,7 +199,7 @@ public class Evento implements ElementoCalendario {
     }
 
 
-    public LocalDateTime getFechaInicial() {
+    public LocalDateTime getFecha() {
         return fechaYHoraInicial;
     }
 
