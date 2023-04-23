@@ -9,8 +9,8 @@ public class InstanciaEvento implements ElementoCalendario {
     // Entonces no tiene sentido que implemente un monton de metodos que estan en ElementoCalendario asi que lo saco
     private final Evento evento;
 
-    private LocalDateTime fecha;
-    private TreeMap<LocalDateTime, Alarma> alarmasInstancia;
+    private final LocalDateTime fecha;
+    private final TreeMap<LocalDateTime, Alarma> alarmasInstancia;
 
     public InstanciaEvento(Evento evento,LocalDateTime fecha) {
         this.evento = evento;
@@ -47,6 +47,16 @@ public class InstanciaEvento implements ElementoCalendario {
     }
 
     @Override
+    public void setDeDiaCompleto() {
+        evento.setDeDiaCompleto();
+    }
+
+    @Override
+    public void asignarDeFechaArbitraria(LocalDateTime nuevaInicial) {
+        evento.asignarDeFechaArbitraria(nuevaInicial);
+    }
+
+    @Override
     public LocalDateTime getFecha() {
         return fecha;
     }
@@ -63,7 +73,7 @@ public class InstanciaEvento implements ElementoCalendario {
         return alarma;
     }
 
-    //Quedo medio horrible esto, no tengo forma de ratrear la alarma original.
+    //Quedo medio horrible esto, no tengo forma de rastrear la alarma original.
     //Tenemos que chusmear el patron observer para la proxima entrega
     @Override
     public void eliminarAlarma(Alarma alarma) {
@@ -73,11 +83,11 @@ public class InstanciaEvento implements ElementoCalendario {
     }
 
     @Override
-    public Alarma proximaAlarma(LocalDateTime dateTime) {
+    public LocalDateTime proximaAlarma(LocalDateTime dateTime) {
         var par = this.alarmasInstancia.ceilingEntry(dateTime);
         if(par == null)
             return  null;
-        return par.getValue();
+        return par.getKey();
     }
 
     @Override
@@ -102,6 +112,11 @@ public class InstanciaEvento implements ElementoCalendario {
         alarma.setEfecto(efecto);
         alarmasInstancia.put(alarma.getFechaYHora(), alarma);
 
+    }
+
+    @Override
+    public EfectoAlarma sonarProximaAlarma(LocalDateTime fecha) {
+        return null;
     }
 
     @Override
