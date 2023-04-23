@@ -10,13 +10,13 @@ public abstract class Repeticion {
     public void setVencimiento(LocalDateTime vencimiento){
         this.vencimiento = vencimiento;
     }
-    public abstract void setCantidadRepeticiones(LocalDateTime inicio, int cantidadRepeticiones);
+    public abstract void setCantidadRepeticiones(LocalDateTime inicio, long cantidadRepeticiones);
 
-    protected boolean estaVencida(LocalDateTime fecha){
+    protected boolean noEstaVencida(LocalDateTime fecha){
         if(vencimiento == null)
-            return false;
+            return true;
         else
-            return vencimiento.isBefore(fecha);
+            return fecha.isBefore(vencimiento) || fecha.equals(vencimiento);
     }
     //no quiero que desde calendario se obtenga esto, solo quiero acceder a esto desde las subclases de repeticion
 

@@ -16,8 +16,8 @@ public class RepeticionSemanal extends Repeticion {
 
 
     @Override
-    public void setCantidadRepeticiones(LocalDateTime inicio, int cantidadRepeticiones) {
-        var semanas = (int)(cantidadRepeticiones-1)/dias.size();
+    public void setCantidadRepeticiones(LocalDateTime inicio, long cantidadRepeticiones) {
+        var semanas = (cantidadRepeticiones-1)/dias.size();
         var diasSumar = 0;
         var resto = cantidadRepeticiones-1-(semanas*dias.size());
         List <Integer> valores_dias = ListaDiasConRepeticion(inicio);
@@ -36,7 +36,7 @@ public class RepeticionSemanal extends Repeticion {
         List <Integer> valores_dias = ListaDiasConRepeticion(inicio);
 
         var fechaRepeticion = inicio.plusDays(valores_dias.get(0));
-        if(!estaVencida(fechaRepeticion))
+        if(noEstaVencida(fechaRepeticion))
             return fechaRepeticion;
         else
             return null;
