@@ -15,17 +15,6 @@ public class Evento implements ElementoCalendario {
     private boolean esDeDiaCompleto;
     private Repeticion repeticion;
     private final TreeMap<LocalDateTime,Alarma> alarmas;
-        /*
-        no puede haber alarmas repetidas, o mejor dicho que suenen al mismo horario?
-        en calendar si se puede poner dos alarmas al mismo horario (con distintos efectos),
-         pero por lo que estuve lo que  estuve leyendo en Slack, si llamas a proxima alarma
-         te devuelve una alarma
-
-        https://guava.dev/releases/23.0/api/docs/com/google/common/collect/TreeMultimap.html
-         un TreeMap que acepta keys duplicadas? por lo que vi en la documentacion no habría problema
-        con LocalDateTime
-        */
-
 
     public Evento(LocalDateTime inicioEvento) {
         this.titulo = "My Event";  //le pongo esto asi queda un poco más lindo
@@ -61,7 +50,7 @@ public class Evento implements ElementoCalendario {
             modificarReferenciaAlarma(i,inicioEvento);
         }
     }
-    public void AsignarDeDiaCompleto(){
+    public void setDeDiaCompleto(){
         //las alarmas de dia completo suenan un dia antes a las 9 de la mañana?
         this.esDeDiaCompleto = true;
         var nuevaInicial = this.fechaYHoraInicial.toLocalDate();
@@ -75,7 +64,8 @@ public class Evento implements ElementoCalendario {
         //En google calendar directamente elimina TODAS las alarmas cuando se modifica esto
         this.alarmas.clear();
     }
-    public void AsignarDeFechaArbitraria(){
+    public void asignarDeFechaArbitraria(){
+
         this.esDeDiaCompleto = false;
         var horaInicial = LocalTime.of(8,0);
         var nuevaInicial = LocalDateTime.of(this.fechaYHoraInicial.toLocalDate(),horaInicial);
@@ -123,12 +113,28 @@ public class Evento implements ElementoCalendario {
     }
 
     @Override
-    public Alarma proximaAlarma(LocalDateTime dateTime) {
-        var par = this.alarmas.ceilingEntry(dateTime);
-        if(par == null)
-                return  null;
-        return par.getValue();
+    public LocalDateTime proximaAlarma(LocalDateTime fecha) {
+        var alarma = proximaAlarmaEvento(fecha);
+        if (alarma == null)
+                return null;
+        return alarma.getFechaYHora();
     }
+    @Override
+    public EfectoAlarma sonarProximaAlarma(LocalDateTime fecha){
+        var alarma = proximaAlarmaEvento(fecha);
+        if (alarma == null)
+            return null;
+        return  alarma.sonar(fecha);
+    }
+
+    private Alarma proximaAlarmaEvento(LocalDateTime fecha){
+        var par = this.alarmas.ceilingEntry(fecha);
+        if(par == null)
+            return  null;
+        return par.getValue();
+
+    }
+
     private void modificarReferenciaAlarma (Alarma alarma, LocalDateTime referncia){
         alarmas.remove(alarma.getFechaYHora());
         alarma.setReferencia(referncia);
@@ -213,4 +219,5 @@ public class Evento implements ElementoCalendario {
     public TreeMap<LocalDateTime, Alarma> getAlarmas() {
         return alarmas;
     }
+
 }
