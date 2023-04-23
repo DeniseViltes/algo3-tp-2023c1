@@ -1,7 +1,6 @@
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import java.util.TreeMap;
@@ -36,6 +35,8 @@ public class Evento implements ElementoCalendario {
         this.duracion = duracionMinutos;
     }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+
 
 
     public LocalDateTime getFechaYHoraFinal(){
@@ -179,10 +180,14 @@ public class Evento implements ElementoCalendario {
     }
 
     public void setRepeticionVencimiento(LocalDateTime vencimiento){
+        if(repeticion == null)
+                return;
         this.repeticion.setVencimiento(vencimiento);
     }
 
     public void setRepeticionCantidad(int cantidadRepeticiones){
+        if(repeticion == null)
+            return;
         this.repeticion.setCantidadRepeticiones(fechaYHoraInicial, cantidadRepeticiones);
     }
 
