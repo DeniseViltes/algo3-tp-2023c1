@@ -7,7 +7,9 @@ import java.util.*;
 public class Calendario {
     //todos los evetos se crean con new, asi que son distintos, y creo que no conviene tener repetidos
     //y depaso quedan ordenados
-    private static TreeSet<Evento> eventos;
+
+
+    private final TreeSet<Evento> eventos;
 
     private final TreeSet<Tarea> tareas;
 
