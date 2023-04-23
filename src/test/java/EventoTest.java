@@ -108,10 +108,12 @@ public class EventoTest {
         var evento = new Evento(ahoraTruncado);
         evento.setFecha(magnana);
         var alarma = evento.agregarAlarma(diezMinutos);
+        alarma.setEfecto(EfectoAlarma.SONIDO);
 
         var horaASonar = magnana.minus(diezMinutos);
 
         Assert.assertEquals(horaASonar, evento.proximaAlarma(ahoraTruncado));
+        Assert.assertEquals(EfectoAlarma.SONIDO, evento.sonarProximaAlarma(horaASonar));
     }
 
     @Test
