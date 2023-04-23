@@ -51,4 +51,11 @@ public class Alarma {
         return intervalo.isZero();
     }
 
+    public Alarma copiarConNuevaReferencia(LocalDateTime nuevaFecha){
+        var nueva = new Alarma(nuevaFecha);
+        nueva.intervalo = this.intervalo;
+        nueva.efecto = this.efecto;
+        return nueva;
+    }
+
 }

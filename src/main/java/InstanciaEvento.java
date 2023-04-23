@@ -24,11 +24,12 @@ public class InstanciaEvento implements ElementoCalendario {
         var alarmasOriginales = evento.getAlarmas();
         for (Alarma i : alarmasOriginales.values()){
             if(!i.esDeFechaAbsoluta()) {
-                i.setReferencia(fecha);
-                alarmasInstancia.put(i.getFechaYHora(), i);
+                var nueva = i.copiarConNuevaReferencia(fecha);
+                alarmasInstancia.put(nueva.getFechaYHora(), nueva);
             }
         }
     }
+
 
 
     @Override
@@ -49,6 +50,16 @@ public class InstanciaEvento implements ElementoCalendario {
     @Override
     public void setDeDiaCompleto() {
         evento.setDeDiaCompleto();
+    }
+
+    @Override
+    public String getTitulo() {
+        return evento.getTitulo();
+    }
+
+    @Override
+    public String getDescripcion() {
+        return evento.getDescripcion();
     }
 
     @Override
@@ -116,7 +127,10 @@ public class InstanciaEvento implements ElementoCalendario {
 
     @Override
     public EfectoAlarma sonarProximaAlarma(LocalDateTime fecha) {
-        return null;
+
+        var alarma = alarmasInstancia.get(proximaAlarma(fecha));
+
+        return alarma.sonar(fecha);
     }
 
     @Override
