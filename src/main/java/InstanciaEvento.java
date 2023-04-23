@@ -23,14 +23,19 @@ public class InstanciaEvento implements ElementoCalendario {
         alarmasInstancia.clear();
         var alarmasOriginales = evento.getAlarmas();
         for (Alarma i : alarmasOriginales.values()){
-            if(!i.esDeFechaAbsoluta()) {
-                var nueva = i.copiarConNuevaReferencia(fecha);
-                alarmasInstancia.put(nueva.getFechaYHora(), nueva);
+            var nueva = i.copiarConNuevaReferencia(fecha);
+            if(i.esDeFechaAbsoluta()) {
+                var nuevaFechaAbs = calcularFechaAbsoluta(i.getFechaYHora());
+                nueva.setAlarmaAbsoluta(nuevaFechaAbs);
             }
+            alarmasInstancia.put(nueva.getFechaYHora(), nueva);
         }
     }
 
-
+    private LocalDateTime calcularFechaAbsoluta(LocalDateTime fechaAlarmaAbs){
+        var intervalo = Duration.between(evento.getFecha(),fecha);
+        return  fechaAlarmaAbs.plus(intervalo);
+    }
 
     @Override
     public void setTitulo(String titulo) {
@@ -103,26 +108,20 @@ public class InstanciaEvento implements ElementoCalendario {
 
     @Override
     public void modificarIntervaloAlarma(Alarma alarma, Duration intervalo) {
-        alarmasInstancia.remove(alarma.getFechaYHora());
-        alarma.setIntervalo(intervalo);
-        alarmasInstancia.put(alarma.getFechaYHora(), alarma);
+        evento.modificarIntervaloAlarma(alarma,intervalo);
+        cargarAlarmas();
 
     }
 
     @Override
     public void modificarFechaAbsolutaAlarma(Alarma alarma, LocalDateTime fecha) {
-        alarmasInstancia.remove(alarma.getFechaYHora());
-        alarma.setAlarmaAbsoluta(fecha);
-        alarmasInstancia.put(alarma.getFechaYHora(), alarma);
-
+       evento.modificarFechaAbsolutaAlarma(alarma,fecha);
     }
 
     @Override
     public void modificarAlarmaEfecto(Alarma alarma, EfectoAlarma efecto) {
-        alarmasInstancia.remove(alarma.getFechaYHora());
-        alarma.setEfecto(efecto);
-        alarmasInstancia.put(alarma.getFechaYHora(), alarma);
-
+        evento.modificarAlarmaEfecto(alarma,efecto);
+        cargarAlarmas();
     }
 
     @Override
