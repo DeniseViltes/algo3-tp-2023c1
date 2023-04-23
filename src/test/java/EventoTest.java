@@ -87,8 +87,8 @@ public class EventoTest {
         evento.modificarAlarmaEfecto(alarma3, EfectoAlarma.SONIDO);
 
 
-        evento.asignarDeFechaArbitraria();
-        var horarioFinal = ahoraTruncado.truncatedTo(ChronoUnit.DAYS).plusDays(5).withHour(8);
+        evento.asignarDeFechaArbitraria(ahoraTruncado);
+        var horarioFinal = ahoraTruncado.plusDays(5);
 
         Assert.assertEquals(horarioFinal,evento.getFechaYHoraFinal());
         Assert.assertEquals(1,evento.cantidadDeAlarmas());
