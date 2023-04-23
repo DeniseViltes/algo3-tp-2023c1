@@ -45,7 +45,9 @@ public class Evento implements ElementoCalendario {
     public void setFecha(LocalDateTime inicioEvento){
         var al = new TreeMap<>(alarmas);
         alarmas.clear();
-        this.fechaYHoraInicial = inicioEvento;
+        if(esDeDiaCompleto)
+            this.fechaYHoraInicial = inicioEvento.truncatedTo(ChronoUnit.DAYS);
+        else this.fechaYHoraInicial = inicioEvento;
         for (Alarma i : al.values() ){
             modificarReferenciaAlarma(i,inicioEvento);
         }
@@ -64,11 +66,9 @@ public class Evento implements ElementoCalendario {
         //En google calendar directamente elimina TODAS las alarmas cuando se modifica esto
         this.alarmas.clear();
     }
-    public void asignarDeFechaArbitraria(){
+    public void asignarDeFechaArbitraria(LocalDateTime nuevaInicial){
 
         this.esDeDiaCompleto = false;
-        var horaInicial = LocalTime.of(8,0);
-        var nuevaInicial = LocalDateTime.of(this.fechaYHoraInicial.toLocalDate(),horaInicial);
         this.fechaYHoraInicial = nuevaInicial;
 
         //google calendar saca todas las alarmas y deja una de 10 min;
@@ -135,9 +135,10 @@ public class Evento implements ElementoCalendario {
 
     }
 
-    private void modificarReferenciaAlarma (Alarma alarma, LocalDateTime referncia){
+
+    private void modificarReferenciaAlarma (Alarma alarma, LocalDateTime referencia){
         alarmas.remove(alarma.getFechaYHora());
-        alarma.setReferencia(referncia);
+        alarma.setReferencia(referencia);
         alarmas.put(alarma.getFechaYHora(), alarma);
     }
 
@@ -181,7 +182,6 @@ public class Evento implements ElementoCalendario {
         this.repeticion.setVencimiento(vencimiento);
     }
 
-    // me parece que es un poco peligroso poner cantidad como Integer
     public void setRepeticionCantidad(int cantidadRepeticiones){
         this.repeticion.setCantidadRepeticiones(fechaYHoraInicial, cantidadRepeticiones);
     }
