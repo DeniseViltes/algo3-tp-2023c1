@@ -79,7 +79,9 @@ public class InstanciaEvento implements ElementoCalendario {
 
     @Override
     public Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma) {
-        return  evento.agregarAlarmaAbsoluta(horarioAlarma);
+       var alarma = evento.agregarAlarmaAbsoluta(horarioAlarma);
+        cargarAlarmas();
+        return alarma;
     }
 
     @Override

@@ -9,9 +9,13 @@ public interface ElementoCalendario {
 
     void setFecha(LocalDateTime inicioEvento);
     void setDeDiaCompleto();
+
+    String getTitulo();
+
+    String getDescripcion();
+    LocalDateTime getFecha();
     void asignarDeFechaArbitraria(LocalDateTime nuevaInicial);
 
-    LocalDateTime getFecha();
     Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma);
     Alarma agregarAlarma(Duration intervalo);
     void eliminarAlarma(Alarma alarma);
