@@ -3,17 +3,12 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class RepeticionSemanal extends Repeticion {
-    private Set<DayOfWeek> dias;
+    private final Set<DayOfWeek> dias;
 
     public RepeticionSemanal(Set<DayOfWeek> dias) {
         super();
         this.dias = dias;
     }
-
-    public void setDias(Set<DayOfWeek> dias) {
-        this.dias = dias;
-    }
-
 
     @Override
     public void setCantidadRepeticiones(LocalDateTime inicio, long cantidadRepeticiones) {

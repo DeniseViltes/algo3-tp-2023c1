@@ -5,12 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Calendario {
-    //todos los evetos se crean con new, asi que son distintos, y creo que no conviene tener repetidos
-    //y depaso quedan ordenados
-
-
     private final TreeSet<Evento> eventos;
-
     private final TreeSet<Tarea> tareas;
 
     public Calendario() {
@@ -104,14 +99,34 @@ public class Calendario {
         var evento = instancia.getEvento();
         evento.setRepeticionMensual();
     }
-    public void  agregarRepeticionSemanalEvento (InstanciaEvento instancia, Set<DayOfWeek> dias){
+    public void  agregarRepeticionSemanalEvento (InstanciaEvento instancia){
         var evento = instancia.getEvento();
+        var dia = instancia.getFecha();
+        var dias = EnumSet.noneOf(DayOfWeek.class);
+        dias.add(dia.getDayOfWeek());
         evento.setRepeticionSemanal(dias);
     }
-    public void  agregarRepeticionDiariaEvento (InstanciaEvento instancia, int intervalo){
+
+    public void modificarRepeticionSemanal(InstanciaEvento instancia, Set<DayOfWeek> dias){
         var evento = instancia.getEvento();
-        evento.setRepeticionDiaria(intervalo);
+        var repeticion = evento.getRepeticion();
+        evento.setRepeticionSemanal(dias);
+        evento.setRepeticionVencimiento(repeticion.getVencimiento());
     }
+
+    public void  agregarRepeticionDiariaEvento (InstanciaEvento instancia){
+        var evento = instancia.getEvento();
+        var intervaloDeault = 1;
+        evento.setRepeticionDiaria(1);
+    }
+
+    public void moficarRepeticionDiaria(InstanciaEvento instancia, int intervalo){
+        var evento = instancia.getEvento();
+        var repeticion = evento.getRepeticion();
+        evento.setRepeticionDiaria(intervalo);
+        evento.setRepeticionVencimiento(repeticion.getVencimiento());
+    }
+
     public void modificarCantidadRepeticiones(InstanciaEvento instancia,int cantidad){
         var evento = instancia.getEvento();
         evento.setRepeticionCantidad(cantidad);
@@ -171,7 +186,6 @@ public class Calendario {
         return todos;
     }
 
-    //se puede hacer sin fecha final?
     public EfectoAlarma sonarProximaAlarma(LocalDateTime fechaYHora, LocalDateTime fin){
         var elementos = elementosEntreFechas(fechaYHora,fin);
         if(elementos == null)

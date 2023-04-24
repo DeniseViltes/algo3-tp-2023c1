@@ -226,4 +226,7 @@ public class Evento implements ElementoCalendario {
         return alarmas;
     }
 
+    public Repeticion getRepeticion() {
+        return repeticion;
+    }
 }
