@@ -18,15 +18,36 @@ public class Calendario {
         this.tareas = new TreeSet<>(new OrdenarElementosPorHorario());
     }
 
-
-    // default crearEvento solo necesita la fecha del evento y la duracion default es de 1 hora
-    //Esta bien que devuelva Evento?? o habria que devolver instanciaEvento
+    private LocalDateTime ahoraDefault (){
+        var ahora = LocalDateTime.now();
+        ahora = ahora.truncatedTo(ChronoUnit.HOURS);
+        return ahora.plusHours(1);
+    }
     public Evento crearEvento() {
         var horaActualTruncada = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
         Evento evento = new Evento(horaActualTruncada.plusHours(1));
         this.eventos.add(evento);
         return evento;
     }
+    public void crearTarea() {
+        var horaActualTruncada = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+        Tarea tarea = new Tarea(horaActualTruncada);
+        this.tareas.add(tarea);
+    }
+    public void eliminarEvento(Evento evento) {
+        eventos.remove(evento);
+    }
+
+    public void eliminarTarea(Tarea tarea) {
+        tareas.remove(tarea);
+    }
+
+    //Para tarea muestra vencimiento y para evento muestra la incial
+    public LocalDateTime verFechaYHora(ElementoCalendario elemento){
+        return  elemento.getFecha();
+    }
+
+
 
     public void modificarTitulo(ElementoCalendario elemento, String titulo) {
         if (elemento != null && titulo != null)
@@ -86,31 +107,18 @@ public class Calendario {
         evento.eliminarRepeticion();
     }
 
-    public void eliminarEvento(Evento evento) {
-        eventos.remove(evento);
-    }
 
-
-    // default crearTarea solo necesita el vencimiento
-    public void crearTarea() {
-        var horaActualTruncada = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-        Tarea tarea = new Tarea(horaActualTruncada);
-        this.tareas.add(tarea);
-    }
 
     public void marcarTareaCompleta(Tarea tarea) {
         if (tarea != null)
-            tarea.setEstado(true);
+            tarea.completar();
     }
 
     public void marcarTareaIncompleta(Tarea tarea) {
         if (tarea != null)
-            tarea.setEstado(false);
+            tarea.descompletar();
     }
 
-    public void eliminarTarea(Tarea tarea) {
-        tareas.remove(tarea);
-    }
 
     //el calendario almacena eventos, pero solo muestra instancias de eventos, no el evento en si
     private Set<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
