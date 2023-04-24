@@ -24,19 +24,54 @@ public class Tarea implements ElementoCalendario{
 
     public void setTitulo(String titulo) { this.titulo = titulo; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
-    public void setEsDeDiaCompleto(boolean esDeDiaCompleto) {
-        this.esDeDiaCompleto = esDeDiaCompleto;
+    public void setDeDiaCompleto() {
+        this.esDeDiaCompleto = true;
+        this.vencimiento = fechaAlFinalDelDia(this.vencimiento);
+        this.alarmas.clear();
+    }
+    @Override
+    public LocalDateTime getFecha() {
+        return this.vencimiento;
     }
 
     public boolean iniciaEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin){
         return esIgualOEstaEntre(inicio,fin,this.vencimiento);
     }
-    public void setEstado(boolean completado) { this.completado = completado; }
+
+    public void completar(){
+        this.completado = true;
+    }
+    public void descompletar(){
+        this.completado = false;
+    }
 
     @Override
-    public EfectoAlarma sonarProximaAlarma(LocalDateTime fecha) {
-        return null;
+    public String getTitulo() {
+        return titulo;
     }
+
+    @Override
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void asignarDeFechaArbitraria(LocalDateTime nuevoVencimiento){
+        this.esDeDiaCompleto = false;
+        this.vencimiento = nuevoVencimiento;
+        //en calendar no se puede poner alarmas a las tareas
+        this.alarmas.clear();
+    }
+
+    public boolean estaCompleta (){
+        return completado;
+    }
+    @Override
+    public EfectoAlarma sonarProximaAlarma(LocalDateTime fecha) {
+        var horarioProxAlarma = proximaAlarma(fecha);
+        var alarma = alarmas.get(horarioProxAlarma);
+        return alarma.sonar(fecha);
+    }
+
 
     private boolean esIgualOEstaEntre(LocalDateTime inicio, LocalDateTime fin, LocalDateTime t){
         return (t.equals(inicio) || t.isAfter(inicio)) && (t.equals(fin) || t.isBefore(fin));
@@ -80,11 +115,19 @@ public class Tarea implements ElementoCalendario{
 
     public void setFecha(LocalDateTime vencimiento) {
         var al = new TreeMap<>(alarmas);
-        alarmas.clear();
         this.vencimiento = vencimiento;
+        alarmas.clear();
+        if (esDeDiaCompleto)
+            this.vencimiento = fechaAlFinalDelDia(vencimiento);
         for (Alarma i : al.values() ){
             modificarReferenciaAlarma(i,vencimiento);
         }
+    }
+
+    private LocalDateTime fechaAlFinalDelDia(LocalDateTime fechaYHora){
+        var fecha = fechaYHora.toLocalDate().atStartOfDay();
+        var duracionUnDia = Duration.ofHours(23).plusMinutes(59);
+        return fecha.plus(duracionUnDia);
     }
     private void modificarReferenciaAlarma (Alarma alarma, LocalDateTime referencia){
         alarmas.remove(alarma.getFechaYHora());
@@ -92,10 +135,6 @@ public class Tarea implements ElementoCalendario{
         alarmas.put(alarma.getFechaYHora(), alarma);
     }
 
-    @Override
-    public LocalDateTime getFecha() {
-        return this.vencimiento;
-    }
 
     @Override
     public Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma) {
@@ -113,21 +152,7 @@ public class Tarea implements ElementoCalendario{
         return nueva;
     }
 
-    public void setDeDiaCompleto(){
-        this.esDeDiaCompleto = true;
-        var nuevoVencimiento = this.vencimiento.toLocalDate();
-        this.vencimiento = nuevoVencimiento.atTime(23,59);
-        this.alarmas.clear();
-    }
 
-    public void asignarDeFechaArbitraria(LocalDateTime nuevoVencimiento){
-
-        this.esDeDiaCompleto = false;
-        this.vencimiento = nuevoVencimiento;
-        //en calendar no se puede poner alarmas a las tareas
-        this.alarmas.clear();
-        var nuevaAlarma = new Alarma(nuevoVencimiento);
-        this.alarmas.put(nuevaAlarma.getFechaYHora(),nuevaAlarma);
-    }
+    //
 
 }

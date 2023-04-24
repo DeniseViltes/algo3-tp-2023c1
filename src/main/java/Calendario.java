@@ -24,18 +24,23 @@ public class Calendario {
         return ahora.plusHours(1);
     }
     public Evento crearEvento() {
-        var horaActualTruncada = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-        Evento evento = new Evento(horaActualTruncada.plusHours(1));
+        Evento evento = new Evento(ahoraDefault());
         this.eventos.add(evento);
         return evento;
     }
     public void crearTarea() {
-        var horaActualTruncada = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-        Tarea tarea = new Tarea(horaActualTruncada);
+        Tarea tarea = new Tarea(ahoraDefault());
         this.tareas.add(tarea);
     }
     public void eliminarEvento(Evento evento) {
         eventos.remove(evento);
+    }
+
+    public void eliminarEvento(InstanciaEvento instanciaEvento) {
+        eventos.remove(instanciaEvento.getEvento());
+    }
+    public LocalDateTime getFecha(ElementoCalendario elementoCalendario){
+        return elementoCalendario.getFecha();
     }
 
     public void eliminarTarea(Tarea tarea) {

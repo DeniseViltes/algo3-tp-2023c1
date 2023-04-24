@@ -10,13 +10,14 @@ public class CalendarioTest {
     private final LocalDateTime hoy = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
     private final LocalDateTime magnana = hoy.plusDays(1);
 
+    private final LocalDateTime ahora = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
     //Eventos
     @Test
     public void crearEvento() {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
         Assert.assertEquals(1,calendario.elementosEntreFechas(hoy, magnana).size());
-
+        Assert.assertEquals(ahora.plusHours(1),calendario.verFechaYHora(evento));
     }
 
     @Test
@@ -27,11 +28,10 @@ public class CalendarioTest {
 
         LocalDateTime fechaActual = LocalDate.now().atStartOfDay();
         var listadoDeEventosPlusDias = calendario.elementosEntreFechas(fechaActual,fechaActual.plusDays(2));
-        var listadoDeEventosPlusAgno = calendario.elementosEntreFechas(fechaActual,fechaActual.plusYears(1).plusDays(2));
+        var listadoDeEventosPlusAgno = calendario.elementosEntreFechas(magnana,fechaActual.plusYears(1).plusDays(2));
 
         Assert.assertEquals(1,listadoDeEventosPlusDias.size());
-        Assert.assertEquals(13,listadoDeEventosPlusAgno.size());
-
+        Assert.assertEquals(12,listadoDeEventosPlusAgno.size());
 
     }
 
@@ -50,11 +50,7 @@ public class CalendarioTest {
         Assert.assertEquals(1,listadoDeEventosPlusDias.size());
         Assert.assertEquals(3,listadoDeEventosPlusMeses.size());
         Assert.assertEquals(6,listadoDeEventosPlusAgno.size());
-
-
     }
-
-
 
     @Test
     public void eventoConUnaRepeticionAnual() {
@@ -102,12 +98,12 @@ public class CalendarioTest {
 
 
         Assert.assertEquals(4, listado.size());
-
         calendario.eliminarEvento(evento);
+       listado = calendario.elementosEntreFechas(horaEvento,horaEvento.plusYears(3));
 
-        listado = calendario.elementosEntreFechas(horaEvento,horaEvento.plusYears(3));
 
         Assert.assertEquals(0, listado.size());
 
     }
+
 }

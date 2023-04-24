@@ -191,4 +191,16 @@ public class EventoTest {
         Assert.assertTrue(evento.tieneRepeticionEntreLosHorarios(ahoraTruncado,masDosDias));
         Assert.assertFalse(evento.tieneRepeticionEntreLosHorarios(magnana,masDosDias));
     }
+
+    @Test
+    public void verficarRepeticionEliminada() {
+        var evento = new Evento(ahoraTruncado);
+        evento.setRepeticionAnual();
+        var vencimiento = ahoraTruncado.plusYears(2);
+        evento.setRepeticionVencimiento(vencimiento);
+
+        evento.eliminarRepeticion();
+
+        Assert.assertFalse(evento.tieneRepeticionEntreLosHorarios(ahoraTruncado,vencimiento));
+    }
 }

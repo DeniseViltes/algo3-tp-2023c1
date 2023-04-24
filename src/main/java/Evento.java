@@ -54,17 +54,12 @@ public class Evento implements ElementoCalendario {
         }
     }
     public void setDeDiaCompleto(){
-        //las alarmas de dia completo suenan un dia antes a las 9 de la mañana?
         this.esDeDiaCompleto = true;
         var nuevaInicial = this.fechaYHoraInicial.toLocalDate();
-        //esto lo pongo asi por ahora, por lo que parece cuando se guarda crea el evento ya no te
-        //guarda la hora en la que estaba antes, solo se mantienen las fechas
-        //además así nos aseguramos de que cumpla el horario que tiene que durar un día completo
         this.fechaYHoraInicial = nuevaInicial.atStartOfDay();
         if (duracion.compareTo(Duration.ofDays(1))<0)
             this.duracion = Duration.ofHours(23).plusMinutes(59);
         else this.duracion = this.duracion.truncatedTo(ChronoUnit.DAYS);
-        //En google calendar directamente elimina TODAS las alarmas cuando se modifica esto
         this.alarmas.clear();
     }
     public void asignarDeFechaArbitraria(LocalDateTime nuevaInicial){
@@ -218,6 +213,8 @@ public class Evento implements ElementoCalendario {
     }
 
     public  LocalDateTime proximaRepeticion (LocalDateTime inicio){
+        if (repeticion == null)
+                return null;
         return repeticion.Repetir(inicio);
     }
 

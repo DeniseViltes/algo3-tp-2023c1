@@ -4,9 +4,7 @@ import java.util.TreeMap;
 
 public class InstanciaEvento implements ElementoCalendario {
 
-    //tendria que implementar ElementoCalendario??
-    // Estaria bueno pero complica demasiado las cosas porque las repeticiones no tienen alarmas propias
-    // Entonces no tiene sentido que implemente un monton de metodos que estan en ElementoCalendario asi que lo saco
+
     private final Evento evento;
 
     private final LocalDateTime fecha;
@@ -107,19 +105,16 @@ public class InstanciaEvento implements ElementoCalendario {
             return  null;
         return par.getKey();
     }
-
     @Override
     public void modificarIntervaloAlarma(Alarma alarma, Duration intervalo) {
         evento.modificarIntervaloAlarma(alarma,intervalo);
         cargarAlarmas();
 
     }
-
     @Override
     public void modificarFechaAbsolutaAlarma(Alarma alarma, LocalDateTime fecha) {
        evento.modificarFechaAbsolutaAlarma(alarma,fecha);
     }
-
     @Override
     public void modificarAlarmaEfecto(Alarma alarma, EfectoAlarma efecto) {
         evento.modificarAlarmaEfecto(alarma,efecto);
@@ -141,5 +136,9 @@ public class InstanciaEvento implements ElementoCalendario {
 
     private boolean esIgualOEstaEntre(LocalDateTime inicio, LocalDateTime fin, LocalDateTime t){
         return (t.equals(inicio) || t.isAfter(inicio)) && (t.equals(fin) || t.isBefore(fin));
+    }
+
+    public Evento getEvento() {
+        return evento;
     }
 }
