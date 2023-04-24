@@ -68,6 +68,8 @@ public class Tarea implements ElementoCalendario{
     @Override
     public EfectoAlarma sonarProximaAlarma(LocalDateTime fecha) {
         var horarioProxAlarma = proximaAlarma(fecha);
+        if(horarioProxAlarma == null)
+            return null;
         var alarma = alarmas.get(horarioProxAlarma);
         return alarma.sonar(fecha);
     }
@@ -148,7 +150,7 @@ public class Tarea implements ElementoCalendario{
     public Alarma agregarAlarma(Duration intervalo) {
         var nueva = new Alarma(this.vencimiento);
         nueva.setIntervalo(intervalo);
-        alarmas.put(nueva.getFechaYHora(),nueva);
+        alarmas.put(nueva.getFechaYHora(), nueva);
         return nueva;
     }
 

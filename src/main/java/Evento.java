@@ -77,7 +77,7 @@ public class Evento implements ElementoCalendario {
 
         this.esDeDiaCompleto = false;
         this.fechaYHoraInicial = nuevaInicial;
-        this.duracion = Duration.ofMinutes(30);
+        this.duracion = this.duracion.truncatedTo(ChronoUnit.DAYS).plusMinutes(30);
 
         this.alarmas.clear();
         var nuevaAlarma = new Alarma(nuevaInicial);

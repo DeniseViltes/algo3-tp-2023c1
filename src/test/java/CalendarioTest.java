@@ -1,6 +1,7 @@
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -325,6 +326,20 @@ public class CalendarioTest {
         Assert.assertEquals(magnana.plusMonths(2).plusHours(5), listado.first().getFecha());
         Assert.assertEquals(magnana.plusYears(2).plusMonths(2).plusHours(5), listado.last().getFecha());
 
+    }
+
+    @Test
+    public void sonarProximaAlarma() {
+        var calendario = new Calendario();
+        var evento = calendario.crearEvento();
+        calendario.modificarFecha(evento, magnana);
+        var alarma = evento.agregarAlarma(Duration.ofMinutes(10));
+        alarma.setEfecto(EfectoAlarma.SONIDO);
+
+        var horaASonar = magnana.minus(Duration.ofMinutes(10));
+
+        Assert.assertEquals(horaASonar, evento.proximaAlarma(hoy));
+        Assert.assertEquals(EfectoAlarma.SONIDO, calendario.sonarProximaAlarma(hoy, hoy.plusDays(5)));
     }
 
 }

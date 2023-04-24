@@ -79,7 +79,7 @@ public class EventoTest {
 
     @Test
     public void modificarAFechaArbitraria() {
-        var evento = new Evento(ahoraTruncado);
+        var evento = new Evento(LocalDateTime.now().truncatedTo(ChronoUnit.DAYS));
         var variosDias = Duration.ofDays(5).plusHours(5);
         evento.setDuracion(variosDias);
         evento.setDeDiaCompleto();
@@ -92,7 +92,7 @@ public class EventoTest {
 
 
         evento.asignarDeFechaArbitraria(ahoraTruncado);
-        var horarioFinal = ahoraTruncado.plusMinutes(30);
+        var horarioFinal = ahoraTruncado.plusDays(5).plusMinutes(30);
 
         Assert.assertEquals(horarioFinal,evento.getFechaYHoraFinal());
         //Assert.assertEquals(1,evento.cantidadDeAlarmas());
@@ -105,6 +105,7 @@ public class EventoTest {
         evento.modificarAlarmaEfecto(alarma, EfectoAlarma.NOTIFICACION);
 
         Assert.assertEquals(magnana,alarma.getFechaYHora());
+        Assert.assertEquals(magnana,evento.proximaAlarma(ahoraTruncado));
 
     }
 
