@@ -90,8 +90,7 @@ public class CalendarioTest {
     public void eventoConUnaRepeticionMensualInfinita() {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
-        evento.setRepeticionMensual();
-
+        calendario.agregarRepeticionMensualEvento(evento);
         LocalDateTime fechaActual = LocalDate.now().atStartOfDay();
         var listadoDeEventosPlusDias = calendario.elementosEntreFechas(fechaActual,fechaActual.plusDays(2));
         var listadoDeEventosPlusAgno = calendario.elementosEntreFechas(magnana,fechaActual.plusYears(1).plusDays(2));
@@ -105,7 +104,8 @@ public class CalendarioTest {
     public void eventoConUnaRepeticionDiariaInfinita() {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
-        evento.setRepeticionDiaria(2);
+        calendario.agregarRepeticionDiariaEvento(evento);
+        calendario.modificarIntervaloRepeticionDiaria(evento,2);
 
         LocalDateTime fechaActual = LocalDate.now().atStartOfDay();
         var listadoDeEventosPlusDias = calendario.elementosEntreFechas(fechaActual,fechaActual.plusDays(2));
@@ -120,8 +120,9 @@ public class CalendarioTest {
     public void eventoConUnaRepeticionDiariaVencimiento() {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
-        evento.setRepeticionDiaria(3);
-        evento.setRepeticionVencimiento(magnana.plusDays(7));
+        calendario.agregarRepeticionDiariaEvento(evento);
+        calendario.modificarIntervaloRepeticionDiaria(evento,3);
+        calendario.modificarVencimientoRepeticion(evento, magnana.plusDays(7));
 
         LocalDateTime fechaActual = LocalDate.now().atStartOfDay();
         var listadoDeEventosPlusDias = calendario.elementosEntreFechas(fechaActual,fechaActual.plusDays(2));
@@ -136,8 +137,8 @@ public class CalendarioTest {
     public void eventoConUnaRepeticionMensualCantidad() {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
-        evento.setRepeticionMensual();
-        evento.setRepeticionCantidad(6);
+        calendario.agregarRepeticionMensualEvento(evento);
+        calendario.modificarCantidadRepeticiones(evento,6);
 
         LocalDateTime fechaActual = LocalDate.now().atStartOfDay();
         var listadoDeEventosPlusDias = calendario.elementosEntreFechas(fechaActual,fechaActual.plusDays(2));
@@ -153,8 +154,8 @@ public class CalendarioTest {
     public void eventoConUnaRepeticionAnual() {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
-        evento.setRepeticionAnual();
-        evento.setRepeticionCantidad(2);
+        calendario.agregarRepeticionAnualEvento(evento);
+        calendario.modificarCantidadRepeticiones(evento,2);
 
         LocalDateTime fechaActual = LocalDate.now().atStartOfDay();
         var listadoDeEventos = calendario.elementosEntreFechas(fechaActual,fechaActual.plusYears(1).plusDays(2));
@@ -166,9 +167,9 @@ public class CalendarioTest {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
         var horaActualTruncada = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-        evento.setRepeticionAnual();
+        calendario.agregarRepeticionAnualEvento(evento);
         var vencimiento = LocalDateTime.of(LocalDate.now().plusYears(1), LocalTime.from(horaActualTruncada).plusHours(1));
-        evento.setRepeticionVencimiento(vencimiento);
+        calendario.modificarVencimientoRepeticion(evento,vencimiento);
 
         var listadoDeEventos = calendario.elementosEntreFechas(horaActualTruncada,horaActualTruncada.plusYears(10));
         Assert.assertEquals(2,listadoDeEventos.size());
@@ -179,7 +180,7 @@ public class CalendarioTest {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
 
-        evento.setRepeticionAnual();
+        calendario.agregarRepeticionAnualEvento(evento);
         var horaEvento = evento.getFecha();
         var listadoDeEventos = calendario.elementosEntreFechas(horaEvento,horaEvento.plusYears(1));
         Assert.assertEquals(2,listadoDeEventos.size());
@@ -189,7 +190,7 @@ public class CalendarioTest {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
 
-        evento.setRepeticionAnual();
+        calendario.agregarRepeticionAnualEvento(evento);
         var horaEvento = evento.getFecha();
         var listado = calendario.elementosEntreFechas(horaEvento,horaEvento.plusYears(3));
 

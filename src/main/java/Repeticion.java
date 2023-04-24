@@ -22,5 +22,8 @@ public abstract class Repeticion {
 
     public abstract LocalDateTime Repetir(LocalDateTime inicio);
 
+    public LocalDateTime getVencimiento() {
+        return vencimiento;
+    }
 }
 

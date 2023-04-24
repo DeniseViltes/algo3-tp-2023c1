@@ -7,7 +7,7 @@ public class InstanciaEvento implements ElementoCalendario {
 
     private final Evento evento;
 
-    private final LocalDateTime fecha;
+    private LocalDateTime fecha;
     private final TreeMap<LocalDateTime, Alarma> alarmasInstancia;
 
     public InstanciaEvento(Evento evento,LocalDateTime fecha) {
@@ -47,6 +47,8 @@ public class InstanciaEvento implements ElementoCalendario {
 
     @Override
     public void setFecha(LocalDateTime inicioEvento) {
+        if(this.evento.getFecha() == this.fecha)
+            this.fecha = inicioEvento;
         evento.setFecha(inicioEvento);
     }
 

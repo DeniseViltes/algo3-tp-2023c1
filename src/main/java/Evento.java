@@ -15,8 +15,13 @@ public class Evento implements ElementoCalendario {
     private Repeticion repeticion;
     private final TreeMap<LocalDateTime,Alarma> alarmas;
 
+
+    /*
+    Crea un evento nuevo apartir de una fecha dada, con una duración de 1 hora,
+    este evento incia solo con un titulo y una alarma default (10 minutos antes del inicio)
+     */
     public Evento(LocalDateTime inicioEvento) {
-        this.titulo = "My Event";  //le pongo esto asi queda un poco más lindo
+        this.titulo = "My Event";
         this.descripcion = null;
         this.fechaYHoraInicial = inicioEvento;
         this.duracion =  Duration.ofHours(1);
@@ -37,8 +42,6 @@ public class Evento implements ElementoCalendario {
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
 
-
-
     public LocalDateTime getFechaYHoraFinal(){
         return this.fechaYHoraInicial.plus(this.duracion);
     }
@@ -53,6 +56,11 @@ public class Evento implements ElementoCalendario {
             modificarReferenciaAlarma(i,inicioEvento);
         }
     }
+    /*
+    Cuando se marca el evento como de dia completo, si el evento previamiente
+    tenia una duración mayor a un dia, esto se mantiene.
+    Ademas se eliminan todas las alarmas previas.
+     */
     public void setDeDiaCompleto(){
         this.esDeDiaCompleto = true;
         var nuevaInicial = this.fechaYHoraInicial.toLocalDate();
@@ -62,13 +70,15 @@ public class Evento implements ElementoCalendario {
         else this.duracion = this.duracion.truncatedTo(ChronoUnit.DAYS).plusHours(23).plusMinutes(59);
         this.alarmas.clear();
     }
+    /*
+
+    */
     public void asignarDeFechaArbitraria(LocalDateTime nuevaInicial){
 
         this.esDeDiaCompleto = false;
         this.fechaYHoraInicial = nuevaInicial;
         this.duracion = Duration.ofMinutes(30);
 
-        //google calendar saca todas las alarmas y deja una de 10 min;
         this.alarmas.clear();
         var nuevaAlarma = new Alarma(nuevaInicial);
         this.alarmas.put(nuevaAlarma.getFechaYHora(),nuevaAlarma);
@@ -85,18 +95,13 @@ public class Evento implements ElementoCalendario {
     }
 
 
-    public int cantidadDeAlarmas(){
-        return alarmas.size();
-    }
-
-    @Override
     public Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma) {
         var nueva = new Alarma(this.fechaYHoraInicial);
         nueva.setAlarmaAbsoluta(horarioAlarma);
         alarmas.put(horarioAlarma, nueva);
         return nueva;
     }
-    @Override
+
     public Alarma agregarAlarma(Duration intervalo) {
         var nueva = new Alarma(this.fechaYHoraInicial);
         nueva.setIntervalo(intervalo);
@@ -104,19 +109,19 @@ public class Evento implements ElementoCalendario {
         return nueva;
     }
 
-    @Override
+
     public void eliminarAlarma(Alarma alarma) {
         alarmas.remove(alarma.getFechaYHora());
     }
 
-    @Override
+
     public LocalDateTime proximaAlarma(LocalDateTime fecha) {
         var alarma = proximaAlarmaEvento(fecha);
         if (alarma == null)
                 return null;
         return alarma.getFechaYHora();
     }
-    @Override
+
     public EfectoAlarma sonarProximaAlarma(LocalDateTime fecha){
         var alarma = proximaAlarmaEvento(fecha);
         if (alarma == null)
@@ -129,7 +134,6 @@ public class Evento implements ElementoCalendario {
         if(par == null)
             return  null;
         return par.getValue();
-
     }
 
 
@@ -139,21 +143,21 @@ public class Evento implements ElementoCalendario {
         alarmas.put(alarma.getFechaYHora(), alarma);
     }
 
-    @Override
+
     public void modificarIntervaloAlarma(Alarma alarma, Duration intervalo) {
         alarmas.remove(alarma.getFechaYHora());
         alarma.setIntervalo(intervalo);
         alarmas.put(alarma.getFechaYHora(), alarma);
     }
 
-    @Override
+
     public void modificarFechaAbsolutaAlarma(Alarma alarma, LocalDateTime fecha) {
         alarmas.remove(alarma.getFechaYHora());
         alarma.setAlarmaAbsoluta(fecha);
         alarmas.put(alarma.getFechaYHora(), alarma);
     }
 
-    @Override
+
     public void modificarAlarmaEfecto(Alarma alarma, EfectoAlarma efecto) {
         alarmas.remove(alarma.getFechaYHora());
         alarma.setEfecto(efecto);
@@ -223,4 +227,7 @@ public class Evento implements ElementoCalendario {
         return alarmas;
     }
 
+    public Repeticion getRepeticion() {
+        return repeticion;
+    }
 }
