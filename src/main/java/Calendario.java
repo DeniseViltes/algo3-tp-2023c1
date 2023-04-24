@@ -107,7 +107,7 @@ public class Calendario {
         evento.setRepeticionSemanal(dias);
     }
 
-    public void modificarRepeticionSemanal(InstanciaEvento instancia, Set<DayOfWeek> dias){
+    public void modificarDiasRepeticionSemanal(InstanciaEvento instancia, Set<DayOfWeek> dias){
         var evento = instancia.getEvento();
         var repeticion = evento.getRepeticion();
         evento.setRepeticionSemanal(dias);
@@ -120,7 +120,7 @@ public class Calendario {
         evento.setRepeticionDiaria(1);
     }
 
-    public void moficarRepeticionDiaria(InstanciaEvento instancia, int intervalo){
+    public void modificarIntervaloRepeticionDiaria(InstanciaEvento instancia, int intervalo){
         var evento = instancia.getEvento();
         var repeticion = evento.getRepeticion();
         evento.setRepeticionDiaria(intervalo);
