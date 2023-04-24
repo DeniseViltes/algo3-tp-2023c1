@@ -70,6 +70,15 @@ public class Calendario {
             elemento.setFecha(inicioEvento);
     }
 
+    public void marcarDeDiaCompleto(ElementoCalendario elementoCalendario){
+        elementoCalendario.setDeDiaCompleto();
+    }
+
+    public void desmarcarDeDiaCompleto(ElementoCalendario elementoCalendario){
+        var fecha = elementoCalendario.getFecha();
+        elementoCalendario.asignarDeFechaArbitraria(fecha);
+    }
+
     public void modificarDuracion(Evento evento, Duration duracionMinutos) {
         if (evento != null && duracionMinutos != null)
             evento.setDuracion(duracionMinutos);
