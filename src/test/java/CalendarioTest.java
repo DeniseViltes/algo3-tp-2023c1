@@ -21,6 +21,72 @@ public class CalendarioTest {
     }
 
     @Test
+    public void modificarEvento() {
+        var calendario = new Calendario();
+        var evento = calendario.crearEvento();
+        calendario.modificarFecha(evento, ahora.plusHours(17));
+        Assert.assertEquals(1,calendario.elementosEntreFechas(hoy, magnana.plusDays(1)).size());
+        Assert.assertEquals(ahora.plusHours(17),calendario.verFechaYHora(evento));
+    }
+
+    @Test
+    public void eliminarEvento() {
+        var calendario = new Calendario();
+        var evento = calendario.crearEvento();
+        Assert.assertEquals(1,calendario.elementosEntreFechas(hoy, magnana.plusDays(1)).size());
+        Assert.assertEquals(ahora.plusHours(1),calendario.verFechaYHora(evento));
+        calendario.eliminarEvento(evento);
+        Assert.assertEquals(0,calendario.elementosEntreFechas(hoy, magnana.plusDays(1)).size());
+
+    }
+
+    @Test
+    public void crearTarea() {
+        var calendario = new Calendario();
+        var tarea = calendario.crearTarea();
+        Assert.assertEquals(1,calendario.elementosEntreFechas(hoy, magnana).size());
+        Assert.assertEquals(ahora.plusHours(1),calendario.verFechaYHora(tarea));
+    }
+
+    @Test
+    public void crearTareaCompleta() {
+        var calendario = new Calendario();
+        var tarea = calendario.crearTarea();
+        calendario.marcarTareaCompleta(tarea);
+        Assert.assertEquals(true,tarea.estaCompleta());
+    }
+
+    @Test
+    public void crearTareaIncompleta() {
+        var calendario = new Calendario();
+        var tarea = calendario.crearTarea();
+        calendario.marcarTareaIncompleta(tarea);
+        Assert.assertEquals(false,tarea.estaCompleta());
+    }
+
+    @Test
+    public void modificarTarea() {
+        var calendario = new Calendario();
+        var tarea = calendario.crearTarea();
+        calendario.modificarFecha(tarea, hoy.plusHours(17));
+        var tarea2 = calendario.crearTarea();
+        calendario.modificarFecha(tarea2, hoy.plusHours(25));
+        Assert.assertEquals(1,calendario.elementosEntreFechas(hoy, magnana).size());
+        Assert.assertEquals(hoy.plusHours(25),calendario.verFechaYHora(tarea2));
+    }
+
+    @Test
+    public void eliminarTarea() {
+        var calendario = new Calendario();
+        var tarea = calendario.crearTarea();
+        calendario.modificarFecha(tarea, hoy.plusHours(17));
+        Assert.assertEquals(1,calendario.elementosEntreFechas(hoy, magnana.plusDays(1)).size());
+        calendario.eliminarTarea(tarea);
+        Assert.assertEquals(0,calendario.elementosEntreFechas(hoy, magnana.plusDays(1)).size());
+
+    }
+
+    @Test
     public void eventoConUnaRepeticionMensualInfinita() {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
@@ -32,6 +98,37 @@ public class CalendarioTest {
 
         Assert.assertEquals(1,listadoDeEventosPlusDias.size());
         Assert.assertEquals(12,listadoDeEventosPlusAgno.size());
+
+    }
+
+    @Test
+    public void eventoConUnaRepeticionDiariaInfinita() {
+        var calendario = new Calendario();
+        var evento = calendario.crearEvento();
+        evento.setRepeticionDiaria(2);
+
+        LocalDateTime fechaActual = LocalDate.now().atStartOfDay();
+        var listadoDeEventosPlusDias = calendario.elementosEntreFechas(fechaActual,fechaActual.plusDays(2));
+        var listadoDeEventosPlusAgno = calendario.elementosEntreFechas(magnana,fechaActual.plusYears(1).plusDays(2));
+
+        Assert.assertEquals(1,listadoDeEventosPlusDias.size());
+        Assert.assertEquals(183,listadoDeEventosPlusAgno.size());
+
+    }
+
+    @Test
+    public void eventoConUnaRepeticionDiariaVencimiento() {
+        var calendario = new Calendario();
+        var evento = calendario.crearEvento();
+        evento.setRepeticionDiaria(3);
+        evento.setRepeticionVencimiento(magnana.plusDays(7));
+
+        LocalDateTime fechaActual = LocalDate.now().atStartOfDay();
+        var listadoDeEventosPlusDias = calendario.elementosEntreFechas(fechaActual,fechaActual.plusDays(2));
+        var listadoDeEventosPlusAgno = calendario.elementosEntreFechas(magnana,fechaActual.plusYears(1).plusDays(2));
+
+        Assert.assertEquals(1,listadoDeEventosPlusDias.size());
+        Assert.assertEquals(2,listadoDeEventosPlusAgno.size());
 
     }
 

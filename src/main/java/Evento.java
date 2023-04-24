@@ -59,13 +59,14 @@ public class Evento implements ElementoCalendario {
         this.fechaYHoraInicial = nuevaInicial.atStartOfDay();
         if (duracion.compareTo(Duration.ofDays(1))<0)
             this.duracion = Duration.ofHours(23).plusMinutes(59);
-        else this.duracion = this.duracion.truncatedTo(ChronoUnit.DAYS);
+        else this.duracion = this.duracion.truncatedTo(ChronoUnit.DAYS).plusHours(23).plusMinutes(59);
         this.alarmas.clear();
     }
     public void asignarDeFechaArbitraria(LocalDateTime nuevaInicial){
 
         this.esDeDiaCompleto = false;
         this.fechaYHoraInicial = nuevaInicial;
+        this.duracion = Duration.ofMinutes(30);
 
         //google calendar saca todas las alarmas y deja una de 10 min;
         this.alarmas.clear();

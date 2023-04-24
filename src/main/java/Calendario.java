@@ -28,9 +28,10 @@ public class Calendario {
         this.eventos.add(evento);
         return evento;
     }
-    public void crearTarea() {
+    public Tarea crearTarea() {
         Tarea tarea = new Tarea(ahoraDefault());
         this.tareas.add(tarea);
+        return tarea;
     }
     public void eliminarEvento(Evento evento) {
         eventos.remove(evento);
@@ -90,7 +91,7 @@ public class Calendario {
     public void  agregarRepeticionAnualEvento (Evento evento){
         evento.setRepeticionAnual();
     }
-    public void  agregarRepeticionMensuakEvento (Evento evento){
+    public void  agregarRepeticionMensualEvento (Evento evento){
         evento.setRepeticionMensual();
     }
     public void  agregarRepeticionSemanalEvento (Evento evento, Set<DayOfWeek> dias){

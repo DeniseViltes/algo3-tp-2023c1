@@ -13,6 +13,11 @@ public class TareaTest {
     @Test
     public void crearTarea() {
         var tarea = new Tarea(ahoraTruncado);
+        tarea.setTitulo("Sacar la basura");
+        tarea.setDescripcion("El basurero esta lleno");
+
+        Assert.assertEquals("Sacar la basura", tarea.getTitulo());
+        Assert.assertEquals("El basurero esta lleno", tarea.getDescripcion());
 
         Assert.assertEquals(ahoraTruncado, tarea.getFecha());
         Assert.assertFalse(tarea.estaCompleta());

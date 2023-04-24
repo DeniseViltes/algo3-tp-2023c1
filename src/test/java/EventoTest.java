@@ -21,8 +21,11 @@ public class EventoTest {
         var evento = new Evento(ahoraTruncado);
         var horaFinalDefault = ahoraTruncado.plusHours(1);
 
+        evento.setDescripcion("Final de Algo3");
+
+        Assert.assertEquals("Final de Algo3", evento.getDescripcion());
+
         Assert.assertEquals("My Event", evento.getTitulo());
-        Assert.assertNull(evento.getDescripcion());
         Assert.assertEquals(horaFinalDefault,evento.getFechaYHoraFinal());
     }
 
@@ -51,7 +54,7 @@ public class EventoTest {
 
 
         evento.setDeDiaCompleto();
-        var horarioFinal =ahoraTruncado.truncatedTo(ChronoUnit.DAYS).plusDays(5);
+        var horarioFinal =ahoraTruncado.truncatedTo(ChronoUnit.DAYS).plusDays(5).plusHours(23).plusMinutes(59);
 
         Assert.assertEquals(horarioFinal,evento.getFechaYHoraFinal());
         Assert.assertEquals(0,evento.cantidadDeAlarmas());
@@ -64,11 +67,13 @@ public class EventoTest {
         var alarma2 = evento.agregarAlarma(Duration.ofMinutes(30));
         evento.modificarAlarmaEfecto(alarma2, EfectoAlarma.NOTIFICACION);
 
+        Assert.assertEquals(ahoraTruncado.plusMinutes(60),evento.getFechaYHoraFinal());
 
         evento.setFecha(ahoraTruncado.plusDays(1));
 
-        var proxAlarma = evento.proximaAlarma(ahoraTruncado.plusHours(12));
+        var proxAlarma = evento.proximaAlarma(ahoraTruncado);
 
+        Assert.assertEquals(ahoraTruncado.plusDays(1).plusMinutes(60),evento.getFechaYHoraFinal());
         Assert.assertEquals(magnana.minusMinutes(30),proxAlarma);
     }
 
@@ -87,7 +92,7 @@ public class EventoTest {
 
 
         evento.asignarDeFechaArbitraria(ahoraTruncado);
-        var horarioFinal = ahoraTruncado.plusDays(5);
+        var horarioFinal = ahoraTruncado.plusMinutes(30);
 
         Assert.assertEquals(horarioFinal,evento.getFechaYHoraFinal());
         Assert.assertEquals(1,evento.cantidadDeAlarmas());
