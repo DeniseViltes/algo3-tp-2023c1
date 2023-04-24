@@ -23,10 +23,10 @@ public class Calendario {
         ahora = ahora.truncatedTo(ChronoUnit.HOURS);
         return ahora.plusHours(1);
     }
-    public Evento crearEvento() {
+    public InstanciaEvento crearEvento() {
         Evento evento = new Evento(ahoraDefault());
         this.eventos.add(evento);
-        return evento;
+        return new InstanciaEvento(evento,evento.getFecha());
     }
     public void crearTarea() {
         Tarea tarea = new Tarea(ahoraDefault());
@@ -37,7 +37,7 @@ public class Calendario {
     }
 
     public void eliminarEvento(InstanciaEvento instanciaEvento) {
-        eventos.remove(instanciaEvento.getEvento());
+        eliminarEvento(instanciaEvento.getEvento());
     }
     public LocalDateTime getFecha(ElementoCalendario elementoCalendario){
         return elementoCalendario.getFecha();
@@ -87,28 +87,35 @@ public class Calendario {
     public void eliminarAlarma(ElementoCalendario elemento, Alarma alarma){
         elemento.eliminarAlarma(alarma);
     }
-    public void  agregarRepeticionAnualEvento (Evento evento){
+    public void  agregarRepeticionAnualEvento (InstanciaEvento instancia){
+        var evento = instancia.getEvento();
         evento.setRepeticionAnual();
     }
-    public void  agregarRepeticionMensuakEvento (Evento evento){
+    public void  agregarRepeticionMensualEvento (InstanciaEvento instancia){
+        var evento = instancia.getEvento();
         evento.setRepeticionMensual();
     }
-    public void  agregarRepeticionSemanalEvento (Evento evento, Set<DayOfWeek> dias){
+    public void  agregarRepeticionSemanalEvento (InstanciaEvento instancia, Set<DayOfWeek> dias){
+        var evento = instancia.getEvento();
         evento.setRepeticionSemanal(dias);
     }
-    public void  agregarRepeticionDiariaEvento (Evento evento, int intervalo){
+    public void  agregarRepeticionDiariaEvento (InstanciaEvento instancia, int intervalo){
+        var evento = instancia.getEvento();
         evento.setRepeticionDiaria(intervalo);
     }
-    public void modificarCantidadRepeticiones(Evento evento,int cantidad){
+    public void modificarCantidadRepeticiones(InstanciaEvento instancia,int cantidad){
+        var evento = instancia.getEvento();
         evento.setRepeticionCantidad(cantidad);
     }
 
     // Para modificar a repeticion infinita, vencimiento debe ser null.
-    public void modificarVencimientoRepeticion (Evento evento, LocalDateTime vencimiento){
+    public void modificarVencimientoRepeticion (InstanciaEvento instancia, LocalDateTime vencimiento){
+        var evento = instancia.getEvento();
         evento.setRepeticionVencimiento(vencimiento);
     }
 
-    public void eliminarRepeticion(Evento evento){
+    public void eliminarRepeticion(InstanciaEvento instancia){
+        var evento = instancia.getEvento();
         evento.eliminarRepeticion();
     }
 
@@ -123,7 +130,6 @@ public class Calendario {
         if (tarea != null)
             tarea.descompletar();
     }
-
 
     //el calendario almacena eventos, pero solo muestra instancias de eventos, no el evento en si
     private Set<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
