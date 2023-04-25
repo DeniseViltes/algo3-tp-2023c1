@@ -57,7 +57,8 @@ public class EventoTest {
         var horarioFinal =ahoraTruncado.truncatedTo(ChronoUnit.DAYS).plusDays(5).plusHours(23).plusMinutes(59);
 
         Assert.assertEquals(horarioFinal,evento.getFechaYHoraFinal());
-       // Assert.assertEquals(0,evento.cantidadDeAlarmas());
+        Assert.assertNull(evento.sonarProximaAlarma(ahoraTruncado.minusDays(1)));
+
     }
     @Test
     public void modificarFechaDeEventoConAlarmas(){
@@ -95,7 +96,7 @@ public class EventoTest {
         var horarioFinal = ahoraTruncado.plusDays(5).plusMinutes(30);
 
         Assert.assertEquals(horarioFinal,evento.getFechaYHoraFinal());
-        //Assert.assertEquals(1,evento.cantidadDeAlarmas());
+        Assert.assertEquals(EfectoAlarma.NOTIFICACION, evento.sonarProximaAlarma(ahoraTruncado.minusMinutes(10)));
     }
 
     @Test
@@ -183,16 +184,12 @@ public class EventoTest {
     @Test
     public void verSiHayRepeticiones() {
         var evento = new Evento(ahoraTruncado);
-        var dias = EnumSet.allOf(DayOfWeek.class); //no entendi para nada como funciona enumSet
-        //pero creo que tendriamos que recibir este tipo de Set?, no cualquier set
+        var dias = EnumSet.allOf(DayOfWeek.class);
         var masDosDias = ahoraTruncado.plusDays(2);
 
 
         evento.setRepeticionSemanal(dias);
         evento.setRepeticionVencimiento(ahoraTruncado.plusDays(1));
-
-        //TODO en calendario se tiene que proporcionar una repeticion
-        // default, pero aca solo recibe el set
 
         Assert.assertTrue(evento.tieneRepeticionEntreLosHorarios(ahoraTruncado,masDosDias));
         Assert.assertFalse(evento.tieneRepeticionEntreLosHorarios(magnana,masDosDias));

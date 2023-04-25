@@ -12,6 +12,10 @@ public class Tarea implements ElementoCalendario{
     private boolean esDeDiaCompleto;
     private final TreeMap<LocalDateTime,Alarma> alarmas;
 
+
+    /*
+    Crea una Tarea  incompleta a partir de una fecha dada, sin alarmas
+     */
     public Tarea(LocalDateTime vencimiento) {
         this.titulo = null;
         this.descripcion = null;
@@ -29,7 +33,7 @@ public class Tarea implements ElementoCalendario{
         this.vencimiento = fechaAlFinalDelDia(this.vencimiento);
         this.alarmas.clear();
     }
-    @Override
+     
     public LocalDateTime getFecha() {
         return this.vencimiento;
     }
@@ -45,12 +49,12 @@ public class Tarea implements ElementoCalendario{
         this.completado = false;
     }
 
-    @Override
+     
     public String getTitulo() {
         return titulo;
     }
 
-    @Override
+     
     public String getDescripcion() {
         return descripcion;
     }
@@ -58,14 +62,13 @@ public class Tarea implements ElementoCalendario{
     public void asignarDeFechaArbitraria(LocalDateTime nuevoVencimiento){
         this.esDeDiaCompleto = false;
         this.vencimiento = nuevoVencimiento;
-        //en calendar no se puede poner alarmas a las tareas
         this.alarmas.clear();
     }
 
     public boolean estaCompleta (){
         return completado;
     }
-    @Override
+     
     public EfectoAlarma sonarProximaAlarma(LocalDateTime fecha) {
         var horarioProxAlarma = proximaAlarma(fecha);
         if(horarioProxAlarma == null)
@@ -79,12 +82,12 @@ public class Tarea implements ElementoCalendario{
         return (t.equals(inicio) || t.isAfter(inicio)) && (t.equals(fin) || t.isBefore(fin));
     }
 
-    @Override
+     
     public void eliminarAlarma(Alarma alarma) {
         alarmas.remove(alarma.getFechaYHora());
     }
 
-    @Override
+     
     public LocalDateTime proximaAlarma(LocalDateTime dateTime) {
         var par = this.alarmas.ceilingEntry(dateTime);
         if(par == null)
@@ -92,7 +95,7 @@ public class Tarea implements ElementoCalendario{
         return par.getKey();
     }
 
-    @Override
+     
     public void modificarIntervaloAlarma(Alarma alarma, Duration intervalo) {
         alarmas.remove(alarma.getFechaYHora());
         alarma.setIntervalo(intervalo);
@@ -100,7 +103,7 @@ public class Tarea implements ElementoCalendario{
 
     }
 
-    @Override
+     
     public void modificarFechaAbsolutaAlarma(Alarma alarma, LocalDateTime fecha) {
         alarmas.remove(alarma.getFechaYHora());
         alarma.setAlarmaAbsoluta(fecha);
@@ -108,7 +111,7 @@ public class Tarea implements ElementoCalendario{
 
     }
 
-    @Override
+     
     public void modificarAlarmaEfecto(Alarma alarma, EfectoAlarma efecto) {
         alarmas.remove(alarma.getFechaYHora());
         alarma.setEfecto(efecto);
@@ -138,7 +141,7 @@ public class Tarea implements ElementoCalendario{
     }
 
 
-    @Override
+     
     public Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma) {
         var nueva = new Alarma(this.vencimiento);
         nueva.setAlarmaAbsoluta(horarioAlarma);
@@ -146,7 +149,7 @@ public class Tarea implements ElementoCalendario{
         return nueva;
     }
 
-    @Override
+     
     public Alarma agregarAlarma(Duration intervalo) {
         var nueva = new Alarma(this.vencimiento);
         nueva.setIntervalo(intervalo);
@@ -155,6 +158,5 @@ public class Tarea implements ElementoCalendario{
     }
 
 
-    //
 
 }

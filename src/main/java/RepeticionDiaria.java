@@ -7,9 +7,6 @@ public class RepeticionDiaria extends Repeticion {
         this.intervalo = intervalo;
     }
 
-    public void setIntervalo(Integer intervalo) {
-        this.intervalo = intervalo;
-    }
 
     @Override
     public void setCantidadRepeticiones(LocalDateTime inicio, long cantidadRepeticiones) {
