@@ -349,7 +349,7 @@ public class CalendarioTest {
         var evento = calendario.crearEvento();
         calendario.agregarRepeticionDiariaEvento(evento);
         var horaInicioEvento = evento.getFecha();
-        var elementos = calendario.elementosEntreFechas(magnana, horaInicioEvento.plusDays(1));
+        var elementos = calendario.elementosEntreFechas(horaInicioEvento.minusMinutes(60), horaInicioEvento.plusDays(1).minusHours(10));
         Assert.assertEquals(1,elementos.size());
         var horaASonar = horaInicioEvento.minus(diezMinutos).plusDays(1);
         Assert.assertEquals(EfectoAlarma.NOTIFICACION,calendario.sonarProximaAlarma(horaASonar, horaASonar.plusDays(1)));
