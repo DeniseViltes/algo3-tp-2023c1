@@ -7,10 +7,13 @@ public class Alarma {
     private Duration intervalo;
     private LocalDateTime referencia;
     private EfectoAlarma efecto;
-
+    /*
+    Crea una alarma a partir de una fecha de referencia que suena diez minutos antes de esta fecha
+    con un efecto del tipo calendario
+    */
     public Alarma(LocalDateTime fechaReferencia) {
-        this.intervalo = Duration.ofMinutes(10); //intervalo default 10 min;
-        this.efecto = EfectoAlarma.NOTIFICACION; //efecto default del tipo notificación
+        this.intervalo = Duration.ofMinutes(10);
+        this.efecto = EfectoAlarma.NOTIFICACION;
         this.referencia = fechaReferencia;
         fechaASonar();
     }
@@ -43,8 +46,8 @@ public class Alarma {
 
     public EfectoAlarma sonar(LocalDateTime actual){
         if (actual.equals(this.fechaYHora))
-            return efecto; //supongo que esto pasa cuando suena la alarma????
-        return null;//se puede devolver null?
+            return efecto;
+        return null;
     }
 
     public boolean esDeFechaAbsoluta(){

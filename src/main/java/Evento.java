@@ -70,9 +70,7 @@ public class Evento implements ElementoCalendario {
         else this.duracion = this.duracion.truncatedTo(ChronoUnit.DAYS).plusHours(23).plusMinutes(59);
         this.alarmas.clear();
     }
-    /*
 
-    */
     public void asignarDeFechaArbitraria(LocalDateTime nuevaInicial){
 
         this.esDeDiaCompleto = false;

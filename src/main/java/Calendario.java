@@ -134,7 +134,7 @@ public class Calendario {
         evento.setRepeticionCantidad(cantidad);
     }
 
-    // Para modificar a repeticion infinita, vencimiento debe ser null.
+
     public void modificarVencimientoRepeticion (InstanciaEvento instancia, LocalDateTime vencimiento){
         var evento = instancia.getEvento();
         evento.setRepeticionVencimiento(vencimiento);

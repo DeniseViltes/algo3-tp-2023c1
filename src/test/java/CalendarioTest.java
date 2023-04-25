@@ -12,8 +12,10 @@ public class CalendarioTest {
     private final LocalDateTime hoy = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
     private final LocalDateTime magnana = hoy.plusDays(1);
 
+    private final Duration diezMinutos = Duration.ofMinutes(10);
+
     private final LocalDateTime ahora = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-    //Eventos
+
     @Test
     public void crearEvento() {
         var calendario = new Calendario();
@@ -51,19 +53,19 @@ public class CalendarioTest {
     }
 
     @Test
-    public void crearTareaCompleta() {
+    public void marcarTareaCompleta() {
         var calendario = new Calendario();
         var tarea = calendario.crearTarea();
         calendario.marcarTareaCompleta(tarea);
-        Assert.assertEquals(true,tarea.estaCompleta());
+        Assert.assertTrue(tarea.estaCompleta());
     }
 
     @Test
-    public void crearTareaIncompleta() {
+    public void marcarTareaIncompleta() {
         var calendario = new Calendario();
         var tarea = calendario.crearTarea();
         calendario.marcarTareaIncompleta(tarea);
-        Assert.assertEquals(false,tarea.estaCompleta());
+        Assert.assertFalse(tarea.estaCompleta());
     }
 
     @Test
@@ -333,13 +335,24 @@ public class CalendarioTest {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
         calendario.modificarFecha(evento, magnana);
-        var alarma = evento.agregarAlarma(Duration.ofMinutes(10));
+        var alarma = evento.agregarAlarma(diezMinutos);
         alarma.setEfecto(EfectoAlarma.SONIDO);
 
-        var horaASonar = magnana.minus(Duration.ofMinutes(10));
+        var horaASonar = magnana.minus(diezMinutos);
 
         Assert.assertEquals(horaASonar, evento.proximaAlarma(hoy));
         Assert.assertEquals(EfectoAlarma.SONIDO, calendario.sonarProximaAlarma(hoy, hoy.plusDays(5)));
+    }
+    @Test
+    public void sonarAlarmaRepeticion() {
+        var calendario = new Calendario();
+        var evento = calendario.crearEvento();
+        calendario.agregarRepeticionDiariaEvento(evento);
+        var horaInicioEvento = evento.getFecha();
+        var elementos = calendario.elementosEntreFechas(magnana, horaInicioEvento.plusDays(1));
+        Assert.assertEquals(1,elementos.size());
+        var horaASonar = horaInicioEvento.minus(diezMinutos).plusDays(1);
+        Assert.assertEquals(EfectoAlarma.NOTIFICACION,calendario.sonarProximaAlarma(horaASonar, horaASonar.plusDays(1)));
     }
 
 }

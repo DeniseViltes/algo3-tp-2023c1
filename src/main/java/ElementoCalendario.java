@@ -1,7 +1,7 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-//Pruebo poner una interfaz asi  no tenemos que duplicar todo para tarea
+
 public interface ElementoCalendario {
     void setTitulo(String titulo);
 
