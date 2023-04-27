@@ -155,7 +155,8 @@ public class Calendario {
             var j = i.getFecha();
             while (i.tieneRepeticionEntreLosHorarios(j,fin)){
                 j = i.proximaRepeticion(j);
-                elementos.add(new InstanciaEvento((Evento)i,j));
+                var instancia = new InstanciaEvento(i,j);
+                instancia.añadirElementoAlSet(elementos);
             }
 
         }

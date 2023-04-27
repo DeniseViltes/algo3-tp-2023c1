@@ -11,8 +11,8 @@ public class InstanciaEvento implements ElementoCalendario {
     private LocalDateTime fecha;
     private final TreeMap<LocalDateTime, Alarma> alarmasInstancia;
 
-    public InstanciaEvento(Evento evento,LocalDateTime fecha) {
-        this.evento = evento;
+    public InstanciaEvento(ElementoCalendario elemento,LocalDateTime fecha) {
+        this.evento = (Evento) elemento;
         this.fecha = fecha;
         this.alarmasInstancia = new TreeMap<>();
         cargarAlarmas();
