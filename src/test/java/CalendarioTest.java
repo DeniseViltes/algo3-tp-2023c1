@@ -39,7 +39,7 @@ public class CalendarioTest {
         var evento = calendario.crearEvento();
         Assert.assertEquals(1,calendario.elementosEntreFechas(hoy, magnana.plusDays(1)).size());
         Assert.assertEquals(ahora.plusHours(1),calendario.verFechaYHora(evento));
-        calendario.eliminarEvento(evento);
+        calendario.eliminarElementoCalendario(evento);
         Assert.assertEquals(0,calendario.elementosEntreFechas(hoy, magnana.plusDays(1)).size());
 
     }
@@ -85,7 +85,7 @@ public class CalendarioTest {
         var tarea = calendario.crearTarea();
         calendario.modificarFecha(tarea, hoy.plusHours(17));
         Assert.assertEquals(1,calendario.elementosEntreFechas(hoy, magnana.plusDays(1)).size());
-        calendario.eliminarTarea(tarea);
+        calendario.eliminarElementoCalendario(tarea);
         Assert.assertEquals(0,calendario.elementosEntreFechas(hoy, magnana.plusDays(1)).size());
 
     }
@@ -300,7 +300,7 @@ public class CalendarioTest {
 
 
         Assert.assertEquals(4, listado.size());
-        calendario.eliminarEvento(evento);
+        calendario.eliminarElementoCalendario(evento);
        listado = calendario.elementosEntreFechas(horaEvento,horaEvento.plusYears(3));
 
 

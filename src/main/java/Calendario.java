@@ -5,12 +5,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Calendario {
-    private final TreeSet<Evento> eventos;
-    private final TreeSet<Tarea> tareas;
+    private final TreeSet<ElementoCalendario> elementosCalendario;
 
     public Calendario() {
-        this.eventos = new TreeSet<>(new OrdenarElementosPorHorario());
-        this.tareas = new TreeSet<>(new OrdenarElementosPorHorario());
+        this.elementosCalendario = new TreeSet<>(new OrdenarElementosPorHorario());
     }
 
     private LocalDateTime ahoraDefault (){
@@ -20,35 +18,26 @@ public class Calendario {
     }
     public InstanciaEvento crearEvento() {
         Evento evento = new Evento(ahoraDefault());
-        this.eventos.add(evento);
+        this.elementosCalendario.add(evento);
         return new InstanciaEvento(evento,evento.getFecha());
     }
     public Tarea crearTarea() {
         Tarea tarea = new Tarea(ahoraDefault());
-        this.tareas.add(tarea);
+        this.elementosCalendario.add(tarea);
         return tarea;
     }
-    public void eliminarEvento(Evento evento) {
-        eventos.remove(evento);
+    public void eliminarElementoCalendario(ElementoCalendario elementoCalendario) {
+        elementosCalendario.remove(elementoCalendario);
     }
 
-    public void eliminarEvento(InstanciaEvento instanciaEvento) {
-        eliminarEvento(instanciaEvento.getEvento());
-    }
-    public LocalDateTime getFecha(ElementoCalendario elementoCalendario){
-        return elementoCalendario.getFecha();
-    }
-
-    public void eliminarTarea(Tarea tarea) {
-        tareas.remove(tarea);
+    public void eliminarElementoCalendario(InstanciaEvento instanciaEvento) {
+        eliminarElementoCalendario(instanciaEvento.getEvento());
     }
 
     //Para tarea muestra vencimiento y para evento muestra la incial
     public LocalDateTime verFechaYHora(ElementoCalendario elemento){
         return  elemento.getFecha();
     }
-
-
 
     public void modificarTitulo(ElementoCalendario elemento, String titulo) {
         if (elemento != null && titulo != null)
@@ -157,35 +146,29 @@ public class Calendario {
             tarea.descompletar();
     }
 
-    //el calendario almacena eventos, pero solo muestra instancias de eventos, no el evento en si
-    private Set<InstanciaEvento> eventosEntreFechas(LocalDateTime inicio, LocalDateTime fin) {
-        var listadoEventos = new TreeSet<InstanciaEvento>(new OrdenarElementosPorHorario());
-        for (Evento i : eventos) {
-            var j = i.getFecha();
-            if (i.iniciaEntreLosHorarios(inicio, fin))
-                listadoEventos.add( new InstanciaEvento(i,j));
-            while (i.tieneRepeticionEntreLosHorarios(j,fin)){
-                j = i.proximaRepeticion(j);
-                listadoEventos.add(new InstanciaEvento(i,j));
-            }
+    public void repeticionesEntreFechas(TreeSet<ElementoCalendario> elementos ,Evento evento, LocalDateTime fin){
+        var j = evento.getFecha();
+        while (evento.tieneRepeticionEntreLosHorarios(j,fin)){
+            j = evento.proximaRepeticion(j);
+            elementos.add(new InstanciaEvento(evento,j));
         }
-        return listadoEventos;
-    }
 
-    private Set<Tarea>  tareasEntreFechas(LocalDateTime inicio, LocalDateTime fin){
-        var listadoTareas = new TreeSet<Tarea>(new OrdenarElementosPorHorario());
-        for(Tarea i : tareas){
-            if(i.iniciaEntreLosHorarios(inicio,fin))
-                listadoTareas.add(i);
-        }
-        return listadoTareas;
     }
 
     public TreeSet<ElementoCalendario> elementosEntreFechas(LocalDateTime inicio, LocalDateTime fin){
-        var todos = new TreeSet<ElementoCalendario>((new OrdenarElementosPorHorario()));
-        todos.addAll(tareasEntreFechas(inicio,fin));
-        todos.addAll(eventosEntreFechas(inicio,fin));
-        return todos;
+        var elementos = new TreeSet<ElementoCalendario>((new OrdenarElementosPorHorario()));
+        for (ElementoCalendario i : elementosCalendario) {
+            if (i.iniciaEntreLosHorarios(inicio, fin)){
+                if(i instanceof Tarea)
+                    elementos.add(i);
+                else
+                    elementos.add(new InstanciaEvento((Evento) i,i.getFecha()));
+            }
+            if(i instanceof Evento)
+                repeticionesEntreFechas(elementos, (Evento) i, fin);
+        }
+
+        return elementos;
     }
 
     public EfectoAlarma sonarProximaAlarma(LocalDateTime fechaYHora, LocalDateTime fin){
