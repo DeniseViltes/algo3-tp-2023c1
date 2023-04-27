@@ -221,6 +221,11 @@ public class Evento implements ElementoCalendario {
         return repeticion.Repetir(inicio);
     }
 
+    @Override
+    public void añadirElementoAlSet(Set<ElementoCalendario> elementos) {
+        elementos.add(new InstanciaEvento((Evento) this,this.getFecha()));
+    }
+
     public TreeMap<LocalDateTime, Alarma> getAlarmas() {
         return alarmas;
     }

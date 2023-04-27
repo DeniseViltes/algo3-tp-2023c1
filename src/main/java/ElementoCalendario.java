@@ -1,5 +1,6 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 
 public interface ElementoCalendario {
@@ -28,6 +29,12 @@ public interface ElementoCalendario {
     void modificarAlarmaEfecto (Alarma alarma, EfectoAlarma efecto);
 
     boolean iniciaEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin);
+
+    public boolean tieneRepeticionEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin);
+
+    public  LocalDateTime proximaRepeticion (LocalDateTime inicio);
+
+    public void añadirElementoAlSet(Set<ElementoCalendario> elementos);
 
     EfectoAlarma sonarProximaAlarma(LocalDateTime fecha);
 

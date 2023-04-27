@@ -146,26 +146,18 @@ public class Calendario {
             tarea.descompletar();
     }
 
-    public void repeticionesEntreFechas(TreeSet<ElementoCalendario> elementos ,Evento evento, LocalDateTime fin){
-        var j = evento.getFecha();
-        while (evento.tieneRepeticionEntreLosHorarios(j,fin)){
-            j = evento.proximaRepeticion(j);
-            elementos.add(new InstanciaEvento(evento,j));
-        }
-
-    }
-
     public TreeSet<ElementoCalendario> elementosEntreFechas(LocalDateTime inicio, LocalDateTime fin){
         var elementos = new TreeSet<ElementoCalendario>((new OrdenarElementosPorHorario()));
         for (ElementoCalendario i : elementosCalendario) {
             if (i.iniciaEntreLosHorarios(inicio, fin)){
-                if(i instanceof Tarea)
-                    elementos.add(i);
-                else
-                    elementos.add(new InstanciaEvento((Evento) i,i.getFecha()));
+                i.añadirElementoAlSet(elementos);
             }
-            if(i instanceof Evento)
-                repeticionesEntreFechas(elementos, (Evento) i, fin);
+            var j = i.getFecha();
+            while (i.tieneRepeticionEntreLosHorarios(j,fin)){
+                j = i.proximaRepeticion(j);
+                elementos.add(new InstanciaEvento((Evento)i,j));
+            }
+
         }
 
         return elementos;

@@ -1,5 +1,6 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class InstanciaEvento implements ElementoCalendario {
@@ -133,6 +134,21 @@ public class InstanciaEvento implements ElementoCalendario {
 
     public boolean iniciaEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin) {
         return esIgualOEstaEntre(inicio,fin,this.fecha);
+    }
+
+    @Override
+    public boolean tieneRepeticionEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin) {
+        return false;
+    }
+
+    @Override
+    public LocalDateTime proximaRepeticion(LocalDateTime inicio) {
+        return null;
+    }
+
+    @Override
+    public void añadirElementoAlSet(Set<ElementoCalendario> elementos) {
+        elementos.add(this);
     }
 
     private boolean esIgualOEstaEntre(LocalDateTime inicio, LocalDateTime fin, LocalDateTime t){
