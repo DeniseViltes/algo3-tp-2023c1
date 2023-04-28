@@ -30,11 +30,7 @@ public interface ElementoCalendario {
 
     boolean iniciaEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin);
 
-    public boolean tieneRepeticionEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin);
-
-    public  LocalDateTime proximaRepeticion (LocalDateTime inicio);
-
-    public void añadirElementoAlSet(Set<ElementoCalendario> elementos);
+    void agregarElementoAlSet(Set<ElementoCalendario> elementos, LocalDateTime inicio, LocalDateTime fin);
 
     EfectoAlarma sonarProximaAlarma(LocalDateTime fecha);
 

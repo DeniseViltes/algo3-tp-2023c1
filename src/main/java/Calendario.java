@@ -149,18 +149,8 @@ public class Calendario {
     public TreeSet<ElementoCalendario> elementosEntreFechas(LocalDateTime inicio, LocalDateTime fin){
         var elementos = new TreeSet<ElementoCalendario>((new OrdenarElementosPorHorario()));
         for (ElementoCalendario i : elementosCalendario) {
-            if (i.iniciaEntreLosHorarios(inicio, fin)){
-                i.añadirElementoAlSet(elementos);
-            }
-            var j = i.getFecha();
-            while (i.tieneRepeticionEntreLosHorarios(j,fin)){
-                j = i.proximaRepeticion(j);
-                var instancia = new InstanciaEvento(i,j);
-                instancia.añadirElementoAlSet(elementos);
-            }
-
+            i.agregarElementoAlSet(elementos,inicio,fin);
         }
-
         return elementos;
     }
 

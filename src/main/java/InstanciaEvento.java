@@ -136,19 +136,9 @@ public class InstanciaEvento implements ElementoCalendario {
         return esIgualOEstaEntre(inicio,fin,this.fecha);
     }
 
-    @Override
-    public boolean tieneRepeticionEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin) {
-        return false;
-    }
-
-    @Override
-    public LocalDateTime proximaRepeticion(LocalDateTime inicio) {
-        return null;
-    }
-
-    @Override
-    public void añadirElementoAlSet(Set<ElementoCalendario> elementos) {
-        elementos.add(this);
+    public void agregarElementoAlSet(Set<ElementoCalendario> elementos, LocalDateTime inicio, LocalDateTime fin) {
+        if (this.iniciaEntreLosHorarios(inicio, fin))
+            elementos.add(this);
     }
 
     private boolean esIgualOEstaEntre(LocalDateTime inicio, LocalDateTime fin, LocalDateTime t){

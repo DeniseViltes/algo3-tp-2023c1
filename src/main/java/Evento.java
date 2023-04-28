@@ -221,9 +221,18 @@ public class Evento implements ElementoCalendario {
         return repeticion.Repetir(inicio);
     }
 
-    @Override
-    public void añadirElementoAlSet(Set<ElementoCalendario> elementos) {
-        elementos.add(new InstanciaEvento((Evento) this,this.getFecha()));
+
+    public void agregarElementoAlSet(Set<ElementoCalendario> elementos, LocalDateTime inicio, LocalDateTime fin) {
+        if (this.iniciaEntreLosHorarios(inicio, fin)){
+            var instancia = new InstanciaEvento(this, this.getFecha());
+            instancia.agregarElementoAlSet(elementos,inicio,fin);
+        }
+        var j = this.fechaYHoraInicial;
+        while (this.tieneRepeticionEntreLosHorarios(j,fin)) {
+            j = this.proximaRepeticion(j);
+            var instancia = new InstanciaEvento(this,j);
+            instancia.agregarElementoAlSet(elementos,j,fin);
+        }
     }
 
     public TreeMap<LocalDateTime, Alarma> getAlarmas() {
