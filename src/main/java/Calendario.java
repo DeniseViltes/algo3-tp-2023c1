@@ -1,3 +1,5 @@
+import jdk.jfr.Event;
+
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -16,10 +18,10 @@ public class Calendario {
         ahora = ahora.truncatedTo(ChronoUnit.HOURS);
         return ahora.plusHours(1);
     }
-    public InstanciaEvento crearEvento() {
+    public Evento crearEvento() {
         Evento evento = new Evento(ahoraDefault());
         this.elementosCalendario.add(evento);
-        return new InstanciaEvento(evento,evento.getFecha());
+        return evento;
     }
     public Tarea crearTarea() {
         Tarea tarea = new Tarea(ahoraDefault());
@@ -28,10 +30,10 @@ public class Calendario {
     }
     public void eliminarElementoCalendario(ElementoCalendario elementoCalendario) {
         elementosCalendario.remove(elementoCalendario);
-    }
-
-    public void eliminarElementoCalendario(InstanciaEvento instanciaEvento) {
-        eliminarElementoCalendario(instanciaEvento.getEvento());
+        if(elementosCalendario.contains(elementoCalendario))
+            elementosCalendario.remove(elementoCalendario);
+        else
+            elementosCalendario.remove(this.getEventoOriginal(elementoCalendario));
     }
 
     //Para tarea muestra vencimiento y para evento muestra la incial
@@ -39,99 +41,202 @@ public class Calendario {
         return  elemento.getFecha();
     }
 
+    public ElementoCalendario getEventoOriginal(ElementoCalendario evento){
+        for (ElementoCalendario elemento : elementosCalendario){
+            if(elemento.comparar(evento))
+                return elemento;
+        }
+        return null;
+    }
+
     public void modificarTitulo(ElementoCalendario elemento, String titulo) {
         if (elemento != null && titulo != null)
-            elemento.setTitulo(titulo);
+            if(elementosCalendario.contains(elemento))
+                elemento.setTitulo(titulo);
+            else
+                this.getEventoOriginal(elemento).setTitulo(titulo);
     }
 
     public void modificarDescripcion(ElementoCalendario elemento, String descripcion) {
         if (elemento != null && descripcion != null)
-            elemento.setDescripcion(descripcion);
+            if(elementosCalendario.contains(elemento))
+                elemento.setDescripcion(descripcion);
+            else
+                this.getEventoOriginal(elemento).setDescripcion(descripcion);
     }
 
     //En el caso de ser una tarea setea la fecha de vencimiento, y si es un evento, setea el inicio
     public void modificarFecha(ElementoCalendario elemento, LocalDateTime inicioEvento) {
         if (elemento != null && inicioEvento != null)
-            elemento.setFecha(inicioEvento);
+            if(elementosCalendario.contains(elemento))
+                elemento.setFecha(inicioEvento);
+            else
+                this.getEventoOriginal(elemento).setFecha(inicioEvento);
     }
 
     public void marcarDeDiaCompleto(ElementoCalendario elementoCalendario){
-        elementoCalendario.setDeDiaCompleto();
+            if(elementosCalendario.contains(elementoCalendario))
+                elementoCalendario.setDeDiaCompleto();
+            else
+                this.getEventoOriginal(elementoCalendario).setDeDiaCompleto();
     }
 
     public void desmarcarDeDiaCompleto(ElementoCalendario elementoCalendario){
         var fecha = elementoCalendario.getFecha();
-        elementoCalendario.asignarDeFechaArbitraria(fecha);
+        if(elementosCalendario.contains(elementoCalendario))
+            elementoCalendario.asignarDeFechaArbitraria(fecha);
+        else
+            this.getEventoOriginal(elementoCalendario).asignarDeFechaArbitraria(fecha);
     }
 
     public void modificarDuracion(Evento evento, Duration duracionMinutos) {
         if (evento != null && duracionMinutos != null)
-            evento.setDuracion(duracionMinutos);
+            if(elementosCalendario.contains(evento))
+                evento.setDuracion(duracionMinutos);
+            else {
+                Evento nuevo = (Evento) this.getEventoOriginal(evento);
+                nuevo.setDuracion(duracionMinutos);
+            }
     }
 
 
     public void modificarAlarmaIntervalo(ElementoCalendario elemento,Alarma alarma,Duration intervalo) {
-        elemento.modificarIntervaloAlarma(alarma,intervalo);
+        if(elementosCalendario.contains(elemento))
+            elemento.modificarIntervaloAlarma(alarma,intervalo);
+        else
+            this.getEventoOriginal(elemento).modificarIntervaloAlarma(alarma,intervalo);
     }
 
     public void modificarAlarmaFechaAbsoluta(ElementoCalendario elemento, Alarma alarma, LocalDateTime fechaYhora){
-        elemento.modificarFechaAbsolutaAlarma(alarma,fechaYhora);
+        if(elementosCalendario.contains(elemento))
+            elemento.modificarFechaAbsolutaAlarma(alarma,fechaYhora);
+        else
+            this.getEventoOriginal(elemento).modificarFechaAbsolutaAlarma(alarma,fechaYhora);
+    }
+
+    public void modificarAlarmaEfecto(ElementoCalendario elemento, Alarma alarma, EfectoAlarma efecto){
+        if(elementosCalendario.contains(elemento))
+            elemento.modificarAlarmaEfecto(alarma,efecto);
+        else
+            this.getEventoOriginal(elemento).modificarAlarmaEfecto(alarma,efecto);
+    }
+
+    public Alarma agregarAlarma(ElementoCalendario elemento,Duration intervalo){
+        Alarma alarma;
+        if(elementosCalendario.contains(elemento))
+            alarma = elemento.agregarAlarma(intervalo);
+        else
+            alarma = this.getEventoOriginal(elemento).agregarAlarma(intervalo);
+
+        return alarma;
+    }
+
+    public Alarma agregarAlarmaAbsoluta(ElementoCalendario elemento,LocalDateTime horario){
+        Alarma alarma;
+        if(elementosCalendario.contains(elemento))
+            alarma = elemento.agregarAlarmaAbsoluta(horario);
+        else
+            alarma = this.getEventoOriginal(elemento).agregarAlarmaAbsoluta(horario);
+
+        return alarma;
     }
 
     public void eliminarAlarma(ElementoCalendario elemento, Alarma alarma){
-        elemento.eliminarAlarma(alarma);
+        if(elementosCalendario.contains(elemento))
+            elemento.eliminarAlarma(alarma);
+        else
+            this.getEventoOriginal(elemento).eliminarAlarma(alarma);
     }
-    public void  agregarRepeticionAnualEvento (InstanciaEvento instancia){
-        var evento = instancia.getEvento();
-        evento.setRepeticionAnual();
+    public void  agregarRepeticionAnualEvento (Evento evento){
+        if(elementosCalendario.contains(evento))
+            evento.setRepeticionAnual();
+        else {
+            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            nuevo.setRepeticionAnual();
+        }
     }
 
-    public void  agregarRepeticionMensualEvento (InstanciaEvento instancia){
-        var evento = instancia.getEvento();
-        evento.setRepeticionMensual();
+    public void  agregarRepeticionMensualEvento (Evento evento){
+        if(elementosCalendario.contains(evento))
+            evento.setRepeticionMensual();
+        else {
+            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            nuevo.setRepeticionMensual();
+        }
     }
-    public void  agregarRepeticionSemanalEvento (InstanciaEvento instancia){
-        var evento = instancia.getEvento();
-        var dia = instancia.getFecha();
+    public void  agregarRepeticionSemanalEvento (Evento evento){
+        var dia = evento.getFecha();
         var dias = EnumSet.noneOf(DayOfWeek.class);
         dias.add(dia.getDayOfWeek());
-        evento.setRepeticionSemanal(dias);
+        if(elementosCalendario.contains(evento))
+            evento.setRepeticionSemanal(dias);
+        else {
+            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            nuevo.setRepeticionSemanal(dias);
+        }
     }
 
-    public void modificarDiasRepeticionSemanal(InstanciaEvento instancia, Set<DayOfWeek> dias){
-        var evento = instancia.getEvento();
+    public void modificarDiasRepeticionSemanal(Evento evento, Set<DayOfWeek> dias){
         var repeticion = evento.getRepeticion();
-        evento.setRepeticionSemanal(dias);
-        evento.setRepeticionVencimiento(repeticion.getVencimiento());
+        if(elementosCalendario.contains(evento)) {
+            evento.setRepeticionSemanal(dias);
+            evento.setRepeticionVencimiento(repeticion.getVencimiento());
+        }
+        else {
+            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            nuevo.setRepeticionSemanal(dias);
+            nuevo.setRepeticionVencimiento(repeticion.getVencimiento());
+        }
     }
 
-    public void  agregarRepeticionDiariaEvento (InstanciaEvento instancia){
-        var evento = instancia.getEvento();
-        var intervaloDeault = 1;
-        evento.setRepeticionDiaria(1);
+    public void  agregarRepeticionDiariaEvento (Evento evento){
+        if(elementosCalendario.contains(evento))
+            evento.setRepeticionDiaria(1);
+        else {
+            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            nuevo.setRepeticionDiaria(1);
+        }
     }
 
-    public void modificarIntervaloRepeticionDiaria(InstanciaEvento instancia, int intervalo){
-        var evento = instancia.getEvento();
+    public void modificarIntervaloRepeticionDiaria(Evento evento, int intervalo){
         var repeticion = evento.getRepeticion();
-        evento.setRepeticionDiaria(intervalo);
-        evento.setRepeticionVencimiento(repeticion.getVencimiento());
+        if(elementosCalendario.contains(evento)) {
+            evento.setRepeticionDiaria(intervalo);
+            evento.setRepeticionVencimiento(repeticion.getVencimiento());
+        }
+        else {
+            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            nuevo.setRepeticionDiaria(intervalo);
+            nuevo.setRepeticionVencimiento(repeticion.getVencimiento());
+        }
     }
 
-    public void modificarCantidadRepeticiones(InstanciaEvento instancia,int cantidad){
-        var evento = instancia.getEvento();
-        evento.setRepeticionCantidad(cantidad);
+    public void modificarCantidadRepeticiones(Evento evento,int cantidad){
+        if(elementosCalendario.contains(evento))
+            evento.setRepeticionCantidad(cantidad);
+        else {
+            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            nuevo.setRepeticionCantidad(cantidad);
+        }
     }
 
 
-    public void modificarVencimientoRepeticion (InstanciaEvento instancia, LocalDateTime vencimiento){
-        var evento = instancia.getEvento();
-        evento.setRepeticionVencimiento(vencimiento);
+    public void modificarVencimientoRepeticion (Evento evento, LocalDateTime vencimiento){
+        if(elementosCalendario.contains(evento))
+            evento.setRepeticionVencimiento(vencimiento);
+        else {
+            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            nuevo.setRepeticionVencimiento(vencimiento);
+        }
     }
 
-    public void eliminarRepeticion(InstanciaEvento instancia){
-        var evento = instancia.getEvento();
-        evento.eliminarRepeticion();
+    public void eliminarRepeticion(Evento evento){
+        if(elementosCalendario.contains(evento))
+            evento.eliminarRepeticion();
+        else {
+            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            nuevo.eliminarRepeticion();
+        }
     }
 
 

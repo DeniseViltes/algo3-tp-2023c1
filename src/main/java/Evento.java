@@ -87,6 +87,15 @@ public class Evento implements ElementoCalendario {
         return this.titulo;
     }
 
+    @Override
+    public boolean comparar(ElementoCalendario elemento) {
+        if(this.titulo == elemento.getTitulo() && this.descripcion == elemento.getDescripcion())
+            if(this.tieneRepeticionEntreLosHorarios(elemento.getFecha().minusMinutes(1), elemento.getFecha().plusMinutes(1)))
+                return true;
+
+        return false;
+    }
+
 
     public String getDescripcion() {
         return this.descripcion;
@@ -163,7 +172,6 @@ public class Evento implements ElementoCalendario {
 
     }
 
-
     public void setRepeticionDiaria(Integer intervalo){
         this.repeticion = new RepeticionDiaria(intervalo);
     }
@@ -221,17 +229,49 @@ public class Evento implements ElementoCalendario {
         return repeticion.Repetir(inicio);
     }
 
+    private Alarma crearAlarmaRepeticion(Evento evento, Alarma alarma){
+        Alarma alarmaNueva = evento.agregarAlarma(alarma.getIntervalo());
+        evento.modificarAlarmaEfecto(alarmaNueva, alarma.getEfecto());
+        return alarmaNueva;
+    }
+
+    private void cargarAlarmasRepeticion(Evento evento){
+        evento.alarmas.clear();
+        var alarmasOriginales = this.alarmas;
+        for (Alarma i : alarmasOriginales.values()){
+            var nueva = crearAlarmaRepeticion(evento, i);
+            if(i.esDeFechaAbsoluta()) {
+                var nuevaFechaAbs = i.getFechaYHora().plusHours(ChronoUnit.HOURS.between(this.fechaYHoraInicial, evento.getFecha()));
+                nueva.setAlarmaAbsoluta(nuevaFechaAbs);
+            }
+            evento.alarmas.put(nueva.getFechaYHora(), nueva);
+        }
+    }
+
+    public  Evento crearRepeticion (LocalDateTime inicio){
+        Evento repeticion = new Evento(inicio);
+        repeticion.setTitulo(this.titulo);
+        repeticion.setDescripcion(this.descripcion);
+        repeticion.setDuracion(this.duracion);
+        if(this.esDeDiaCompleto)
+            repeticion.setDeDiaCompleto();
+        cargarAlarmasRepeticion(repeticion);
+
+        return repeticion;
+    }
+
 
     public void agregarElementoAlSet(Set<ElementoCalendario> elementos, LocalDateTime inicio, LocalDateTime fin) {
         if (this.iniciaEntreLosHorarios(inicio, fin)){
-            var instancia = new InstanciaEvento(this, this.getFecha());
-            instancia.agregarElementoAlSet(elementos,inicio,fin);
+            elementos.add(this);
         }
         var j = this.fechaYHoraInicial;
         while (this.tieneRepeticionEntreLosHorarios(j,fin)) {
             j = this.proximaRepeticion(j);
-            var instancia = new InstanciaEvento(this,j);
-            instancia.agregarElementoAlSet(elementos,j,fin);
+            Evento repeticion = crearRepeticion(j);
+            if (repeticion.iniciaEntreLosHorarios(inicio, fin)){
+                elementos.add(repeticion);
+            }
         }
     }
 

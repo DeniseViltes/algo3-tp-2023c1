@@ -13,6 +13,8 @@ public interface ElementoCalendario {
 
     String getTitulo();
 
+    boolean comparar(ElementoCalendario elemento);
+
     String getDescripcion();
     LocalDateTime getFecha();
     void asignarDeFechaArbitraria(LocalDateTime nuevaInicial);

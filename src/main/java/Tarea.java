@@ -61,7 +61,14 @@ public class Tarea implements ElementoCalendario{
         return titulo;
     }
 
-     
+    @Override
+    public boolean comparar(ElementoCalendario elemento) {
+        if(elemento.getFecha() == this.vencimiento && elemento.getTitulo() == this.titulo && elemento.getDescripcion() == this.descripcion)
+            return true;
+        return false;
+    }
+
+
     public String getDescripcion() {
         return descripcion;
     }
