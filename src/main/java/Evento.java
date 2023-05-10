@@ -22,7 +22,7 @@ public class Evento implements ElementoCalendario {
      */
     public Evento(LocalDateTime inicioEvento) {
         this.titulo = "My Event";
-        this.descripcion = null;
+        this.descripcion = "";
         this.fechaYHoraInicial = inicioEvento;
         this.duracion =  Duration.ofHours(1);
         this.repeticion = null;
@@ -89,10 +89,19 @@ public class Evento implements ElementoCalendario {
 
     @Override
     public boolean comparar(ElementoCalendario elemento) {
-        if(this.titulo == elemento.getTitulo() && this.descripcion == elemento.getDescripcion())
-            if(this.tieneRepeticionEntreLosHorarios(elemento.getFecha().minusMinutes(1), elemento.getFecha().plusMinutes(1)))
-                return true;
+        if(this.titulo.equals(elemento.getTitulo()) && this.descripcion.equals(elemento.getDescripcion()))
+            return this.equals(elemento) || esUnaRepeticion((Evento) elemento);
 
+        return false;
+    }
+
+    private boolean esUnaRepeticion(Evento elemento){
+        var i = fechaYHoraInicial;
+        while (tieneRepeticionEntreLosHorarios(i, elemento.fechaYHoraInicial.plusMinutes(1))){
+            if(i.equals(fechaYHoraInicial))
+                    return true;
+                i = proximaRepeticion(i);
+        }
         return false;
     }
 
@@ -229,17 +238,9 @@ public class Evento implements ElementoCalendario {
         return repeticion.Repetir(inicio);
     }
 
-    private Alarma crearAlarmaRepeticion(Evento evento, Alarma alarma){
-        Alarma alarmaNueva = evento.agregarAlarma(alarma.getIntervalo());
-        evento.modificarAlarmaEfecto(alarmaNueva, alarma.getEfecto());
-        return alarmaNueva;
-    }
-
     private void cargarAlarmasRepeticion(Evento evento){
-        evento.alarmas.clear();
-        var alarmasOriginales = this.alarmas;
-        for (Alarma i : alarmasOriginales.values()){
-            var nueva = crearAlarmaRepeticion(evento, i);
+        for (Alarma i : this.alarmas.values()){
+            var nueva = i.copiarConNuevaReferencia(evento.fechaYHoraInicial);
             if(i.esDeFechaAbsoluta()) {
                 var nuevaFechaAbs = i.getFechaYHora().plusHours(ChronoUnit.HOURS.between(this.fechaYHoraInicial, evento.getFecha()));
                 nueva.setAlarmaAbsoluta(nuevaFechaAbs);
@@ -273,10 +274,6 @@ public class Evento implements ElementoCalendario {
                 elementos.add(repeticion);
             }
         }
-    }
-
-    public TreeMap<LocalDateTime, Alarma> getAlarmas() {
-        return alarmas;
     }
 
     public Repeticion getRepeticion() {

@@ -18,14 +18,6 @@ public class Alarma {
         fechaASonar();
     }
 
-    public Duration getIntervalo(){
-        return this.intervalo;
-    }
-
-    public EfectoAlarma getEfecto(){
-        return this.efecto;
-    }
-
     private void fechaASonar(){
        this.fechaYHora = this.referencia.minus(this.intervalo);
     }

@@ -18,8 +18,8 @@ public class Tarea implements ElementoCalendario{
     Crea una Tarea  incompleta a partir de una fecha dada, sin alarmas
      */
     public Tarea(LocalDateTime vencimiento) {
-        this.titulo = null;
-        this.descripcion = null;
+        this.titulo = "My Task";
+        this.descripcion = "";
         this.completado = false;
         this.vencimiento = vencimiento;
         this.esDeDiaCompleto = false;
@@ -63,9 +63,7 @@ public class Tarea implements ElementoCalendario{
 
     @Override
     public boolean comparar(ElementoCalendario elemento) {
-        if(elemento.getFecha() == this.vencimiento && elemento.getTitulo() == this.titulo && elemento.getDescripcion() == this.descripcion)
-            return true;
-        return false;
+        return this.equals(elemento);
     }
 
 
