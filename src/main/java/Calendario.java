@@ -121,10 +121,10 @@ public class Calendario {
     }
 
     public void modificarDiasRepeticionSemanal(Evento evento, Set<DayOfWeek> dias){
-        var repeticion = evento.getRepeticion();
+        var fechaVencimiento = evento.getRepeticionVencimiento();
         Evento nuevo = (Evento) this.getEventoOriginal(evento);
         nuevo.setRepeticionSemanal(dias);
-        nuevo.setRepeticionVencimiento(repeticion.getVencimiento());
+        nuevo.setRepeticionVencimiento(fechaVencimiento);
 
     }
 
@@ -135,10 +135,10 @@ public class Calendario {
     }
 
     public void modificarIntervaloRepeticionDiaria(Evento evento, int intervalo){
-        var repeticion = evento.getRepeticion();
+        var fechaVencimiento = evento.getRepeticionVencimiento();
             Evento nuevo = (Evento) this.getEventoOriginal(evento);
             nuevo.setRepeticionDiaria(intervalo);
-            nuevo.setRepeticionVencimiento(repeticion.getVencimiento());
+            nuevo.setRepeticionVencimiento(fechaVencimiento);
 
     }
 

@@ -276,7 +276,7 @@ public class Evento implements ElementoCalendario {
         }
     }
 
-    public Repeticion getRepeticion() {
-        return repeticion;
+    public LocalDateTime getRepeticionVencimiento() {
+        return repeticion.getVencimiento();
     }
 }
