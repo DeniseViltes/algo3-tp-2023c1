@@ -354,4 +354,30 @@ public class CalendarioTest {
         Assert.assertEquals(EfectoAlarma.NOTIFICACION,calendario.sonarProximaAlarma(horaASonar, horaASonar.plusDays(1)));
     }
 
+    @Test
+    public void modificarApartirDeUnaRepeticion() {
+        var calendario = new Calendario();
+        var evento = calendario.crearEvento();
+        evento.setDescripcion("antes de la prueba");
+        evento.setRepeticionDiaria(1);
+        var listadoEventos = calendario.elementosEntreFechas(hoy.minusDays(1), magnana.plusDays(3));
+
+        var repeticionEvento = listadoEventos.pollLast();
+        calendario.modificarDescripcion(repeticionEvento, "probando comparador");
+
+        Assert.assertEquals("probando comparador",evento.getDescripcion());
+    }
+
+    @Test
+    public void eliminarApartirDeUnaRepeticion() {
+        var calendario = new Calendario();
+        var evento = calendario.crearEvento();
+        evento.setRepeticionDiaria(1);
+        var listadoEventos = calendario.elementosEntreFechas(hoy.minusDays(1), magnana.plusDays(3));
+        var repeticionEvento = listadoEventos.pollLast();
+        calendario.eliminarElementoCalendario(repeticionEvento);
+        listadoEventos = calendario.elementosEntreFechas(hoy.minusDays(1), magnana.plusDays(3));
+
+        Assert.assertEquals(0,listadoEventos.size());
+    }
 }
