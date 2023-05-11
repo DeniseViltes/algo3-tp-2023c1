@@ -97,11 +97,13 @@ public class Evento implements ElementoCalendario {
 
     private boolean esUnaRepeticion(Evento elemento){
         var i = fechaYHoraInicial;
-        while (tieneRepeticionEntreLosHorarios(i, elemento.fechaYHoraInicial.plusMinutes(1))){
-            if(i.equals(fechaYHoraInicial))
-                    return true;
-                i = proximaRepeticion(i);
+        while (tieneRepeticionEntreLosHorarios(i, elemento.getFecha().plusMinutes(1))){
+            if(i.equals(elemento.getFecha()))
+                return true;
+            i = proximaRepeticion(i);
         }
+        if(i.equals(elemento.getFecha()))
+            return true;
         return false;
     }
 
@@ -239,6 +241,7 @@ public class Evento implements ElementoCalendario {
     }
 
     private void cargarAlarmasRepeticion(Evento evento){
+        evento.alarmas.clear();
         for (Alarma i : this.alarmas.values()){
             var nueva = i.copiarConNuevaReferencia(evento.fechaYHoraInicial);
             if(i.esDeFechaAbsoluta()) {
