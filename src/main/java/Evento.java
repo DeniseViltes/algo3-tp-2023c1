@@ -128,7 +128,6 @@ public class Evento extends ElementoCalendario {
     }
 
     private void cargarAlarmasRepeticion(Evento evento){
-        //evento.alarmas.clear();
         for (Alarma i : getAlarmas()){
             var nueva = i.copiarConNuevaReferencia(evento.getFecha());
             if(i.esDeFechaAbsoluta()) {
@@ -146,6 +145,7 @@ public class Evento extends ElementoCalendario {
         repeticion.setDuracion(this.duracion);
         if(isEsDeDiaCompleto())
             repeticion.setDeDiaCompleto();
+        repeticion.borrarAlarmas();
         cargarAlarmasRepeticion(repeticion);
         return repeticion;
     }

@@ -131,4 +131,8 @@ public abstract class ElementoCalendario {
     public Collection<Alarma> getAlarmas() {
         return alarmas.values();
     }
+
+    void borrarAlarmas(){
+        alarmas.clear();
+    }
 }
