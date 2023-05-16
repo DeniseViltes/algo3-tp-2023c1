@@ -11,8 +11,8 @@ public class Alarma {
     Crea una alarma a partir de una fecha de referencia que suena diez minutos antes de esta fecha
     con un efecto del tipo calendario
     */
-    public Alarma(LocalDateTime fechaReferencia) {
-        this.intervalo = Duration.ofMinutes(10);
+    public Alarma(LocalDateTime fechaReferencia, Duration intervalo) {
+        this.intervalo = intervalo;
         this.efecto = EfectoAlarma.NOTIFICACION;
         this.referencia = fechaReferencia;
         fechaASonar();
@@ -55,8 +55,7 @@ public class Alarma {
     }
 
     public Alarma copiarConNuevaReferencia(LocalDateTime nuevaFecha){
-        var nueva = new Alarma(nuevaFecha);
-        nueva.intervalo = this.intervalo;
+        var nueva = new Alarma(nuevaFecha,this.intervalo);
         nueva.efecto = this.efecto;
         return nueva;
     }

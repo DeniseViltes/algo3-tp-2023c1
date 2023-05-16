@@ -3,183 +3,79 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
-import java.util.TreeMap;
 
-public class Evento implements ElementoCalendario {
-
-    private String titulo;
-    private String descripcion;
-    private LocalDateTime fechaYHoraInicial;
+public class Evento extends ElementoCalendario {
     private Duration duracion;
-    private boolean esDeDiaCompleto;
     private Repeticion repeticion;
-    private final TreeMap<LocalDateTime,Alarma> alarmas;
-
 
     /*
     Crea un evento nuevo apartir de una fecha dada, con una duración de 1 hora,
     este evento incia solo con un titulo y una alarma default (10 minutos antes del inicio)
      */
     public Evento(LocalDateTime inicioEvento) {
-        this.titulo = "My Event";
-        this.descripcion = "";
-        this.fechaYHoraInicial = inicioEvento;
+        super(inicioEvento);
+        this.setTitulo("My Event");
         this.duracion =  Duration.ofHours(1);
         this.repeticion = null;
-        this.esDeDiaCompleto = false;
-
-        this.alarmas = new TreeMap<>();
-        var alarmaDefault = new Alarma(inicioEvento);
-        this.alarmas.put(alarmaDefault.getFechaYHora(),alarmaDefault);
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+        agregarAlarma(Duration.ofMinutes(10),inicioEvento );
     }
     public void setDuracion(Duration duracionMinutos){
         this.duracion = duracionMinutos;
     }
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
 
     public LocalDateTime getFechaYHoraFinal(){
-        return this.fechaYHoraInicial.plus(this.duracion);
+        return this.getFecha().plus(this.duracion);
     }
 
+    @Override
     public void setFecha(LocalDateTime inicioEvento){
-        var al = new TreeMap<>(alarmas);
-        alarmas.clear();
-        if(esDeDiaCompleto)
-            this.fechaYHoraInicial = inicioEvento.truncatedTo(ChronoUnit.DAYS);
-        else this.fechaYHoraInicial = inicioEvento;
-        for (Alarma i : al.values() ){
-            modificarReferenciaAlarma(i,inicioEvento);
-        }
+        super.setFecha(inicioEvento);
+        if(isEsDeDiaCompleto())
+            super.setFecha(inicioEvento.truncatedTo(ChronoUnit.DAYS));
     }
     /*
     Cuando se marca el evento como de dia completo, si el evento previamiente
     tenia una duración mayor a un dia, esto se mantiene.
     Ademas se eliminan todas las alarmas previas.
      */
+    @Override
     public void setDeDiaCompleto(){
-        this.esDeDiaCompleto = true;
-        var nuevaInicial = this.fechaYHoraInicial.toLocalDate();
-        this.fechaYHoraInicial = nuevaInicial.atStartOfDay();
+        super.setDeDiaCompleto();
+        var nuevaInicial = getFecha().toLocalDate();
+        setFecha(nuevaInicial.atStartOfDay());
         if (duracion.compareTo(Duration.ofDays(1))<0)
             this.duracion = Duration.ofHours(23).plusMinutes(59);
         else this.duracion = this.duracion.truncatedTo(ChronoUnit.DAYS).plusHours(23).plusMinutes(59);
-        this.alarmas.clear();
     }
-
+    @Override
     public void asignarDeFechaArbitraria(LocalDateTime nuevaInicial){
 
-        this.esDeDiaCompleto = false;
-        this.fechaYHoraInicial = nuevaInicial;
+        super.asignarDeFechaArbitraria(nuevaInicial);
         this.duracion = this.duracion.truncatedTo(ChronoUnit.DAYS).plusMinutes(30);
+        agregarAlarma(Duration.ofMinutes(10),nuevaInicial);
 
-        this.alarmas.clear();
-        var nuevaAlarma = new Alarma(nuevaInicial);
-        this.alarmas.put(nuevaAlarma.getFechaYHora(),nuevaAlarma);
     }
 
-
-    public String getTitulo() {
-        return this.titulo;
-    }
 
     @Override
     public boolean comparar(ElementoCalendario elemento) {
-        if(this.titulo.equals(elemento.getTitulo()) && this.descripcion.equals(elemento.getDescripcion()))
+        if(getTitulo().equals(elemento.getTitulo()) && getDescripcion().equals(elemento.getDescripcion()))
             return this.equals(elemento) || esUnaRepeticion((Evento) elemento);
 
         return false;
     }
 
     private boolean esUnaRepeticion(Evento elemento){
-        var i = fechaYHoraInicial;
-        while (tieneRepeticionEntreLosHorarios(i, elemento.fechaYHoraInicial.plusMinutes(1))){
-            if(i.equals(fechaYHoraInicial))
-                    return true;
-                i = proximaRepeticion(i);
+        var i = getFecha();
+        while (tieneRepeticionEntreLosHorarios(i, elemento.getFecha().plusMinutes(1))){
+            if(i.equals(elemento.getFecha()))
+                return true;
+            i = proximaRepeticion(i);
         }
-        return false;
+        return i.equals(elemento.getFecha());
     }
 
-
-    public String getDescripcion() {
-        return this.descripcion;
-    }
-
-
-    public Alarma agregarAlarmaAbsoluta(LocalDateTime horarioAlarma) {
-        var nueva = new Alarma(this.fechaYHoraInicial);
-        nueva.setAlarmaAbsoluta(horarioAlarma);
-        alarmas.put(horarioAlarma, nueva);
-        return nueva;
-    }
-
-    public Alarma agregarAlarma(Duration intervalo) {
-        var nueva = new Alarma(this.fechaYHoraInicial);
-        nueva.setIntervalo(intervalo);
-        alarmas.put(nueva.getFechaYHora(),nueva);
-        return nueva;
-    }
-
-
-    public void eliminarAlarma(Alarma alarma) {
-        alarmas.remove(alarma.getFechaYHora());
-    }
-
-
-    public LocalDateTime proximaAlarma(LocalDateTime fecha) {
-        var alarma = proximaAlarmaEvento(fecha);
-        if (alarma == null)
-                return null;
-        return alarma.getFechaYHora();
-    }
-
-    public EfectoAlarma sonarProximaAlarma(LocalDateTime fecha){
-        var alarma = proximaAlarmaEvento(fecha);
-        if (alarma == null)
-            return null;
-        return  alarma.sonar(fecha);
-    }
-
-    private Alarma proximaAlarmaEvento(LocalDateTime fecha){
-        var par = this.alarmas.ceilingEntry(fecha);
-        if(par == null)
-            return  null;
-        return par.getValue();
-    }
-
-
-    private void modificarReferenciaAlarma (Alarma alarma, LocalDateTime referencia){
-        alarmas.remove(alarma.getFechaYHora());
-        alarma.setReferencia(referencia);
-        alarmas.put(alarma.getFechaYHora(), alarma);
-    }
-
-
-    public void modificarIntervaloAlarma(Alarma alarma, Duration intervalo) {
-        alarmas.remove(alarma.getFechaYHora());
-        alarma.setIntervalo(intervalo);
-        alarmas.put(alarma.getFechaYHora(), alarma);
-    }
-
-
-    public void modificarFechaAbsolutaAlarma(Alarma alarma, LocalDateTime fecha) {
-        alarmas.remove(alarma.getFechaYHora());
-        alarma.setAlarmaAbsoluta(fecha);
-        alarmas.put(alarma.getFechaYHora(), alarma);
-    }
-
-
-    public void modificarAlarmaEfecto(Alarma alarma, EfectoAlarma efecto) {
-        alarmas.remove(alarma.getFechaYHora());
-        alarma.setEfecto(efecto);
-        alarmas.put(alarma.getFechaYHora(), alarma);
-
-    }
 
     public void setRepeticionDiaria(Integer intervalo){
         this.repeticion = new RepeticionDiaria(intervalo);
@@ -203,16 +99,13 @@ public class Evento implements ElementoCalendario {
     public void setRepeticionCantidad(int cantidadRepeticiones){
         if(repeticion == null)
             return;
-        this.repeticion.setCantidadRepeticiones(fechaYHoraInicial, cantidadRepeticiones);
+        this.repeticion.setCantidadRepeticiones(getFecha(), cantidadRepeticiones);
     }
 
     public void eliminarRepeticion (){
         this.repeticion = null;
     }
 
-    public boolean iniciaEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin){
-        return esIgualOEstaEntre(inicio,fin,this.fechaYHoraInicial);
-    }
 
     public boolean tieneRepeticionEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin){
         if(repeticion == null)
@@ -228,10 +121,6 @@ public class Evento implements ElementoCalendario {
     }
 
 
-    public LocalDateTime getFecha() {
-        return fechaYHoraInicial;
-    }
-
     public  LocalDateTime proximaRepeticion (LocalDateTime inicio){
         if (repeticion == null)
                 return null;
@@ -239,25 +128,24 @@ public class Evento implements ElementoCalendario {
     }
 
     private void cargarAlarmasRepeticion(Evento evento){
-        for (Alarma i : this.alarmas.values()){
-            var nueva = i.copiarConNuevaReferencia(evento.fechaYHoraInicial);
+        for (Alarma i : getAlarmas()){
+            var nueva = i.copiarConNuevaReferencia(evento.getFecha());
             if(i.esDeFechaAbsoluta()) {
-                var nuevaFechaAbs = i.getFechaYHora().plusHours(ChronoUnit.HOURS.between(this.fechaYHoraInicial, evento.getFecha()));
+                var nuevaFechaAbs = i.getFechaYHora().plusHours(ChronoUnit.HOURS.between(getFecha(), evento.getFecha()));
                 nueva.setAlarmaAbsoluta(nuevaFechaAbs);
             }
-            evento.alarmas.put(nueva.getFechaYHora(), nueva);
+            evento.agregarAlarma(nueva);
         }
     }
 
     public  Evento crearRepeticion (LocalDateTime inicio){
         Evento repeticion = new Evento(inicio);
-        repeticion.setTitulo(this.titulo);
-        repeticion.setDescripcion(this.descripcion);
+        repeticion.setTitulo(getTitulo());
+        repeticion.setDescripcion(getDescripcion());
         repeticion.setDuracion(this.duracion);
-        if(this.esDeDiaCompleto)
+        if(isEsDeDiaCompleto())
             repeticion.setDeDiaCompleto();
         cargarAlarmasRepeticion(repeticion);
-
         return repeticion;
     }
 
@@ -266,7 +154,7 @@ public class Evento implements ElementoCalendario {
         if (this.iniciaEntreLosHorarios(inicio, fin)){
             elementos.add(this);
         }
-        var j = this.fechaYHoraInicial;
+        var j = getFecha();
         while (this.tieneRepeticionEntreLosHorarios(j,fin)) {
             j = this.proximaRepeticion(j);
             Evento repeticion = crearRepeticion(j);

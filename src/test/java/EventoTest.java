@@ -32,12 +32,12 @@ public class EventoTest {
     @Test
     public void modificarADiaCompleto() {
         var evento = new Evento(ahoraTruncado);
-        var alarma = evento.agregarAlarma(diezMinutos);
+        var alarma = evento.agregarAlarma(diezMinutos, ahoraTruncado);
         alarma.setEfecto(EfectoAlarma.MAIL);
         evento.setDeDiaCompleto();
         var horarioFinal =ahoraTruncado.truncatedTo(ChronoUnit.DAYS).withHour(23).withMinute(59);
         Assert.assertEquals(horarioFinal,evento.getFechaYHoraFinal());
-        Assert.assertNull(evento.proximaAlarma(ahoraTruncado));
+        Assert.assertNull(evento.horarioProximaAlarma(ahoraTruncado));
 
     }
     @Test
@@ -45,11 +45,11 @@ public class EventoTest {
         var evento = new Evento(ahoraTruncado);
         var variosDias = Duration.ofDays(5).plusHours(5);
         evento.setDuracion(variosDias);
-        var alarma = evento.agregarAlarma(Duration.ofMinutes(10));
+        var alarma = evento.agregarAlarma(Duration.ofMinutes(10),ahoraTruncado );
         evento.modificarAlarmaEfecto(alarma, EfectoAlarma.NOTIFICACION);
-        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(20));
+        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(20), ahoraTruncado);
         evento.modificarAlarmaEfecto(alarma2, EfectoAlarma.SONIDO);
-        var alarma3 = evento.agregarAlarma(Duration.ofMinutes(30));
+        var alarma3 = evento.agregarAlarma(Duration.ofMinutes(30),ahoraTruncado );
         evento.modificarAlarmaEfecto(alarma3, EfectoAlarma.SONIDO);
 
 
@@ -63,16 +63,16 @@ public class EventoTest {
     @Test
     public void modificarFechaDeEventoConAlarmas(){
         var evento = new Evento(ahoraTruncado);
-        var alarma = evento.agregarAlarma(Duration.ofMinutes(10));
+        var alarma = evento.agregarAlarma(Duration.ofMinutes(10),ahoraTruncado );
         evento.modificarAlarmaEfecto(alarma, EfectoAlarma.NOTIFICACION);
-        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(30));
+        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(30),ahoraTruncado );
         evento.modificarAlarmaEfecto(alarma2, EfectoAlarma.NOTIFICACION);
 
         Assert.assertEquals(ahoraTruncado.plusMinutes(60),evento.getFechaYHoraFinal());
 
         evento.setFecha(ahoraTruncado.plusDays(1));
 
-        var proxAlarma = evento.proximaAlarma(ahoraTruncado);
+        var proxAlarma = evento.horarioProximaAlarma(ahoraTruncado);
 
         Assert.assertEquals(ahoraTruncado.plusDays(1).plusMinutes(60),evento.getFechaYHoraFinal());
         Assert.assertEquals(magnana.minusMinutes(30),proxAlarma);
@@ -84,11 +84,11 @@ public class EventoTest {
         var variosDias = Duration.ofDays(5).plusHours(5);
         evento.setDuracion(variosDias);
         evento.setDeDiaCompleto();
-        var alarma = evento.agregarAlarma(Duration.ofMinutes(10));
+        var alarma = evento.agregarAlarma(Duration.ofMinutes(10),ahoraTruncado );
         evento.modificarAlarmaEfecto(alarma, EfectoAlarma.NOTIFICACION);
-        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(20));
+        var alarma2 = evento.agregarAlarma(Duration.ofMinutes(20), ahoraTruncado);
         evento.modificarAlarmaEfecto(alarma2, EfectoAlarma.SONIDO);
-        var alarma3 = evento.agregarAlarma(Duration.ofMinutes(30));
+        var alarma3 = evento.agregarAlarma(Duration.ofMinutes(30), ahoraTruncado);
         evento.modificarAlarmaEfecto(alarma3, EfectoAlarma.SONIDO);
 
 
@@ -106,7 +106,7 @@ public class EventoTest {
         evento.modificarAlarmaEfecto(alarma, EfectoAlarma.NOTIFICACION);
 
         Assert.assertEquals(magnana,alarma.getFechaYHora());
-        Assert.assertEquals(magnana,evento.proximaAlarma(ahoraTruncado));
+        Assert.assertEquals(magnana,evento.horarioProximaAlarma(ahoraTruncado));
 
     }
 
@@ -114,12 +114,12 @@ public class EventoTest {
     public void sonarProximaAlarma() {
         var evento = new Evento(ahoraTruncado);
         evento.setFecha(magnana);
-        var alarma = evento.agregarAlarma(diezMinutos);
-        alarma.setEfecto(EfectoAlarma.SONIDO);
+        var alarma = evento.agregarAlarma(diezMinutos,magnana );
+        evento.modificarAlarmaEfecto(alarma,EfectoAlarma.SONIDO);
 
         var horaASonar = magnana.minus(diezMinutos);
 
-        Assert.assertEquals(horaASonar, evento.proximaAlarma(ahoraTruncado));
+        Assert.assertEquals(horaASonar, evento.horarioProximaAlarma(ahoraTruncado));
         Assert.assertEquals(EfectoAlarma.SONIDO, evento.sonarProximaAlarma(horaASonar));
     }
 
@@ -163,7 +163,7 @@ public class EventoTest {
 
         var alarma = evento.agregarAlarmaAbsoluta(ahoraTruncado);
         evento.modificarFechaAbsolutaAlarma(alarma, fechaACambiar);
-        Assert.assertEquals(fechaACambiar,evento.proximaAlarma(ahoraTruncado));
+        Assert.assertEquals(fechaACambiar,evento.horarioProximaAlarma(ahoraTruncado));
 
     }
 

@@ -22,7 +22,7 @@ public class TareaTest {
 
         Assert.assertEquals(ahoraTruncado, tarea.getFecha());
         Assert.assertFalse(tarea.estaCompleta());
-        Assert.assertNull(tarea.proximaAlarma(ahoraTruncado));
+        Assert.assertNull(tarea.horarioProximaAlarma(ahoraTruncado));
     }
 
     @Test
@@ -32,7 +32,7 @@ public class TareaTest {
         var vencimientoEsperado  = fechaAlFinalDelDia(ahoraTruncado);
 
         Assert.assertEquals(vencimientoEsperado,tarea.getFecha());
-        Assert.assertNull(tarea.proximaAlarma(ahoraTruncado));
+        Assert.assertNull(tarea.horarioProximaAlarma(ahoraTruncado));
     }
 
 
@@ -49,7 +49,7 @@ public class TareaTest {
         tarea.modificarAlarmaEfecto(alarma, EfectoAlarma.NOTIFICACION);
 
         Assert.assertEquals(magnana,alarma.getFechaYHora());
-        Assert.assertEquals(magnana,tarea.proximaAlarma(ahoraTruncado));
+        Assert.assertEquals(magnana,tarea.horarioProximaAlarma(ahoraTruncado));
 
     }
 
@@ -57,12 +57,12 @@ public class TareaTest {
     public void sonarProximaAlarma() {
         var tarea = new Tarea(ahoraTruncado);
         tarea.setFecha(magnana);
-        var alarma = tarea.agregarAlarma(diezMinutos);
-        alarma.setEfecto(EfectoAlarma.SONIDO);
+        var alarma = tarea.agregarAlarma(diezMinutos,magnana );
+        tarea.modificarAlarmaEfecto(alarma,EfectoAlarma.SONIDO);
 
         var horaASonar = magnana.minus(diezMinutos);
 
-        Assert.assertEquals(horaASonar, tarea.proximaAlarma(ahoraTruncado));
+        Assert.assertEquals(horaASonar, tarea.horarioProximaAlarma(ahoraTruncado));
         Assert.assertEquals(EfectoAlarma.SONIDO, tarea.sonarProximaAlarma(horaASonar));
     }
 
@@ -106,7 +106,7 @@ public class TareaTest {
 
         var alarma = tarea.agregarAlarmaAbsoluta(ahoraTruncado);
         tarea.modificarFechaAbsolutaAlarma(alarma, fechaACambiar);
-        Assert.assertEquals(fechaACambiar,tarea.proximaAlarma(ahoraTruncado));
+        Assert.assertEquals(fechaACambiar,tarea.horarioProximaAlarma(ahoraTruncado));
 
     }
     

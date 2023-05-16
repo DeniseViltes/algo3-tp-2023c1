@@ -334,12 +334,12 @@ public class CalendarioTest {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
         calendario.modificarFecha(evento, magnana);
-        var alarma = evento.agregarAlarma(diezMinutos);
+        var alarma = evento.agregarAlarma(diezMinutos, magnana);
         alarma.setEfecto(EfectoAlarma.SONIDO);
 
         var horaASonar = magnana.minus(diezMinutos);
 
-        Assert.assertEquals(horaASonar, evento.proximaAlarma(hoy));
+        Assert.assertEquals(horaASonar, evento.horarioProximaAlarma(hoy));
         Assert.assertEquals(EfectoAlarma.SONIDO, calendario.sonarProximaAlarma(hoy, hoy.plusDays(5)));
     }
     @Test

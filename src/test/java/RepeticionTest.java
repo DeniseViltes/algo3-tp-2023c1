@@ -38,7 +38,7 @@ public class RepeticionTest {
         var horarioAlarma = ahora.minus(diezMinutos);
         var horarioAlarmaMagnana = magnana.minus(diezMinutos);
 
-        Assert.assertNotEquals(evento.proximaAlarma(horarioAlarma),instancia.proximaAlarma(horarioAlarma));
+        Assert.assertNotEquals(evento.horarioProximaAlarma(horarioAlarma),instancia.horarioProximaAlarma(horarioAlarma));
         Assert.assertEquals(evento.sonarProximaAlarma(horarioAlarma),instancia.sonarProximaAlarma(horarioAlarmaMagnana));
     }
 
@@ -52,11 +52,11 @@ public class RepeticionTest {
         Evento repeticion = (Evento) elementos.last();
         Alarma alarma = calendario.agregarAlarmaAbsoluta(repeticion,alarmaAbs);
         TreeSet<ElementoCalendario> elementos2 = calendario.elementosEntreFechas(ahora.minusHours(1), ahora.plusDays(1).plusHours(20));
-        Assert.assertEquals(elementos2.first().proximaAlarma(ahora.plusDays(1)).plusDays(1),elementos2.last().proximaAlarma(ahora.plusDays(2)));
+        Assert.assertEquals(elementos2.first().horarioProximaAlarma(ahora.plusDays(1)).plusDays(1),elementos2.last().horarioProximaAlarma(ahora.plusDays(2)));
 
         calendario.modificarAlarmaFechaAbsoluta(repeticion, alarma, ahora.plusDays(10));
         TreeSet<ElementoCalendario> elementos3 = calendario.elementosEntreFechas(ahora.minusHours(1), ahora.plusDays(1).plusHours(20));
-        Assert.assertEquals(elementos3.first().proximaAlarma(alarmaAbs).plusDays(1),elementos3.last().proximaAlarma(alarmaAbs));
+        Assert.assertEquals(elementos3.first().horarioProximaAlarma(alarmaAbs).plusDays(1),elementos3.last().horarioProximaAlarma(alarmaAbs));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class RepeticionTest {
         repeticion.agregarAlarmaAbsoluta(alarmaAbs);
         TreeSet<ElementoCalendario> elementos = calendario.elementosEntreFechas(ahora.minusDays(2), ahora.plusDays(2));
 
-        Assert.assertEquals(elementos.first().proximaAlarma(alarmaAbs),elementos.last().proximaAlarma(alarmaAbs));
+        Assert.assertEquals(elementos.first().horarioProximaAlarma(alarmaAbs),elementos.last().horarioProximaAlarma(alarmaAbs));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class RepeticionTest {
         instancia.agregarAlarmaAbsoluta(alarmaAbs);
         var horarioAsonarInstancia = alarmaAbs.plusDays(1);
 
-        Assert.assertNotEquals(evento.proximaAlarma(alarmaAbs),instancia.proximaAlarma(alarmaAbs));
+        Assert.assertNotEquals(evento.horarioProximaAlarma(alarmaAbs),instancia.horarioProximaAlarma(alarmaAbs));
         Assert.assertEquals(evento.sonarProximaAlarma(alarmaAbs),instancia.sonarProximaAlarma(horarioAsonarInstancia));
     }
 

@@ -90,7 +90,7 @@ public class Calendario {
     }
 
     public Alarma agregarAlarma(ElementoCalendario elemento,Duration intervalo){
-        return this.getEventoOriginal(elemento).agregarAlarma(intervalo);
+        return this.getEventoOriginal(elemento).agregarAlarma(intervalo,elemento.getFecha());
     }
 
     public Alarma agregarAlarmaAbsoluta(ElementoCalendario elemento,LocalDateTime horario){
@@ -188,7 +188,7 @@ public class Calendario {
         EfectoAlarma efecto = null;
         LocalDateTime date = fin;
         for (ElementoCalendario i : elementos){
-            var horarioAlarma = i.proximaAlarma(fechaYHora);
+            var horarioAlarma = i.horarioProximaAlarma(fechaYHora);
             if (!horarioAlarma.isAfter(date)){
                 date = horarioAlarma;
                 efecto = i.sonarProximaAlarma(horarioAlarma);
