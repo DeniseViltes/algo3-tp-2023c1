@@ -1,3 +1,5 @@
+package Repeticiones;
+
 import java.time.LocalDateTime;
 
 public class RepeticionMensual extends Repeticion {
