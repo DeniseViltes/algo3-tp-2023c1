@@ -1,0 +1,23 @@
+import java.time.LocalDateTime;
+
+public class RepeticionMensual extends Repeticion {
+
+    public RepeticionMensual() {
+        super();
+    }
+
+    @Override
+    public void setCantidadRepeticiones(LocalDateTime inicio, long cantidadRepeticiones) {
+        this.vencimiento = inicio.plusMonths(cantidadRepeticiones-1);
+    }
+
+    @Override
+    public LocalDateTime Repetir(LocalDateTime inicio) {
+        var fechaRepeticion = inicio.plusMonths(1);
+
+        if(noEstaVencida(fechaRepeticion))
+            return fechaRepeticion;
+        else
+            return null;
+    }
+}
