@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 
-public class Alarma {
+public class Alarma implements Serializable {
     private  LocalDateTime fechaYHora;
     private Duration intervalo;
     private LocalDateTime referencia;

@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -5,7 +6,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 
-public abstract class ElementoCalendario {
+public abstract class ElementoCalendario implements Serializable {
     private String titulo;
     private String descripcion;
     private LocalDateTime fechaYHoraCaracteristica;
