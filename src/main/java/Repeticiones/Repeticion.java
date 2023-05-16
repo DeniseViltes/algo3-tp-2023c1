@@ -1,8 +1,9 @@
 package Repeticiones;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public abstract class Repeticion {
+public abstract class Repeticion implements Serializable {
     protected LocalDateTime vencimiento;
     public Repeticion() {
         this.vencimiento = null;
