@@ -27,8 +27,7 @@ public class Calendario {
         return tarea;
     }
     public void eliminarElementoCalendario(ElementoCalendario elementoCalendario) {
-        if(elementosCalendario.remove(elementoCalendario)) ;
-            elementosCalendario.remove(this.getEventoOriginal(elementoCalendario));
+        elementosCalendario.remove(this.getEventoOriginal(elementoCalendario));
     }
 
     //Para tarea muestra vencimiento y para evento muestra la incial
@@ -121,8 +120,8 @@ public class Calendario {
     }
 
     public void modificarDiasRepeticionSemanal(Evento evento, Set<DayOfWeek> dias){
-        var fechaVencimiento = evento.getRepeticionVencimiento();
         Evento nuevo = (Evento) this.getEventoOriginal(evento);
+        var fechaVencimiento = nuevo.getRepeticionVencimiento();
         nuevo.setRepeticionSemanal(dias);
         nuevo.setRepeticionVencimiento(fechaVencimiento);
 
@@ -135,8 +134,8 @@ public class Calendario {
     }
 
     public void modificarIntervaloRepeticionDiaria(Evento evento, int intervalo){
-        var fechaVencimiento = evento.getRepeticionVencimiento();
             Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            var fechaVencimiento = nuevo.getRepeticionVencimiento();
             nuevo.setRepeticionDiaria(intervalo);
             nuevo.setRepeticionVencimiento(fechaVencimiento);
 
