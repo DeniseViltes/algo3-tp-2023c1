@@ -9,8 +9,8 @@ public class Alarma implements Serializable {
     private LocalDateTime referencia;
     private EfectoAlarma efecto;
     /*
-    Crea una alarma a partir de una fecha de referencia que suena diez minutos antes de esta fecha
-    con un efecto del tipo calendario
+    Crea una alarma a partir de una fecha de referencia que suena un intervalo
+     antes de esta fecha con un efecto del tipo Notificacion
     */
     public Alarma(LocalDateTime fechaReferencia, Duration intervalo) {
         this.intervalo = intervalo;
