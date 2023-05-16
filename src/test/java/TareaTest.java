@@ -57,7 +57,7 @@ public class TareaTest {
     public void sonarProximaAlarma() {
         var tarea = new Tarea(ahoraTruncado);
         tarea.setFecha(magnana);
-        var alarma = tarea.agregarAlarma(diezMinutos,magnana );
+        var alarma = tarea.agregarAlarma(magnana, diezMinutos);
         tarea.modificarAlarmaEfecto(alarma,EfectoAlarma.SONIDO);
 
         var horaASonar = magnana.minus(diezMinutos);

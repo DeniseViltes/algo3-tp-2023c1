@@ -89,7 +89,7 @@ public class Calendario {
     }
 
     public Alarma agregarAlarma(ElementoCalendario elemento,Duration intervalo){
-        return this.getEventoOriginal(elemento).agregarAlarma(intervalo,elemento.getFecha());
+        return this.getEventoOriginal(elemento).agregarAlarma(elemento.getFecha(), intervalo);
     }
 
     public Alarma agregarAlarmaAbsoluta(ElementoCalendario elemento,LocalDateTime horario){

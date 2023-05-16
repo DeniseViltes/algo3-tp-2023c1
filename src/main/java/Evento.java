@@ -17,7 +17,7 @@ public class Evento extends ElementoCalendario {
         this.setTitulo("My Event");
         this.duracion =  Duration.ofHours(1);
         this.repeticion = null;
-        agregarAlarma(Duration.ofMinutes(10),inicioEvento );
+        agregarAlarma(inicioEvento, Duration.ofMinutes(10));
     }
     public void setDuracion(Duration duracionMinutos){
         this.duracion = duracionMinutos;
@@ -53,7 +53,7 @@ public class Evento extends ElementoCalendario {
 
         super.asignarDeFechaArbitraria(nuevaInicial);
         this.duracion = this.duracion.truncatedTo(ChronoUnit.DAYS).plusMinutes(30);
-        agregarAlarma(Duration.ofMinutes(10),nuevaInicial);
+        agregarAlarma(nuevaInicial, Duration.ofMinutes(10));
 
     }
 
@@ -128,6 +128,7 @@ public class Evento extends ElementoCalendario {
     }
 
     private void cargarAlarmasRepeticion(Evento evento){
+        //evento.alarmas.clear();
         for (Alarma i : getAlarmas()){
             var nueva = i.copiarConNuevaReferencia(evento.getFecha());
             if(i.esDeFechaAbsoluta()) {

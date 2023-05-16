@@ -334,7 +334,7 @@ public class CalendarioTest {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
         calendario.modificarFecha(evento, magnana);
-        var alarma = evento.agregarAlarma(diezMinutos, magnana);
+        var alarma = evento.agregarAlarma(magnana, diezMinutos);
         alarma.setEfecto(EfectoAlarma.SONIDO);
 
         var horaASonar = magnana.minus(diezMinutos);

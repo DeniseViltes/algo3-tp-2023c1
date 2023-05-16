@@ -63,7 +63,7 @@ public abstract class ElementoCalendario {
         alarmas.put(horarioAlarma, nueva);
         return nueva;
     }
-    Alarma agregarAlarma(Duration intervalo, LocalDateTime fecha){
+    Alarma agregarAlarma(LocalDateTime fecha, Duration intervalo){
         var nueva = new Alarma(fecha,intervalo);
         alarmas.put(nueva.getFechaYHora(),nueva);
         return nueva;
