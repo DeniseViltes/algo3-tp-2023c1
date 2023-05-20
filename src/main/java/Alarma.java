@@ -4,8 +4,14 @@ import java.time.LocalDateTime;
 
 
 public class Alarma implements Serializable {
+
+    //Fecha de la alarma
     private  LocalDateTime fechaYHora;
+
+    //El tiempo entre la alarma y el elemento del calendario para el cual se utiliza la alarma.
     private Duration intervalo;
+
+    // La fecha del elemento para el cual se utiliza la alarma.
     private LocalDateTime referencia;
     private EfectoAlarma efecto;
     /*
@@ -55,6 +61,8 @@ public class Alarma implements Serializable {
         return intervalo.isZero();
     }
 
+    // Crea una nueva alarma tomando el mismo intervalo y el mismo efecto que esta alarma.
+    // Se crea en base a la fecha de referencia del elemento pasada como parametro.
     public Alarma copiarConNuevaReferencia(LocalDateTime nuevaFecha){
         var nueva = new Alarma(nuevaFecha,this.intervalo);
         nueva.efecto = this.efecto;

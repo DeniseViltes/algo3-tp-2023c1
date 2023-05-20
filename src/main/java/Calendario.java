@@ -12,6 +12,7 @@ public class Calendario implements Serializable {
         this.elementosCalendario = new TreeSet<>(new OrdenadorElementosPorHorario());
     }
 
+    // Devuelve la fecha actual truncada a la proxima hora.
     private LocalDateTime ahoraDefault (){
         var ahora = LocalDateTime.now();
         ahora = ahora.truncatedTo(ChronoUnit.HOURS);
@@ -27,15 +28,18 @@ public class Calendario implements Serializable {
         this.elementosCalendario.add(tarea);
         return tarea;
     }
+
+    // Elimina el elemento original del calendario.
     public void eliminarElementoCalendario(ElementoCalendario elementoCalendario) {
         elementosCalendario.remove(this.getEventoOriginal(elementoCalendario));
     }
 
-    //Para tarea muestra vencimiento y para evento muestra la incial
+    //Para tarea muestra vencimiento y para evento muestra la inicial
     public LocalDateTime verFechaYHora(ElementoCalendario elemento){
         return  elemento.getFecha();
     }
 
+    // Devuelve el elemento original, ya sea el mismo o una repeticion.
     public ElementoCalendario getEventoOriginal(ElementoCalendario evento){
         for (ElementoCalendario elemento : elementosCalendario){
             if(elemento.comparar(evento))
@@ -122,9 +126,7 @@ public class Calendario implements Serializable {
 
     public void modificarDiasRepeticionSemanal(Evento evento, Set<DayOfWeek> dias){
         Evento nuevo = (Evento) this.getEventoOriginal(evento);
-        var fechaVencimiento = nuevo.getRepeticionVencimiento();
-        nuevo.setRepeticionSemanal(dias);
-        nuevo.setRepeticionVencimiento(fechaVencimiento);
+        nuevo.modificarDiasRepeticionSemanal(dias);
 
     }
 
@@ -136,10 +138,7 @@ public class Calendario implements Serializable {
 
     public void modificarIntervaloRepeticionDiaria(Evento evento, int intervalo){
             Evento nuevo = (Evento) this.getEventoOriginal(evento);
-            var fechaVencimiento = nuevo.getRepeticionVencimiento();
-            nuevo.setRepeticionDiaria(intervalo);
-            nuevo.setRepeticionVencimiento(fechaVencimiento);
-
+            nuevo.modificarIntervaloRepeticionDiaria(intervalo);
     }
 
     public void modificarCantidadRepeticiones(Evento evento,int cantidad){
@@ -173,6 +172,8 @@ public class Calendario implements Serializable {
             tarea.descompletar();
     }
 
+    // Devuelve un TreeSet con todos los elementos entre el inicio y el fin. Los elementos serian eventos
+    // con sus repeticiones y tareas.
     public TreeSet<ElementoCalendario> elementosEntreFechas(LocalDateTime inicio, LocalDateTime fin){
         var elementos = new TreeSet<ElementoCalendario>((new OrdenadorElementosPorHorario()));
         for (ElementoCalendario i : elementosCalendario) {
@@ -181,6 +182,7 @@ public class Calendario implements Serializable {
         return elementos;
     }
 
+    // Devuelve el efecto de la proxima alarma a sonar entre las fechas dadas.
     public EfectoAlarma sonarProximaAlarma(LocalDateTime fechaYHora, LocalDateTime fin){
         var elementos = elementosEntreFechas(fechaYHora,fin);
         if(elementos == null)
@@ -197,18 +199,29 @@ public class Calendario implements Serializable {
         return efecto;
     }
 
+    public void guardarCalendarioEnArchivo(String fileName) throws IOException{
+        FileOutputStream fos = new FileOutputStream(fileName);
+        serializar(fos);
+        fos.close();
 
-
-
-    public void serializar(OutputStream os) throws IOException {
-        ObjectOutputStream objectOutStream = new ObjectOutputStream(os);
-        objectOutStream.writeObject(this);
-        objectOutStream.flush();
+    }
+    public static Calendario leerCalendarioDeArchivo(String fileName) throws IOException, ClassNotFoundException{
+        FileInputStream fis = new FileInputStream(fileName);
+        Calendario calendario = deserializar(fis);
+        fis.close();
+        return calendario;
     }
 
     public static Calendario deserializar(InputStream is) throws IOException, ClassNotFoundException {
-        ObjectInputStream objectInStream = new ObjectInputStream(is);
-        return (Calendario) objectInStream.readObject();
+        ObjectInputStream ois = new ObjectInputStream(is);
+        Calendario obj = (Calendario) ois.readObject();
+        return obj;
+    }
+
+    public void serializar(OutputStream os) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(os);
+        oos.writeObject(this);
+        oos.flush();
     }
 
 

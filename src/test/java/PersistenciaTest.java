@@ -73,4 +73,18 @@ public class PersistenciaTest {
         Assert.assertEquals(tarea.getTitulo(),tareaDeserializada.getTitulo());
         Assert.assertEquals(tarea.getDescripcion(),tareaDeserializada.getDescripcion());
     }
+
+
+    @Test
+    public void serializar() throws IOException, ClassNotFoundException {
+        var calendario = new Calendario();
+        var evento = calendario.crearEvento();
+        evento.setRepeticionDiaria(1);
+        var listadoEventos = calendario.elementosEntreFechas(hoy.minusDays(1), magnana.plusDays(3));
+        calendario.guardarCalendarioEnArchivo("serializa.txt");
+        Calendario cal2 = calendario.leerCalendarioDeArchivo("serializa.txt");
+        var listadoEventos2 = cal2.elementosEntreFechas(hoy.minusDays(1), magnana.plusDays(3));
+
+        Assert.assertEquals(listadoEventos.first().comparar(listadoEventos2.first()), true);
+    }
 }
