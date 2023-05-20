@@ -115,9 +115,6 @@ public abstract class ElementoCalendario implements Serializable {
             return null;
         return  alarma.sonar(fecha);
     }
-    public void elimarAlarmas(){
-        this.alarmas.clear();
-    }
 
     // Devuelve la proxima alarma del elemento.
     private Alarma proximaAlarma(LocalDateTime fecha){
@@ -139,5 +136,8 @@ public abstract class ElementoCalendario implements Serializable {
 
     public Collection<Alarma> getAlarmas() {
         return alarmas.values();
+    }
+    void borrarAlarmas(){
+        alarmas.clear();
     }
 }

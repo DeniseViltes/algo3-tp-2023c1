@@ -38,10 +38,11 @@ public class Evento extends ElementoCalendario {
         if(isEsDeDiaCompleto())
             super.setFecha(inicioEvento.truncatedTo(ChronoUnit.DAYS));
     }
-    /*
-    Cuando se marca el evento como de dia completo, si el evento previamiente
-    tenia una duración mayor a un dia, esto se mantiene.
-    Ademas se eliminan todas las alarmas previas.
+
+    /**
+     * Cuando se marca el evento como de dia completo, si el evento previamiente
+     *     tenia una duración mayor a un dia, esto se mantiene.
+     *     Ademas se eliminan todas las alarmas previas.
      */
     @Override
     public void setDeDiaCompleto(){
@@ -125,7 +126,9 @@ public class Evento extends ElementoCalendario {
     }
 
 
-    // Devuelve la fecha de la proxima repeticion desde inicio.
+    /**
+     * Devuelve la fecha de la proxima repeticion desde inicio.
+     */
     public  LocalDateTime proximaRepeticion (LocalDateTime inicio){
         if (repeticion == null)
                 return null;
@@ -135,7 +138,6 @@ public class Evento extends ElementoCalendario {
     // Carga todas las alarmas del evento original en una instancia de repeticion manteniendo el intervalo de la alarma
     // al evento.
     private void cargarAlarmasRepeticion(Evento evento){
-        evento.elimarAlarmas();
         for (Alarma i : getAlarmas()){
             var nueva = i.copiarConNuevaReferencia(evento.getFecha());
             if(i.esDeFechaAbsoluta()) {
@@ -155,6 +157,7 @@ public class Evento extends ElementoCalendario {
         repeticion.setDuracion(this.duracion);
         if(isEsDeDiaCompleto())
             repeticion.setDeDiaCompleto();
+        repeticion.borrarAlarmas();
         cargarAlarmasRepeticion(repeticion);
         return repeticion;
     }
