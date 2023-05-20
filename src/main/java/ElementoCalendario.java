@@ -137,6 +137,7 @@ public abstract class ElementoCalendario implements Serializable {
     public Collection<Alarma> getAlarmas() {
         return alarmas.values();
     }
+
     void borrarAlarmas(){
         alarmas.clear();
     }
