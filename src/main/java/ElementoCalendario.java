@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 
 public abstract class ElementoCalendario implements Serializable {
@@ -140,5 +141,14 @@ public abstract class ElementoCalendario implements Serializable {
 
     void borrarAlarmas(){
         alarmas.clear();
+    }
+
+    // Devuelve el elemento original, ya sea el mismo o una repeticion.
+    public ElementoCalendario getElementoOriginal(TreeSet<ElementoCalendario> elementos){
+        for (ElementoCalendario elemento : elementos){
+            if(elemento.comparar(this))
+                return elemento;
+        }
+        return null;
     }
 }

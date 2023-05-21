@@ -76,7 +76,7 @@ public class PersistenciaTest {
 
 
     @Test
-    public void serializar() throws IOException, ClassNotFoundException {
+    public void guardarEnArchivo() throws IOException, ClassNotFoundException {
         var calendario = new Calendario();
         var evento = calendario.crearEvento();
         evento.setRepeticionDiaria(1);

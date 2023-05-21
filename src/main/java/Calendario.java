@@ -31,7 +31,7 @@ public class Calendario implements Serializable {
 
     // Elimina el elemento original del calendario.
     public void eliminarElementoCalendario(ElementoCalendario elementoCalendario) {
-        elementosCalendario.remove(this.getEventoOriginal(elementoCalendario));
+        elementosCalendario.remove(elementoCalendario.getElementoOriginal(elementosCalendario));
     }
 
     //Para tarea muestra vencimiento y para evento muestra la inicial
@@ -39,79 +39,70 @@ public class Calendario implements Serializable {
         return  elemento.getFecha();
     }
 
-    // Devuelve el elemento original, ya sea el mismo o una repeticion.
-    public ElementoCalendario getEventoOriginal(ElementoCalendario evento){
-        for (ElementoCalendario elemento : elementosCalendario){
-            if(elemento.comparar(evento))
-                return elemento;
-        }
-        return null;
-    }
-
     public void modificarTitulo(ElementoCalendario elemento, String titulo) {
         if (elemento != null && titulo != null)
-            this.getEventoOriginal(elemento).setTitulo(titulo);
+            elemento.getElementoOriginal(elementosCalendario).setTitulo(titulo);
     }
 
     public void modificarDescripcion(ElementoCalendario elemento, String descripcion) {
         if (elemento != null && descripcion != null)
-            this.getEventoOriginal(elemento).setDescripcion(descripcion);
+            elemento.getElementoOriginal(elementosCalendario).setDescripcion(descripcion);
     }
 
     //En el caso de ser una tarea setea la fecha de vencimiento, y si es un evento, setea el inicio
     public void modificarFecha(ElementoCalendario elemento, LocalDateTime inicioEvento) {
         if (elemento != null && inicioEvento != null)
-            this.getEventoOriginal(elemento).setFecha(inicioEvento);
+            elemento.getElementoOriginal(elementosCalendario).setFecha(inicioEvento);
     }
 
     public void marcarDeDiaCompleto(ElementoCalendario elementoCalendario){
-            this.getEventoOriginal(elementoCalendario).setDeDiaCompleto();
+        elementoCalendario.getElementoOriginal(elementosCalendario).setDeDiaCompleto();
     }
 
     public void desmarcarDeDiaCompleto(ElementoCalendario elementoCalendario){
         var fecha = elementoCalendario.getFecha();
-        this.getEventoOriginal(elementoCalendario).asignarDeFechaArbitraria(fecha);
+        elementoCalendario.getElementoOriginal(elementosCalendario).asignarDeFechaArbitraria(fecha);
     }
 
     public void modificarDuracion(Evento evento, Duration duracionMinutos) {
         if (evento != null && duracionMinutos != null){
-                var nuevo = (Evento)this.getEventoOriginal(evento);
+                var nuevo = (Evento)evento.getElementoOriginal(elementosCalendario);
                 nuevo.setDuracion(duracionMinutos);
             }
     }
 
 
     public void modificarAlarmaIntervalo(ElementoCalendario elemento,Alarma alarma,Duration intervalo) {
-        this.getEventoOriginal(elemento).modificarIntervaloAlarma(alarma,intervalo);
+        elemento.getElementoOriginal(elementosCalendario).modificarIntervaloAlarma(alarma,intervalo);
     }
 
     public void modificarAlarmaFechaAbsoluta(ElementoCalendario elemento, Alarma alarma, LocalDateTime fechaYhora){
-        this.getEventoOriginal(elemento).modificarFechaAbsolutaAlarma(alarma,fechaYhora);
+        elemento.getElementoOriginal(elementosCalendario).modificarFechaAbsolutaAlarma(alarma,fechaYhora);
     }
 
     public void modificarAlarmaEfecto(ElementoCalendario elemento, Alarma alarma, EfectoAlarma efecto){
-        this.getEventoOriginal(elemento).modificarAlarmaEfecto(alarma,efecto);
+        elemento.getElementoOriginal(elementosCalendario).modificarAlarmaEfecto(alarma,efecto);
     }
 
     public Alarma agregarAlarma(ElementoCalendario elemento,Duration intervalo){
-        return this.getEventoOriginal(elemento).agregarAlarma(elemento.getFecha(), intervalo);
+        return elemento.getElementoOriginal(elementosCalendario).agregarAlarma(elemento.getFecha(), intervalo);
     }
 
     public Alarma agregarAlarmaAbsoluta(ElementoCalendario elemento,LocalDateTime horario){
-        return this.getEventoOriginal(elemento).agregarAlarmaAbsoluta(horario);
+        return elemento.getElementoOriginal(elementosCalendario).agregarAlarmaAbsoluta(horario);
     }
 
     public void eliminarAlarma(ElementoCalendario elemento, Alarma alarma){
-        this.getEventoOriginal(elemento).eliminarAlarma(alarma);
+        elemento.getElementoOriginal(elementosCalendario).eliminarAlarma(alarma);
     }
     public void  agregarRepeticionAnualEvento (Evento evento){
-        Evento nuevo = (Evento) this.getEventoOriginal(evento);
+        Evento nuevo = (Evento) evento.getElementoOriginal(elementosCalendario);
             nuevo.setRepeticionAnual();
 
     }
 
     public void  agregarRepeticionMensualEvento (Evento evento){
-            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            Evento nuevo = (Evento) evento.getElementoOriginal(elementosCalendario);
             nuevo.setRepeticionMensual();
 
     }
@@ -119,43 +110,43 @@ public class Calendario implements Serializable {
         var dia = evento.getFecha();
         var dias = EnumSet.noneOf(DayOfWeek.class);
         dias.add(dia.getDayOfWeek());
-            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            Evento nuevo = (Evento) evento.getElementoOriginal(elementosCalendario);
             nuevo.setRepeticionSemanal(dias);
 
     }
 
     public void modificarDiasRepeticionSemanal(Evento evento, Set<DayOfWeek> dias){
-        Evento nuevo = (Evento) this.getEventoOriginal(evento);
+        Evento nuevo = (Evento) evento.getElementoOriginal(elementosCalendario);
         nuevo.modificarDiasRepeticionSemanal(dias);
 
     }
 
     public void  agregarRepeticionDiariaEvento (Evento evento){
-            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            Evento nuevo = (Evento) evento.getElementoOriginal(elementosCalendario);
             nuevo.setRepeticionDiaria(1);
 
     }
 
     public void modificarIntervaloRepeticionDiaria(Evento evento, int intervalo){
-            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            Evento nuevo = (Evento) evento.getElementoOriginal(elementosCalendario);
             nuevo.modificarIntervaloRepeticionDiaria(intervalo);
     }
 
     public void modificarCantidadRepeticiones(Evento evento,int cantidad){
-            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            Evento nuevo = (Evento) evento.getElementoOriginal(elementosCalendario);
             nuevo.setRepeticionCantidad(cantidad);
 
     }
 
 
     public void modificarVencimientoRepeticion (Evento evento, LocalDateTime vencimiento){
-            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            Evento nuevo = (Evento) evento.getElementoOriginal(elementosCalendario);
             nuevo.setRepeticionVencimiento(vencimiento);
 
     }
 
     public void eliminarRepeticion(Evento evento){
-            Evento nuevo = (Evento) this.getEventoOriginal(evento);
+            Evento nuevo = (Evento) evento.getElementoOriginal(elementosCalendario);
             nuevo.eliminarRepeticion();
 
     }
@@ -197,19 +188,6 @@ public class Calendario implements Serializable {
             }
         }
         return efecto;
-    }
-
-    public void guardarCalendarioEnArchivo(String fileName) throws IOException{
-        FileOutputStream fos = new FileOutputStream(fileName);
-        serializar(fos);
-        fos.close();
-
-    }
-    public static Calendario leerCalendarioDeArchivo(String fileName) throws IOException, ClassNotFoundException{
-        FileInputStream fis = new FileInputStream(fileName);
-        Calendario calendario = deserializar(fis);
-        fis.close();
-        return calendario;
     }
 
     public static Calendario deserializar(InputStream is) throws IOException, ClassNotFoundException {
