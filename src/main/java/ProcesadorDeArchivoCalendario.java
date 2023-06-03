@@ -4,9 +4,9 @@ import java.io.IOException;
 
 public class ProcesadorDeArchivoCalendario {
     public static void guardarCalendarioEnArchivo(Calendario calendario,String fileName) throws IOException {
-        FileOutputStream fos = new FileOutputStream(fileName);
-        calendario.serializar(fos);
-        fos.close();
+        try (FileOutputStream fos = new FileOutputStream(fileName)) {
+            calendario.serializar(fos);
+        }
 
     }
     public static Calendario leerCalendarioDeArchivo(String fileName) throws IOException, ClassNotFoundException{

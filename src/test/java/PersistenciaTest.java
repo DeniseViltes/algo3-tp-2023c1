@@ -81,8 +81,8 @@ public class PersistenciaTest {
         var evento = calendario.crearEvento();
         evento.setRepeticionDiaria(1);
         var listadoEventos = calendario.elementosEntreFechas(hoy.minusDays(1), magnana.plusDays(3));
-        ProcesadorDeArchivoCalendario.guardarCalendarioEnArchivo(calendario,"serializa.txt");
-        Calendario cal2 = ProcesadorDeArchivoCalendario.leerCalendarioDeArchivo("serializa.txt");
+        ProcesadorDeArchivoCalendario.guardarCalendarioEnArchivo(calendario,"serializa.cal");
+        Calendario cal2 = ProcesadorDeArchivoCalendario.leerCalendarioDeArchivo("serializa.cal");
         var listadoEventos2 = cal2.elementosEntreFechas(hoy.minusDays(1), magnana.plusDays(3));
 
         Assert.assertTrue(listadoEventos.first().comparar(listadoEventos2.first()));
