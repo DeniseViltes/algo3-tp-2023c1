@@ -8,6 +8,8 @@ import java.util.Set;
 
 public class Evento extends ElementoCalendario {
     private Duration duracion;
+
+    // Tipo de repeticion
     private Repeticion repeticion;
 
     /*
@@ -36,10 +38,11 @@ public class Evento extends ElementoCalendario {
         if(isEsDeDiaCompleto())
             super.setFecha(inicioEvento.truncatedTo(ChronoUnit.DAYS));
     }
-    /*
-    Cuando se marca el evento como de dia completo, si el evento previamiente
-    tenia una duración mayor a un dia, esto se mantiene.
-    Ademas se eliminan todas las alarmas previas.
+
+    /**
+     * Cuando se marca el evento como de dia completo, si el evento previamiente
+     *     tenia una duración mayor a un dia, esto se mantiene.
+     *     Ademas se eliminan todas las alarmas previas.
      */
     @Override
     public void setDeDiaCompleto(){
@@ -123,12 +126,17 @@ public class Evento extends ElementoCalendario {
     }
 
 
+    /**
+     * Devuelve la fecha de la proxima repeticion desde inicio.
+     */
     public  LocalDateTime proximaRepeticion (LocalDateTime inicio){
         if (repeticion == null)
                 return null;
         return repeticion.Repetir(inicio);
     }
 
+    // Carga todas las alarmas del evento original en una instancia de repeticion manteniendo el intervalo de la alarma
+    // al evento.
     private void cargarAlarmasRepeticion(Evento evento){
         for (Alarma i : getAlarmas()){
             var nueva = i.copiarConNuevaReferencia(evento.getFecha());
@@ -140,6 +148,8 @@ public class Evento extends ElementoCalendario {
         }
     }
 
+    // Crea una repeticion del evento en la fecha inicio, seteando todos los datos que corresponde y cargando
+    // las mismas alarmas.
     public  Evento crearRepeticion (LocalDateTime inicio){
         Evento repeticion = new Evento(inicio);
         repeticion.setTitulo(getTitulo());
@@ -153,6 +163,7 @@ public class Evento extends ElementoCalendario {
     }
 
 
+    // Agrega el evento y todas sus repeticiones al set si estan dentro del periodo establecido.
     public void agregarElementoAlSet(Set<ElementoCalendario> elementos, LocalDateTime inicio, LocalDateTime fin) {
         if (this.iniciaEntreLosHorarios(inicio, fin)){
             elementos.add(this);
@@ -167,7 +178,27 @@ public class Evento extends ElementoCalendario {
         }
     }
 
-    public LocalDateTime getRepeticionVencimiento() {
-        return repeticion.getVencimiento();
+    public void modificarDiasRepeticionSemanal(Set<DayOfWeek> dias) {
+        if (repeticion.tieneVencimientoPorCantidadRepeticiones()) {
+            var cantidad = repeticion.getCantidadRepeticiones();
+            this.setRepeticionSemanal(dias);
+            this.setRepeticionCantidad(cantidad);
+        } else {
+            var vencimiento = repeticion.getVencimiento();
+            this.setRepeticionSemanal(dias);
+            this.setRepeticionVencimiento(vencimiento);
+        }
+    }
+
+    public void modificarIntervaloRepeticionDiaria(int intervalo) {
+        if (repeticion.tieneVencimientoPorCantidadRepeticiones()) {
+            var cantidad = repeticion.getCantidadRepeticiones();
+            this.setRepeticionDiaria(intervalo);
+            this.setRepeticionCantidad(cantidad);
+        } else {
+            var vencimiento = repeticion.getVencimiento();
+            this.setRepeticionDiaria(intervalo);
+            this.setRepeticionVencimiento(vencimiento);
+        }
     }
 }

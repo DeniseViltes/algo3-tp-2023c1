@@ -1,11 +1,13 @@
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 
-public abstract class ElementoCalendario {
+public abstract class ElementoCalendario implements Serializable {
     private String titulo;
     private String descripcion;
     private LocalDateTime fechaYHoraCaracteristica;
@@ -71,6 +73,8 @@ public abstract class ElementoCalendario {
     void eliminarAlarma(Alarma alarma){
         alarmas.remove(alarma.getFechaYHora());
     }
+
+    // Devuelve el horario de la proxima alarma del elemento.
     LocalDateTime horarioProximaAlarma(LocalDateTime dateTime){
         var alarma = proximaAlarma(dateTime);
         if (alarma == null)
@@ -102,8 +106,10 @@ public abstract class ElementoCalendario {
     private boolean esIgualOEstaEntre(LocalDateTime inicio, LocalDateTime fin, LocalDateTime t){
         return (t.equals(inicio) || t.isAfter(inicio)) && (t.equals(fin) || t.isBefore(fin));
     }
+
     abstract void agregarElementoAlSet(Set<ElementoCalendario> elementos, LocalDateTime inicio, LocalDateTime fin);
 
+    // Devuelve el efecto si va a sonar una alarma en el momento fecha, sino NULL.
     EfectoAlarma sonarProximaAlarma(LocalDateTime fecha){
         var alarma = proximaAlarma(fecha);
         if (alarma == null)
@@ -111,6 +117,7 @@ public abstract class ElementoCalendario {
         return  alarma.sonar(fecha);
     }
 
+    // Devuelve la proxima alarma del elemento.
     private Alarma proximaAlarma(LocalDateTime fecha){
         var par = this.alarmas.ceilingEntry(fecha);
         if(par == null)
@@ -134,5 +141,14 @@ public abstract class ElementoCalendario {
 
     void borrarAlarmas(){
         alarmas.clear();
+    }
+
+    // Devuelve el elemento original, ya sea el mismo o una repeticion.
+    public ElementoCalendario getElementoOriginal(TreeSet<ElementoCalendario> elementos){
+        for (ElementoCalendario elemento : elementos){
+            if(elemento.comparar(this))
+                return elemento;
+        }
+        return null;
     }
 }

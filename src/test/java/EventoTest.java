@@ -52,6 +52,7 @@ public class EventoTest {
         var alarma3 = evento.agregarAlarma(ahoraTruncado, Duration.ofMinutes(30));
         evento.modificarAlarmaEfecto(alarma3, EfectoAlarma.SONIDO);
 
+        Assert.assertEquals(EfectoAlarma.NOTIFICACION,evento.sonarProximaAlarma(ahoraTruncado.minusMinutes(10)));
 
         evento.setDeDiaCompleto();
         var horarioFinal =ahoraTruncado.truncatedTo(ChronoUnit.DAYS).plusDays(5).plusHours(23).plusMinutes(59);

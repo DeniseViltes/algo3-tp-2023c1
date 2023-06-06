@@ -11,7 +11,8 @@ public class RepeticionDiaria extends Repeticion {
 
 
     @Override
-    public void setCantidadRepeticiones(LocalDateTime inicio, long cantidadRepeticiones) {
+    public void setCantidadRepeticiones(LocalDateTime inicio, int cantidadRepeticiones) {
+        super.setCantidadRepeticiones(inicio, cantidadRepeticiones);
         this.vencimiento = inicio.plusDays((cantidadRepeticiones-1)*intervalo);
     }
 
