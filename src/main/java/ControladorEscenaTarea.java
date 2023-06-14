@@ -1,4 +1,3 @@
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,28 +11,22 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-
-public class ControladorEscenaEvento{
-    private Evento evento;
-
-    @FXML
-    private TextField descripcionEvento;
+public class ControladorEscenaTarea {
+    private Tarea tarea;
 
     @FXML
-    private TextField tituloEvento;
-
-
-    @FXML
-    private DatePicker selecionadorFechaFinal;
+    private TextField descripcionTarea;
 
     @FXML
     private DatePicker selecionadorFechaInicio;
 
+    @FXML
+    private TextField tituloTarea;
 
-    void  initEvento (Evento evento){
-        this.evento = evento;
+    @FXML
+    void modificarTitulo(KeyEvent event) {
+        tarea.setTitulo(tituloTarea.getText());
     }
-
     @FXML
     void volverAVistaPrincipal(ActionEvent event) throws IOException {
 
@@ -44,15 +37,7 @@ public class ControladorEscenaEvento{
         stage.setScene(scene);
         stage.show();
     }
-    @FXML
-    void modificarDescripcion(ActionEvent event) {
-        System.out.println("psa algo");
-
+    void  initTarea (Tarea tarea){
+        this.tarea = tarea;
     }
-    @FXML
-    void modificarTitulo(KeyEvent event) {
-        if(tituloEvento.getText()!= null)
-            evento.setTitulo(tituloEvento.getText());
-    }
-
 }

@@ -16,7 +16,7 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0">
          <MenuButton fx:id="menuCrear" mnemonicParsing="false" text="Crear">
             <items>
-               <MenuItem mnemonicParsing="false" text="Tarea" />
+               <MenuItem mnemonicParsing="false" onAction="#crearTarea" text="Tarea" />
                <MenuItem mnemonicParsing="false" onAction="#crearEvento" text="Evento" />
             </items>
          </MenuButton>
@@ -49,7 +49,7 @@
             <AnchorPane prefHeight="30.0" prefWidth="740.0" style="-fx-background-color: azure;" BorderPane.alignment="CENTER" />
          </bottom>
          <center>
-            <ListView fx:id="listaDeElementos" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <ListView fx:id="listaDeElementos" onMouseClicked="#habilitarVistaDetallada" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </VBox>
