@@ -14,10 +14,10 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="740.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador">
    <VBox layoutY="6.0" prefHeight="510.0" prefWidth="651.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <ToolBar prefHeight="40.0" prefWidth="200.0">
-         <MenuButton mnemonicParsing="false" text="Crear">
+         <MenuButton fx:id="menuCrear" mnemonicParsing="false" text="Crear">
             <items>
                <MenuItem mnemonicParsing="false" text="Tarea" />
-               <MenuItem mnemonicParsing="false" text="Evento" />
+               <MenuItem mnemonicParsing="false" onAction="#crearEvento" text="Evento" />
             </items>
          </MenuButton>
          <MenuButton mnemonicParsing="false" text="Tipo de Visualización">
