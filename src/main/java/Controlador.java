@@ -93,7 +93,7 @@ public class Controlador {
         Scene scene = new Scene(view);
         ControladorEscenaEvento controlador = loader.getController();
 
-        controlador.initEvento(evento);
+        controlador.initEvento(calendario,evento);
         stage.setScene(scene);
         stage.show();
     }
