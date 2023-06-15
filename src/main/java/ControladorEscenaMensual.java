@@ -6,10 +6,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
 
 public class ControladorEscenaMensual {
 
@@ -32,77 +37,148 @@ public class ControladorEscenaMensual {
     private Label label_mes;
 
     @FXML
-    private Label dia1;
+    private Label dia1Label;
     @FXML
-    private Label dia2;
+    private Label dia2Label;
     @FXML
-    private Label dia3;
+    private Label dia3Label;
     @FXML
-    private Label dia4;
+    private Label dia4Label;
     @FXML
-    private Label dia5;
+    private Label dia5Label;
     @FXML
-    private Label dia6;
+    private Label dia6Label;
     @FXML
-    private Label dia7;
+    private Label dia7Label;
     @FXML
-    private Label dia8;
+    private Label dia8Label;
     @FXML
-    private Label dia9;
+    private Label dia9Label;
     @FXML
-    private Label dia10;
+    private Label dia10Label;
     @FXML
-    private Label dia11;
+    private Label dia11Label;
     @FXML
-    private Label dia12;
+    private Label dia12Label;
     @FXML
-    private Label dia13;
+    private Label dia13Label;
     @FXML
-    private Label dia14;
+    private Label dia14Label;
     @FXML
-    private Label dia15;
+    private Label dia15Label;
     @FXML
-    private Label dia16;
+    private Label dia16Label;
     @FXML
-    private Label dia17;
+    private Label dia17Label;
     @FXML
-    private Label dia18;
+    private Label dia18Label;
     @FXML
-    private Label dia19;
+    private Label dia19Label;
     @FXML
-    private Label dia20;
+    private Label dia20Label;
     @FXML
-    private Label dia21;
+    private Label dia21Label;
     @FXML
-    private Label dia22;
+    private Label dia22Label;
     @FXML
-    private Label dia23;
+    private Label dia23Label;
     @FXML
-    private Label dia24;
+    private Label dia24Label;
     @FXML
-    private Label dia25;
+    private Label dia25Label;
     @FXML
-    private Label dia26;
+    private Label dia26Label;
     @FXML
-    private Label dia27;
+    private Label dia27Label;
     @FXML
-    private Label dia28;
+    private Label dia28Label;
     @FXML
-    private Label dia29;
+    private Label dia29Label;
     @FXML
-    private Label dia30;
+    private Label dia30Label;
     @FXML
-    private Label dia31;
+    private Label dia31Label;
     @FXML
-    private Label dia32;
+    private Label dia32Label;
     @FXML
-    private Label dia33;
+    private Label dia33Label;
     @FXML
-    private Label dia34;
+    private Label dia34Label;
     @FXML
-    private Label dia35;
+    private Label dia35Label;
+    @FXML
+    private VBox dia1;
+    @FXML
+    private VBox dia2;
+    @FXML
+    private VBox dia3;
+    @FXML
+    private VBox dia4;
+    @FXML
+    private VBox dia5;
+    @FXML
+    private VBox dia6;
+    @FXML
+    private VBox dia7;
+    @FXML
+    private VBox dia8;
+    @FXML
+    private VBox dia9;
+    @FXML
+    private VBox dia10;
+    @FXML
+    private VBox dia11;
+    @FXML
+    private VBox dia12;
+    @FXML
+    private VBox dia13;
+    @FXML
+    private VBox dia14;
+    @FXML
+    private VBox dia15;
+    @FXML
+    private VBox dia16;
+    @FXML
+    private VBox dia17;
+    @FXML
+    private VBox dia18;
+    @FXML
+    private VBox dia19;
+    @FXML
+    private VBox dia20;
+    @FXML
+    private VBox dia21;
+    @FXML
+    private VBox dia22;
+    @FXML
+    private VBox dia23;
+    @FXML
+    private VBox dia24;
+    @FXML
+    private VBox dia25;
+    @FXML
+    private VBox dia26;
+    @FXML
+    private VBox dia27;
+    @FXML
+    private VBox dia28;
+    @FXML
+    private VBox dia29;
+    @FXML
+    private VBox dia30;
+    @FXML
+    private VBox dia31;
+    @FXML
+    private VBox dia32;
+    @FXML
+    private VBox dia33;
+    @FXML
+    private VBox dia34;
+    @FXML
+    private VBox dia35;
 
-    private Label [] dias;
+    private Label [] diasLabel;
+    private VBox [] dias;
 
 
 
@@ -133,16 +209,18 @@ public class ControladorEscenaMensual {
     private int mes_mostrado;
     private int año_mostrado;
 
-    public void initEscenaMensual(Controlador controlador) {
+    public void initEscenaMensual(Controlador controlador, Calendario calendario) {
 
         this.controlador = controlador;
 
         label_mes.setText(Mes.valueOf(LocalDateTime.now().getMonth().toString()).getMesEspañol() + " " + LocalDateTime.now().getYear());
         mes_mostrado = LocalDateTime.now().getMonthValue();
         año_mostrado = LocalDateTime.now().getYear();
+        inicializarDiasLabel();
         inicializarDias();
         marcarDiaActual();
         mostrarMes(mes_mostrado, año_mostrado);
+        actualizarCalendario(calendario);
         btn_hoy.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -151,6 +229,8 @@ public class ControladorEscenaMensual {
                 año_mostrado = LocalDateTime.now().getYear();
                 marcarDiaActual();
                 mostrarMes(mes_mostrado, año_mostrado);
+                limpiarCalendario();
+                actualizarCalendario(calendario);
             }
         });
 
@@ -168,6 +248,8 @@ public class ControladorEscenaMensual {
                 marcarDiaNormal();
                 if(mes_mostrado == (LocalDateTime.now().getMonthValue()))
                     marcarDiaActual();
+                limpiarCalendario();
+                actualizarCalendario(calendario);
             }
         });
 
@@ -185,6 +267,8 @@ public class ControladorEscenaMensual {
                 marcarDiaNormal();
                 if(mes_mostrado == (LocalDateTime.now().getMonthValue()))
                     marcarDiaActual();
+                limpiarCalendario();
+                actualizarCalendario(calendario);
             }
         });
 
@@ -192,8 +276,85 @@ public class ControladorEscenaMensual {
 
     }
 
+    public void limpiarCalendario(){
+        for(int i = 0; i < 35; i++){
+            for(int j = 1 ; j < dias[i].getChildren().size(); j++)
+                dias[i].getChildren().remove(j);
+        }
+    }
+
+    public void actualizarCalendario(Calendario calendario){
+        boolean esDomingo = false;
+        LocalDateTime dia = LocalDateTime.of(año_mostrado, mes_mostrado,1,1,1).truncatedTo(ChronoUnit.DAYS);
+        int cant_dias = 0;
+        while(esDomingo == false){
+            if(dia.getDayOfWeek().toString() == "SUNDAY") {
+                esDomingo = true;
+            }
+            else {
+                dia = dia.minusDays(1);
+                cant_dias++;
+            }
+        }
+        List<TreeSet<ElementoCalendario>> elementos = new ArrayList<TreeSet<ElementoCalendario>>();
+
+        for(int i = 0; i < 35; i++){
+            elementos.add(calendario.elementosEntreFechas(dia, dia.plusDays(1)));
+            dia = dia.plusDays(1);
+        }
+
+        for(int i = 0; i < 35; i++){
+            for (ElementoCalendario elemento : elementos.get(i)){
+                Label lbl = new Label(elemento.getTitulo());
+                dias[i].getChildren().add(lbl);
+            }
+        }
+
+    }
+
+
+    public void inicializarDiasLabel(){
+        diasLabel = new Label[35];
+        int i = 0;
+        diasLabel[i++] = dia1Label;
+        diasLabel[i++] = dia2Label;
+        diasLabel[i++] = dia3Label;
+        diasLabel[i++] = dia4Label;
+        diasLabel[i++] = dia5Label;
+        diasLabel[i++] = dia6Label;
+        diasLabel[i++] = dia7Label;
+        diasLabel[i++] = dia8Label;
+        diasLabel[i++] = dia9Label;
+        diasLabel[i++] = dia10Label;
+        diasLabel[i++] = dia11Label;
+        diasLabel[i++] = dia12Label;
+        diasLabel[i++] = dia13Label;
+        diasLabel[i++] = dia14Label;
+        diasLabel[i++] = dia15Label;
+        diasLabel[i++] = dia16Label;
+        diasLabel[i++] = dia17Label;
+        diasLabel[i++] = dia18Label;
+        diasLabel[i++] = dia19Label;
+        diasLabel[i++] = dia20Label;
+        diasLabel[i++] = dia21Label;
+        diasLabel[i++] = dia22Label;
+        diasLabel[i++] = dia23Label;
+        diasLabel[i++] = dia24Label;
+        diasLabel[i++] = dia25Label;
+        diasLabel[i++] = dia26Label;
+        diasLabel[i++] = dia27Label;
+        diasLabel[i++] = dia28Label;
+        diasLabel[i++] = dia29Label;
+        diasLabel[i++] = dia30Label;
+        diasLabel[i++] = dia31Label;
+        diasLabel[i++] = dia32Label;
+        diasLabel[i++] = dia33Label;
+        diasLabel[i++] = dia34Label;
+        diasLabel[i] = dia35Label;
+    }
+
     public void inicializarDias(){
-        dias = new Label[35];
+        dias = new VBox[35];
         int i = 0;
         dias[i++] = dia1;
         dias[i++] = dia2;
@@ -234,7 +395,7 @@ public class ControladorEscenaMensual {
 
     public void mostrarMes(int mes_mostrado, int año_mostrado){
         boolean esDomingo = false;
-        LocalDateTime dia = LocalDateTime.of(año_mostrado, mes_mostrado,1,1,1);
+        LocalDateTime dia = LocalDateTime.of(año_mostrado, mes_mostrado,1,1,1).truncatedTo(ChronoUnit.DAYS);
         int cant_dias = 0;
         while(esDomingo == false){
             if(dia.getDayOfWeek().toString() == "SUNDAY") {
@@ -247,23 +408,23 @@ public class ControladorEscenaMensual {
         }
 
         int i = 0;
-        dias[i++].setText("DOM" + '\n' + dia.getDayOfMonth());
+        diasLabel[i++].setText("DOM" + '\n' + dia.getDayOfMonth());
         dia = dia.plusDays(1);
-        dias[i++].setText("LUN" + '\n' + dia.getDayOfMonth());
+        diasLabel[i++].setText("LUN" + '\n' + dia.getDayOfMonth());
         dia = dia.plusDays(1);
-        dias[i++].setText("MAR" + '\n' + dia.getDayOfMonth());
+        diasLabel[i++].setText("MAR" + '\n' + dia.getDayOfMonth());
         dia = dia.plusDays(1);
-        dias[i++].setText("MIE" + '\n' + dia.getDayOfMonth());
+        diasLabel[i++].setText("MIE" + '\n' + dia.getDayOfMonth());
         dia = dia.plusDays(1);
-        dias[i++].setText("JUE" + '\n' + dia.getDayOfMonth());
+        diasLabel[i++].setText("JUE" + '\n' + dia.getDayOfMonth());
         dia = dia.plusDays(1);
-        dias[i++].setText("VIE" + '\n' + dia.getDayOfMonth());
+        diasLabel[i++].setText("VIE" + '\n' + dia.getDayOfMonth());
         dia = dia.plusDays(1);
-        dias[i].setText("SAB" + '\n' + dia.getDayOfMonth());
+        diasLabel[i].setText("SAB" + '\n' + dia.getDayOfMonth());
         dia = dia.plusDays(1);
 
         for(int j = 7; j < 35; j++){
-            dias[j].setText(""+dia.getDayOfMonth());
+            diasLabel[j].setText(""+dia.getDayOfMonth());
             dia = dia.plusDays(1);
         }
 
@@ -271,7 +432,7 @@ public class ControladorEscenaMensual {
 
     public void marcarDiaActual(){
         boolean esDomingo = false;
-        LocalDateTime dia = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),1, 1, 1);
+        LocalDateTime dia = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),1, 1, 1).truncatedTo(ChronoUnit.DAYS);
         int cant_dias = 0;
         while(esDomingo == false){
             if(dia.getDayOfWeek().toString() == "SUNDAY") {
@@ -283,12 +444,12 @@ public class ControladorEscenaMensual {
             }
         }
 
-        dias[(LocalDateTime.now().getDayOfMonth())-1+cant_dias].setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
+        diasLabel[(LocalDateTime.now().getDayOfMonth())-1+cant_dias].setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
     }
 
     public void marcarDiaNormal(){
         boolean esDomingo = false;
-        LocalDateTime dia = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),1, 1, 1);
+        LocalDateTime dia = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),1, 1, 1).truncatedTo(ChronoUnit.DAYS);
         int cant_dias = 0;
         while(esDomingo == false){
             if(dia.getDayOfWeek().toString() == "SUNDAY") {
@@ -300,6 +461,6 @@ public class ControladorEscenaMensual {
             }
         }
 
-        dias[(LocalDateTime.now().getDayOfMonth())-1+cant_dias].setStyle(dias[(LocalDateTime.now().getDayOfMonth())+cant_dias].getStyle());
+        diasLabel[(LocalDateTime.now().getDayOfMonth())-1+cant_dias].setStyle(diasLabel[(LocalDateTime.now().getDayOfMonth())+cant_dias].getStyle());
     }
 }

@@ -113,7 +113,7 @@ public class Controlador {
         ControladorEscenaMensual controlador = loader.getController();
         menuFecha.setText("Mes");
 
-        controlador.initEscenaMensual(this);
+        controlador.initEscenaMensual(this, calendario);
         stage.setScene(scene);
         stage.show();
     }
