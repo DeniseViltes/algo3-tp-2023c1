@@ -1,14 +1,12 @@
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 
 public class ControladorEscenaEvento{
@@ -38,6 +36,8 @@ public class ControladorEscenaEvento{
         selecionadorFechaInicio.setChronology(evento.getFecha().getChronology());
         selecionadorFechaFinal.setChronology(evento.getFechaYHoraFinal().getChronology());
         cantRepeticiones.setDisable(true);
+        var spinner = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,Integer.MAX_VALUE,0);
+        this.cantRepeticiones.setValueFactory(spinner);
     }
     @FXML
     void volverAVistaPrincipal(ActionEvent event){
@@ -85,10 +85,32 @@ public class ControladorEscenaEvento{
     @FXML
     void guardarCantRepeticiones(MouseEvent event) {
         if(cantRepeticiones.getValue() == null){
-            calendario.agregarRepeticionDiariaEvento(evento);
+            calendario.modificarCantidadRepeticiones(evento,0); //TODO agregar alerta
         }
         calendario.modificarCantidadRepeticiones(evento,cantRepeticiones.getValue());
     }
+
+
+    // Alarmas
+
+    @FXML
+    private Spinner<Integer> intervaloAlarma;
+
+    @FXML
+    private ChoiceBox<String> tipoDeIntervalo;
+
+
+    @FXML
+    void agregarAlarma(ActionEvent event) {
+
+
+    }
+
+    @FXML
+    void eliminarAlarma(ActionEvent event) {
+
+    }
+
 
 
 }
