@@ -32,15 +32,15 @@
             </Label>
             <SplitMenuButton fx:id="menuFecha" mnemonicParsing="false" text="Semana">
               <items>
-                 <MenuItem mnemonicParsing="false" text="Dia" onAction="#setDia"/>
-                 <MenuItem mnemonicParsing="false" text="Semana" onAction="#setSemana"/>
-                 <MenuItem mnemonicParsing="false" text="Mes" onAction="#setMes"/>
+                 <MenuItem mnemonicParsing="false" onAction="#setDia" text="Dia" />
+                 <MenuItem mnemonicParsing="false" onAction="#setSemana" text="Semana" />
+                 <MenuItem mnemonicParsing="false" onAction="#setMes" text="Mes" />
               </items>
                <HBox.margin>
                   <Insets left="800.0" />
                </HBox.margin>
             </SplitMenuButton>
-            <SplitMenuButton fx:id="menuCrear" mnemonicParsing="false" text="Crear">
+            <SplitMenuButton mnemonicParsing="false" text="Crear">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#crearEvento" text="Evento" />
                 <MenuItem mnemonicParsing="false" onAction="#crearTarea" text="Tarea" />
