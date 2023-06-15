@@ -15,12 +15,11 @@ public class Calendario implements Serializable {
     }
 
     public void agregarListener(CalendarioListener listener){
+        if(listeners == null)
+            listeners = new ArrayList<CalendarioListener>();
         listeners.add(listener);
     }
     public void notificarListeners(){
-        if(listeners == null)
-            listeners = new ArrayList<CalendarioListener>();
-
         for (CalendarioListener listener : listeners){
             listener.updateCalendario();
         }
