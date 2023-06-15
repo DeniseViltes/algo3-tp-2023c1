@@ -7,8 +7,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.SplitMenuButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,14 +22,14 @@ import java.util.ResourceBundle;
 
 public class Controlador implements Initializable {
     private Calendario calendario;
-    @FXML
+    /*@FXML
     private ListView<ElementoCalendario> listaDeElementos;
 
     @FXML
-    private Button masInfo;
+    private Button masInfo;*/
     @FXML
-    private MenuButton menuCrear;
-
+    private SplitMenuButton menuCrear;
+/*
     @FXML
     void obtenerMasInfo(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -45,18 +47,19 @@ public class Controlador implements Initializable {
     @FXML
     void habilitarVistaDetallada(MouseEvent event) {
         this.masInfo.setDisable(false);
-    }
+    }*/
 
 
     @FXML
     void crearEvento(ActionEvent event) throws IOException {
         var evento = calendario.crearEvento();
-        listaDeElementos.getItems().add(evento);
+        //listaDeElementos.getItems().add(evento);
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/EscenaCrearEvento.fxml"));
         AnchorPane view = loader.load();
-        Stage stage = (Stage) menuCrear.getScene().getWindow();
+        //Stage stage = (Stage) menuCrear.getScene().getWindow();
+        final Stage stage = new Stage();
         Scene scene = new Scene(view);
         ControladorEscenaEvento controlador = loader.getController();
 
@@ -72,7 +75,8 @@ public class Controlador implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/EscenaCrearTarea.fxml"));
         AnchorPane view = loader.load();
-        Stage stage = (Stage) menuCrear.getScene().getWindow();
+        //Stage stage = (Stage) menuCrear.getScene().getWindow();
+        final Stage stage = new Stage();
         Scene scene = new Scene(view);
         ControladorEscenaTarea controlador = loader.getController();
         controlador.initTarea(tarea);
@@ -86,7 +90,17 @@ public class Controlador implements Initializable {
 //        var elementos = calendario.elementosEntreFechas(hoy.atStartOfDay(),hoy.atTime(LocalTime.MAX));
 //        listaDeElementos.getItems().addAll(elementos);
 //    }
-
+    public void init() throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/EscenaSemanal.fxml"));
+        VBox view = loader.load();
+        Stage stage = (Stage) menuCrear.getScene().getWindow();
+        Scene scene = new Scene(view);
+        ControladorEscenaSemanal controlador = loader.getController();
+        controlador.initEscenaSemanal(this);
+        stage.setScene(scene);
+        stage.show();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -99,8 +113,8 @@ public class Controlador implements Initializable {
         var hoy = LocalDateTime.now().toLocalDate();
         var elementos = calendario.elementosEntreFechas(hoy.atStartOfDay(),hoy.atTime(LocalTime.MAX));
 
-        listaDeElementos.getItems().addAll(elementos);
-        listaDeElementos.setEditable(true);
-        this.masInfo.setDisable(true);
+        //listaDeElementos.getItems().addAll(elementos);
+        //listaDeElementos.setEditable(true);
+        //this.masInfo.setDisable(true);
     }
 }

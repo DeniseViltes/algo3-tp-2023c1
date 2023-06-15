@@ -8,6 +8,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,13 +37,8 @@ public class ControladorEscenaEvento{
 
     @FXML
     void volverAVistaPrincipal(ActionEvent event) throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Intento1.fxml"));
-        AnchorPane view = loader.load();
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(view);
-        stage.setScene(scene);
-        stage.show();
+        Stage stage = (Stage) selecionadorFechaFinal.getScene().getWindow();
+        stage.close();
     }
     @FXML
     void modificarDescripcion(ActionEvent event) {
