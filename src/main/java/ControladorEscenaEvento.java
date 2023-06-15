@@ -1,13 +1,14 @@
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import java.io.IOException;
 import java.time.Duration;
-import java.time.LocalDateTime;
 
 
 public class ControladorEscenaEvento{
@@ -26,21 +27,25 @@ public class ControladorEscenaEvento{
 
     @FXML
     private DatePicker selecionadorFechaInicio;
+    @FXML
+    private Spinner<Integer> cantRepeticiones;
 
 
     void  initEvento ( Calendario calendario,Evento evento){
         this.evento = evento;
+        this.calendario =calendario;
         tituloEvento.setText(evento.getTitulo());
         selecionadorFechaInicio.setChronology(evento.getFecha().getChronology());
         selecionadorFechaFinal.setChronology(evento.getFechaYHoraFinal().getChronology());
+        cantRepeticiones.setDisable(true);
     }
     @FXML
-    void volverAVistaPrincipal(ActionEvent event) throws IOException {
+    void volverAVistaPrincipal(ActionEvent event){
         Stage stage = (Stage) selecionadorFechaFinal.getScene().getWindow();
         stage.close();
     }
     @FXML
-    void modificarDescripcion(ActionEvent event) {
+    void modificarDescripcion(KeyEvent event) {
         if(descripcionEvento.getText()!= null)
             calendario.modificarDescripcion(evento,descripcionEvento.getText());
     }
@@ -60,4 +65,30 @@ public class ControladorEscenaEvento{
     void modificarInicio(ActionEvent event) {
         calendario.modificarFecha(evento,selecionadorFechaInicio.getValue().atStartOfDay());
     }
+
+
+
+    @FXML
+    private CheckBox botonRepeticion;
+
+    @FXML
+    void tieneRepeticion(ActionEvent event) {
+        if(!botonRepeticion.isSelected()) {
+            cantRepeticiones.setDisable(true);
+            calendario.eliminarRepeticion(evento);
+        }else {
+            cantRepeticiones.setDisable(false);
+            calendario.agregarRepeticionDiariaEvento(evento);
+        }
+    }
+
+    @FXML
+    void guardarCantRepeticiones(MouseEvent event) {
+        if(cantRepeticiones.getValue() == null){
+            calendario.agregarRepeticionDiariaEvento(evento);
+        }
+        calendario.modificarCantidadRepeticiones(evento,cantRepeticiones.getValue());
+    }
+
+
 }
