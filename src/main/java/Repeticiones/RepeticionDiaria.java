@@ -2,7 +2,6 @@ package Repeticiones;
 
 import java.time.LocalDateTime;
 
-// Estas irian en otro archivo pero estamos viendo todavia como lo implementamos
 public class RepeticionDiaria extends Repeticion {
         private final Integer intervalo;
     public RepeticionDiaria(Integer intervalo) {
@@ -24,5 +23,13 @@ public class RepeticionDiaria extends Repeticion {
             return fechaRepeticion;
         else
             return null;
+    }
+
+    @Override
+    public String descripcionRepeticion() {
+        if(intervalo == 1)
+            return "Se repite todos los dias";
+        else
+            return "Se repite cada "+ intervalo + " dias";
     }
 }

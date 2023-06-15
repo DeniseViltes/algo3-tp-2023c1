@@ -1,5 +1,8 @@
 package Repeticiones;
 
+import Fechas.Dia;
+import Fechas.Mes;
+
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -38,6 +41,15 @@ public class RepeticionSemanal extends Repeticion {
             return fechaRepeticion;
         else
             return null;
+    }
+
+    @Override
+    public String descripcionRepeticion() {
+        String dias_str = "";
+        for (DayOfWeek dia : dias){
+            dias_str += Dia.valueOf(dia.toString()).getDiaEspañol() + " ";
+        }
+        return "Se repite semanalmente los dias: " + dias_str;
     }
 
     // Funcion que devuelve una lista ordenada con la cantidad de dias que faltan para cada dia de la semana en que

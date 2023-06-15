@@ -50,5 +50,7 @@ public abstract class Repeticion implements Serializable {
     public boolean tieneVencimientoPorCantidadRepeticiones() {
         return this.cantidadRepeticiones != 0;
     }
+
+    public abstract String descripcionRepeticion();
 }
 

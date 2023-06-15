@@ -24,6 +24,10 @@ public class RepeticionAnual extends Repeticion {
             return null;
     }
 
+    @Override
+    public String descripcionRepeticion() {
+        return "Se repite anualmente";
+    }
 
 
 }

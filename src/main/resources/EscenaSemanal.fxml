@@ -32,9 +32,9 @@
             </Label>
             <SplitMenuButton fx:id="menuFecha" mnemonicParsing="false" text="Semana">
               <items>
-                 <MenuItem mnemonicParsing="false" text="Dia" onAction="#setDia"/>
-                 <MenuItem mnemonicParsing="false" text="Semana" onAction="#setSemana"/>
-                 <MenuItem mnemonicParsing="false" text="Mes" onAction="#setMes"/>
+                 <MenuItem mnemonicParsing="false" onAction="#setDia" text="Dia" />
+                 <MenuItem mnemonicParsing="false" onAction="#setSemana" text="Semana" />
+                 <MenuItem mnemonicParsing="false" onAction="#setMes" text="Mes" />
               </items>
                <HBox.margin>
                   <Insets left="800.0" />
@@ -58,7 +58,7 @@
          <content>
             <HBox prefHeight="926.0" prefWidth="1600.0" spacing="50.0">
                <children>
-                  <VBox fx:id="diaDomingo" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0">
+                  <VBox fx:id="diaDomingo" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0" spacing="7.0">
                      <children>
                         <Label fx:id="diaDomingoLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="70.0" textAlignment="CENTER">
                            <font>
@@ -67,7 +67,7 @@
                         </Label>
                      </children>
                   </VBox>
-                  <VBox fx:id="diaLunes" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0">
+                  <VBox fx:id="diaLunes" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0" spacing="7.0">
                      <children>
                         <Label fx:id="diaLunesLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="70.0" textAlignment="CENTER">
                            <font>
@@ -76,7 +76,7 @@
                         </Label>
                      </children>
                   </VBox>
-                  <VBox fx:id="diaMartes" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0">
+                  <VBox fx:id="diaMartes" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0" spacing="7.0">
                      <children>
                         <Label fx:id="diaMartesLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="70.0" textAlignment="CENTER">
                            <font>
@@ -85,7 +85,7 @@
                         </Label>
                      </children>
                   </VBox>
-                  <VBox fx:id="diaMiercoles" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0">
+                  <VBox fx:id="diaMiercoles" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0" spacing="7.0">
                      <children>
                         <Label fx:id="diaMiercolesLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="70.0" textAlignment="CENTER">
                            <font>
@@ -94,7 +94,7 @@
                         </Label>
                      </children>
                   </VBox>
-                  <VBox fx:id="diaJueves" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0">
+                  <VBox fx:id="diaJueves" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0" spacing="7.0">
                      <children>
                         <Label fx:id="diaJuevesLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="70.0" textAlignment="CENTER">
                            <font>
@@ -103,7 +103,7 @@
                         </Label>
                      </children>
                   </VBox>
-                  <VBox fx:id="diaViernes" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0">
+                  <VBox fx:id="diaViernes" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0" spacing="7.0">
                      <children>
                         <Label fx:id="diaViernesLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="70.0" textAlignment="CENTER">
                            <font>
@@ -112,7 +112,7 @@
                         </Label>
                      </children>
                   </VBox>
-                  <VBox fx:id="diaSabado" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0">
+                  <VBox fx:id="diaSabado" alignment="TOP_CENTER" prefHeight="1494.0" prefWidth="170.0" spacing="7.0">
                      <children>
                         <Label fx:id="diaSabadoLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="70.0" textAlignment="CENTER">
                            <font>
