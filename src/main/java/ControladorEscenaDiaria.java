@@ -3,14 +3,20 @@ import Fechas.Mes;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
 import java.util.TreeSet;
 
 public class ControladorEscenaDiaria {
@@ -127,8 +133,12 @@ public class ControladorEscenaDiaria {
         TreeSet<ElementoCalendario> elementos = calendario.elementosEntreFechas(dia_mostrar, dia_mostrar.plusDays(1));
 
         for (ElementoCalendario elemento : elementos){
-            Label lbl = new Label(elemento.getTitulo());
-            dia.getChildren().add(lbl);
+            Button btn = new Button();
+            btn.setMinWidth(1000);
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setText(elemento.getTitulo() + '\n' + elemento.getFecha().getHour() + ":" + String.format("%02d", elemento.getFecha().getMinute()) + " - " + ((Evento) elemento).getFechaYHoraFinal().getHour() + ":" + String.format("%02d", ((Evento) elemento).getFechaYHoraFinal().getMinute()));
+            dia.getChildren().add(btn);
+
         }
 
 
