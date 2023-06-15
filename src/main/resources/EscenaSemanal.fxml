@@ -40,7 +40,7 @@
                   <Insets left="800.0" />
                </HBox.margin>
             </SplitMenuButton>
-            <SplitMenuButton mnemonicParsing="false" text="Crear">
+            <SplitMenuButton fx:id="menuCrear" mnemonicParsing="false" text="Crear">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#crearEvento" text="Evento" />
                 <MenuItem mnemonicParsing="false" onAction="#crearTarea" text="Tarea" />
