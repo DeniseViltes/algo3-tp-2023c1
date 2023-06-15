@@ -1,21 +1,18 @@
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 
 public class ControladorEscenaEvento{
     private Evento evento;
+    private Calendario calendario;
 
     @FXML
     private TextField descripcionEvento;
@@ -31,10 +28,12 @@ public class ControladorEscenaEvento{
     private DatePicker selecionadorFechaInicio;
 
 
-    void  initEvento (Evento evento){
+    void  initEvento ( Calendario calendario,Evento evento){
         this.evento = evento;
+        tituloEvento.setText(evento.getTitulo());
+        selecionadorFechaInicio.setChronology(evento.getFecha().getChronology());
+        selecionadorFechaFinal.setChronology(evento.getFechaYHoraFinal().getChronology());
     }
-
     @FXML
     void volverAVistaPrincipal(ActionEvent event) throws IOException {
         Stage stage = (Stage) selecionadorFechaFinal.getScene().getWindow();
@@ -42,13 +41,23 @@ public class ControladorEscenaEvento{
     }
     @FXML
     void modificarDescripcion(ActionEvent event) {
-        System.out.println("psa algo");
-
+        if(descripcionEvento.getText()!= null)
+            calendario.modificarDescripcion(evento,descripcionEvento.getText());
     }
     @FXML
     void modificarTitulo(KeyEvent event) {
         if(tituloEvento.getText()!= null)
-            evento.setTitulo(tituloEvento.getText());
+            calendario.modificarTitulo(evento,tituloEvento.getText());
     }
 
+    @FXML
+    void modificarFinal(ActionEvent event) {
+        var duracion = Duration.between(selecionadorFechaFinal.getValue(),selecionadorFechaInicio.getValue());
+        calendario.modificarDuracion(evento,duracion);
+    }
+
+    @FXML
+    void modificarInicio(ActionEvent event) {
+        calendario.modificarFecha(evento,selecionadorFechaInicio.getValue().atStartOfDay());
+    }
 }
