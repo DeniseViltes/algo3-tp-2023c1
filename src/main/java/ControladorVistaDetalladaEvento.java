@@ -26,7 +26,7 @@ public class ControladorVistaDetalladaEvento extends  ControladorVistaDetallada{
     @FXML
     private ListView<String> listaAlarmas;
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private  DateTimeFormatter formatter= DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 
     @Override
@@ -40,7 +40,6 @@ public class ControladorVistaDetalladaEvento extends  ControladorVistaDetallada{
         Por ahora dejo asi las fechas, pero estaria bueno formatear la fecha
         como en google calendar
          */
-
         fechaInicio.setText(inicio.format(formatter));
         fechaFinal.setText(fin.format(formatter));
         if(evento.tieneRepeticion())

@@ -44,7 +44,7 @@
                </Label>
                <SplitPane dividerPositions="0.5" focusTraversable="false" pickOnBounds="false" prefHeight="47.0" prefWidth="480.0">
                   <items>
-                     <Label fx:id="fechaInicio" prefHeight="17.0" prefWidth="238.0" text="Label" />
+                     <Label fx:id="fechaInicio" prefHeight="17.0" prefWidth="240.0" text="Label" />
                      <Label fx:id="fechaFinal" prefHeight="17.0" prefWidth="95.0" text="Label" />
                   </items>
                </SplitPane>
