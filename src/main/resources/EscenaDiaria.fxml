@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControladorEscenaDiaria">
+   <children>
+      <HBox prefHeight="2.0" prefWidth="1600.0" spacing="25.0">
+         <children>
+            <Label prefHeight="45.0" prefWidth="163.0" text="Calendario">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Button fx:id="btn_hoy" mnemonicParsing="false" prefHeight="35.0" prefWidth="58.0" text="Hoy" textAlignment="CENTER" />
+            <Button fx:id="btn_anterior" alignment="CENTER" mnemonicParsing="false" text="&lt;" textAlignment="CENTER" />
+            <Button fx:id="btn_siguiente" mnemonicParsing="false" text="&gt;" />
+            <Label fx:id="label_mes" prefHeight="45.0" prefWidth="159.0" text="Junio 2023">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <SplitMenuButton fx:id="menuFecha" mnemonicParsing="false" text="Semana">
+              <items>
+                 <MenuItem mnemonicParsing="false" onAction="#setDia" text="Dia" />
+                 <MenuItem mnemonicParsing="false" onAction="#setSemana" text="Semana" />
+                 <MenuItem mnemonicParsing="false" onAction="#setMes" text="Mes" />
+              </items>
+               <HBox.margin>
+                  <Insets left="800.0" />
+               </HBox.margin>
+            </SplitMenuButton>
+            <SplitMenuButton fx:id="menuCrear" mnemonicParsing="false" text="Crear">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#crearEvento" text="Evento" />
+                <MenuItem mnemonicParsing="false" onAction="#crearTarea" text="Tarea" />
+              </items>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </SplitMenuButton>
+         </children>
+         <VBox.margin>
+            <Insets bottom="20.0" top="20.0" />
+         </VBox.margin>
+      </HBox>
+      <ScrollPane prefHeight="914.0" prefWidth="1600.0">
+         <content>
+            <HBox prefHeight="926.0" prefWidth="1600.0" spacing="50.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="906.0" prefWidth="1543.0">
+                     <children>
+                        <Label fx:id="dia" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="70.0" textAlignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </HBox>
+         </content>
+      </ScrollPane>
+   </children>
+</VBox>

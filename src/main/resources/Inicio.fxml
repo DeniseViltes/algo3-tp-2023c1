@@ -10,11 +10,11 @@
    <children>
       <HBox prefHeight="2.0" prefWidth="1600.0" spacing="25.0">
          <children>
-            <SplitMenuButton fx:id="dropDown_fecha" mnemonicParsing="false" text="Semana">
+            <SplitMenuButton fx:id="menuFecha" mnemonicParsing="false" text="Semana">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Dia" />
-                  <MenuItem mnemonicParsing="false" text="Semana" />
-                  <MenuItem mnemonicParsing="false" text="Mes" />
+                  <MenuItem mnemonicParsing="false" text="Dia" onAction="#setDia"/>
+                  <MenuItem mnemonicParsing="false" text="Semana" onAction="#setSemana"/>
+                  <MenuItem mnemonicParsing="false" text="Mes" onAction="#setMes"/>
                </items>
                <HBox.margin>
                   <Insets left="800.0" />

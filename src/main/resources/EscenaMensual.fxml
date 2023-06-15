@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControladorEscenaMensual">
+   <children>
+      <HBox prefHeight="2.0" prefWidth="1600.0" spacing="25.0">
+         <children>
+            <Label prefHeight="45.0" prefWidth="163.0" text="Calendario">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Button fx:id="btn_hoy" mnemonicParsing="false" prefHeight="35.0" prefWidth="58.0" text="Hoy" textAlignment="CENTER" />
+            <Button fx:id="btn_anterior" alignment="CENTER" mnemonicParsing="false" text="&lt;" textAlignment="CENTER" />
+            <Button fx:id="btn_siguiente" mnemonicParsing="false" text="&gt;" />
+            <Label fx:id="label_mes" prefHeight="45.0" prefWidth="159.0" text="Junio 2023">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <SplitMenuButton fx:id="menuFecha" mnemonicParsing="false" text="Semana">
+              <items>
+                 <MenuItem mnemonicParsing="false" onAction="#setDia" text="Dia" />
+                 <MenuItem mnemonicParsing="false" onAction="#setSemana" text="Semana" />
+                 <MenuItem mnemonicParsing="false" onAction="#setMes" text="Mes" />
+              </items>
+               <HBox.margin>
+                  <Insets left="800.0" />
+               </HBox.margin>
+            </SplitMenuButton>
+            <SplitMenuButton fx:id="menuCrear" mnemonicParsing="false" text="Crear">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#crearEvento" text="Evento" />
+                <MenuItem mnemonicParsing="false" onAction="#crearTarea" text="Tarea" />
+              </items>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </SplitMenuButton>
+         </children>
+         <VBox.margin>
+            <Insets bottom="20.0" top="20.0" />
+         </VBox.margin>
+      </HBox>
+      <ScrollPane prefHeight="914.0" prefWidth="1600.0">
+         <content>
+            <VBox prefHeight="895.0" prefWidth="1589.0">
+               <children>
+                  <HBox prefHeight="926.0" prefWidth="1600.0" spacing="20.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia1" alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="46.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia2" alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="46.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia3" alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="46.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="30.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia4" alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="46.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="470.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia5" alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="46.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="690.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia6" alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="46.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="30.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia7" alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="46.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="682.0" prefHeight="926.0" prefWidth="1600.0" spacing="20.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia8" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia9" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia10" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="30.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia11" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="470.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia12" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="690.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia13" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="30.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia14" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="10.0" prefHeight="926.0" prefWidth="1600.0" spacing="20.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia15" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia16" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia17" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="30.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia18" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="470.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia19" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="690.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia20" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="30.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia21" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="458.0" prefHeight="926.0" prefWidth="1600.0" spacing="20.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia22" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia23" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia24" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="30.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia25" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="470.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia26" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="690.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia27" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="30.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia28" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="458.0" prefHeight="926.0" prefWidth="1600.0" spacing="20.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia29" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia30" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia31" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="30.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia32" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="470.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia33" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="690.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia34" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="30.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dia35" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
+</VBox>

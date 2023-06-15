@@ -17,7 +17,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setTitle("Calendario-Algo3");
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-        controlador.init();
+        controlador.init(stage);
         stage.show();
     }
 }

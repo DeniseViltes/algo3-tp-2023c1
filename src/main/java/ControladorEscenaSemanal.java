@@ -5,20 +5,20 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.TreeSet;
+import java.util.function.Predicate;
 
 public class ControladorEscenaSemanal{
-    private Calendario calendario;
 
     private Controlador controlador;
 
@@ -29,25 +29,56 @@ public class ControladorEscenaSemanal{
     private MenuButton menuCrear;
 
     @FXML
+    private MenuButton menuFecha;
+
+    @FXML
     private Button btn_anterior;
     @FXML
     private Button btn_siguiente;
     @FXML
     private Label label_mes;
     @FXML
-    private Label diaSabado;
+    private Label diaSabadoLabel;
     @FXML
-    private Label diaDomingo;
+    private VBox diaSabado;
     @FXML
-    private Label diaLunes;
+    private Label diaDomingoLabel;
     @FXML
-    private Label diaMartes;
+    private VBox diaDomingo;
     @FXML
-    private Label diaMiercoles;
+    private VBox diaLunes;
     @FXML
-    private Label diaJueves;
+    private Label diaLunesLabel;
     @FXML
-    private Label diaViernes;
+    private VBox diaMartes;
+    @FXML
+    private Label diaMartesLabel;
+    @FXML
+    private Label diaMiercolesLabel;
+    @FXML
+    private VBox diaMiercoles;
+    @FXML
+    private Label diaJuevesLabel;
+    @FXML
+    private VBox diaJueves;
+    @FXML
+    private Label diaViernesLabel;
+    @FXML
+    private VBox diaViernes;
+
+    @FXML
+    void setSemana(ActionEvent event) throws IOException {
+    }
+
+    @FXML
+    void setDia(ActionEvent event) throws IOException {
+        controlador.setDia(event);
+    }
+
+    @FXML
+    void setMes(ActionEvent event) throws IOException {
+        controlador.setMes(event);
+    }
 
     @FXML
     void crearEvento(ActionEvent event) throws IOException {
@@ -61,7 +92,7 @@ public class ControladorEscenaSemanal{
 
     private LocalDateTime dia_mostrado;
 
-    public void initEscenaSemanal(Controlador controlador) {
+    public void initEscenaSemanal(Controlador controlador, Calendario calendario) {
 
         this.controlador = controlador;
 
@@ -70,6 +101,7 @@ public class ControladorEscenaSemanal{
         dia_mostrado = LocalDateTime.now();
         marcarDiaActual();
         mostrarSemana(dia_mostrado);
+        actualizarCalendario(calendario, dia_mostrado);
         btn_hoy.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -77,6 +109,8 @@ public class ControladorEscenaSemanal{
                 label_mes.setText(Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspañol() + " " + dia_mostrado.getYear());
                 mostrarSemana(dia_mostrado);
                 marcarDiaActual();
+                limpiarCalendario();
+                actualizarCalendario(calendario, dia_mostrado);
             }
         });
 
@@ -89,6 +123,8 @@ public class ControladorEscenaSemanal{
                 marcarDiaNormal();
                 if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
                     marcarDiaActual();
+                limpiarCalendario();
+                actualizarCalendario(calendario, dia_mostrado);
             }
         });
 
@@ -101,33 +137,111 @@ public class ControladorEscenaSemanal{
                 marcarDiaNormal();
                 if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
                     marcarDiaActual();
+                limpiarCalendario();
+                actualizarCalendario(calendario, dia_mostrado);
             }
         });
+
+        menuFecha.setText("Semana");
+
+    }
+
+    public void limpiarCalendario(){
+        for(int i = 1 ; i < diaSabado.getChildren().size(); i++)
+            diaSabado.getChildren().remove(i);
+        for(int i = 1 ; i < diaViernes.getChildren().size(); i++)
+            diaViernes.getChildren().remove(i);
+        for(int i = 1 ; i < diaJueves.getChildren().size(); i++)
+            diaJueves.getChildren().remove(i);
+        for(int i = 1 ; i < diaMiercoles.getChildren().size(); i++)
+            diaMiercoles.getChildren().remove(i);
+        for(int i = 1 ; i < diaLunes.getChildren().size(); i++)
+            diaLunes.getChildren().remove(i);
+        for(int i = 1 ; i < diaMartes.getChildren().size(); i++)
+            diaMartes.getChildren().remove(i);
+        for(int i = 1 ; i < diaDomingo.getChildren().size(); i++)
+            diaDomingo.getChildren().remove(i);
+    }
+
+    public void actualizarCalendario(Calendario calendario, LocalDateTime dia){
+        boolean esDomingo = false;
+        while(esDomingo == false){
+            if(dia.getDayOfWeek().toString() == "SUNDAY") {
+                esDomingo = true;
+            }
+            else {
+                dia = dia.minusDays(1);
+            }
+        }
+
+        TreeSet<ElementoCalendario> domingo = calendario.elementosEntreFechas(dia, dia.plusDays(1));
+        dia = dia.plusDays(1);
+        TreeSet<ElementoCalendario> lunes = calendario.elementosEntreFechas(dia, dia.plusDays(1));
+        dia = dia.plusDays(1);
+        TreeSet<ElementoCalendario> martes = calendario.elementosEntreFechas(dia, dia.plusDays(1));
+        dia = dia.plusDays(1);
+        TreeSet<ElementoCalendario> miercoles = calendario.elementosEntreFechas(dia, dia.plusDays(1));
+        dia = dia.plusDays(1);
+        TreeSet<ElementoCalendario> jueves = calendario.elementosEntreFechas(dia, dia.plusDays(1));
+        dia = dia.plusDays(1);
+        TreeSet<ElementoCalendario> viernes = calendario.elementosEntreFechas(dia, dia.plusDays(1));
+        dia = dia.plusDays(1);
+        TreeSet<ElementoCalendario> sabado = calendario.elementosEntreFechas(dia, dia.plusDays(1));
+
+        for (ElementoCalendario elemento : domingo){
+            Label lbl = new Label(elemento.getTitulo());
+            diaDomingo.getChildren().add(lbl);
+        }
+        for (ElementoCalendario elemento : lunes){
+            Label lbl = new Label(elemento.getTitulo());
+            diaLunes.getChildren().add(lbl);
+        }
+        for (ElementoCalendario elemento : martes){
+            Label lbl = new Label(elemento.getTitulo());
+            diaMartes.getChildren().add(lbl);
+        }
+        for (ElementoCalendario elemento : miercoles){
+            Label lbl = new Label(elemento.getTitulo());
+            diaMiercoles.getChildren().add(lbl);
+        }
+        for (ElementoCalendario elemento : jueves){
+            Label lbl = new Label(elemento.getTitulo());
+            diaJueves.getChildren().add(lbl);
+        }
+        for (ElementoCalendario elemento : viernes){
+            Label lbl = new Label(elemento.getTitulo());
+            diaViernes.getChildren().add(lbl);
+        }
+        for (ElementoCalendario elemento : sabado){
+            Label lbl = new Label(elemento.getTitulo());
+            diaSabado.getChildren().add(lbl);
+        }
+
 
     }
 
     public void setearDia(String dia, int numero) {
         switch (dia){
             case "LUN":
-                diaLunes.setText(dia + '\n' + numero);
+                diaLunesLabel.setText(dia + '\n' + numero);
                 break;
             case "MAR":
-                diaMartes.setText(dia + '\n' + numero);
+                diaMartesLabel.setText(dia + '\n' + numero);
                 break;
             case "MIE":
-                diaMiercoles.setText(dia + '\n' + numero);
+                diaMiercolesLabel.setText(dia + '\n' + numero);
                 break;
             case "JUE":
-                diaJueves.setText(dia + '\n' + numero);
+                diaJuevesLabel.setText(dia + '\n' + numero);
                 break;
             case "VIE":
-                diaViernes.setText(dia + '\n' + numero);
+                diaViernesLabel.setText(dia + '\n' + numero);
                 break;
             case "SAB":
-                diaSabado.setText(dia + '\n' + numero);
+                diaSabadoLabel.setText(dia + '\n' + numero);
                 break;
             case "DOM":
-                diaDomingo.setText(dia + '\n' + numero);
+                diaDomingoLabel.setText(dia + '\n' + numero);
                 break;
         }
     }
@@ -157,25 +271,25 @@ public class ControladorEscenaSemanal{
         String dia = Dia.valueOf(LocalDateTime.now().getDayOfWeek().toString()).getDiaEspañol();
         switch (dia){
             case "LUN":
-                diaLunes.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
+                diaLunesLabel.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
                 break;
             case "MAR":
-                diaMartes.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
+                diaMartesLabel.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
                 break;
             case "MIE":
-                diaMiercoles.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
+                diaMiercolesLabel.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
                 break;
             case "JUE":
-                diaJueves.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
+                diaJuevesLabel.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
                 break;
             case "VIE":
-                diaViernes.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
+                diaViernesLabel.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
                 break;
             case "SAB":
-                diaSabado.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
+                diaSabadoLabel.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
                 break;
             case "DOM":
-                diaDomingo.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
+                diaDomingoLabel.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
                 break;
         }
     }
@@ -184,25 +298,25 @@ public class ControladorEscenaSemanal{
         String dia = Dia.valueOf(LocalDateTime.now().getDayOfWeek().toString()).getDiaEspañol();
         switch (dia){
             case "LUN":
-                diaLunes.setStyle(diaMartes.getStyle());
+                diaLunesLabel.setStyle(diaMartes.getStyle());
                 break;
             case "MAR":
-                diaMartes.setStyle(diaLunes.getStyle());
+                diaMartesLabel.setStyle(diaLunes.getStyle());
                 break;
             case "MIE":
-                diaMiercoles.setStyle(diaLunes.getStyle());
+                diaMiercolesLabel.setStyle(diaLunes.getStyle());
                 break;
             case "JUE":
-                diaJueves.setStyle(diaLunes.getStyle());
+                diaJuevesLabel.setStyle(diaLunes.getStyle());
                 break;
             case "VIE":
-                diaViernes.setStyle(diaLunes.getStyle());
+                diaViernesLabel.setStyle(diaLunes.getStyle());
                 break;
             case "SAB":
-                diaSabado.setStyle(diaLunes.getStyle());
+                diaSabadoLabel.setStyle(diaLunes.getStyle());
                 break;
             case "DOM":
-                diaDomingo.setStyle(diaLunes.getStyle());
+                diaDomingoLabel.setStyle(diaLunes.getStyle());
                 break;
         }
     }

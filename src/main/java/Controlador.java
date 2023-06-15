@@ -19,11 +19,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
 
-public class Controlador implements Initializable {
+public class Controlador {
     private Calendario calendario;
+
+    public Stage stage;
 
     @FXML
     private final LocalDate hoy = LocalDateTime.now().toLocalDate();
@@ -34,6 +37,9 @@ public class Controlador implements Initializable {
     private Button masInfo;*/
     @FXML
     private SplitMenuButton menuCrear;
+
+    @FXML
+    private SplitMenuButton menuFecha;
 /*
     @FXML
     private Label labelFecha;
@@ -65,6 +71,52 @@ public class Controlador implements Initializable {
     void habilitarVistaDetallada(MouseEvent event) {
         this.masInfo.setDisable(false);
     }*/
+
+    @FXML
+    void setSemana(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/EscenaSemanal.fxml"));
+        VBox view = loader.load();
+        //Stage stage = (Stage) menuCrear.getScene().getWindow();
+        Scene scene = new Scene(view);
+        ControladorEscenaSemanal controlador = loader.getController();
+        menuFecha.setText("Semana");
+
+        controlador.initEscenaSemanal(this, calendario);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    void setDia(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/EscenaDiaria.fxml"));
+        VBox view = loader.load();
+        //Stage stage = (Stage) menuCrear.getScene().getWindow();
+        Scene scene = new Scene(view);
+        ControladorEscenaDiaria controlador = loader.getController();
+
+
+        controlador.initEscenaDiaria(this);
+        stage.setScene(scene);
+        menuFecha.setText("Dia");
+        stage.show();
+    }
+
+    @FXML
+    void setMes(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/EscenaMensual.fxml"));
+        VBox view = loader.load();
+        //Stage stage = (Stage) menuCrear.getScene().getWindow();
+        Scene scene = new Scene(view);
+        ControladorEscenaMensual controlador = loader.getController();
+        menuFecha.setText("Mes");
+
+        controlador.initEscenaMensual(this);
+        stage.setScene(scene);
+        stage.show();
+    }
 
 
     @FXML
@@ -107,27 +159,32 @@ public class Controlador implements Initializable {
 //        var elementos = calendario.elementosEntreFechas(hoy.atStartOfDay(),hoy.atTime(LocalTime.MAX));
 //        listaDeElementos.getItems().addAll(elementos);
 //    }
-    public void init() throws IOException{
+    public void init(Stage stage) throws IOException{
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/EscenaSemanal.fxml"));
         VBox view = loader.load();
-        Stage stage = (Stage) menuCrear.getScene().getWindow();
+        this.stage = stage;
         Scene scene = new Scene(view);
+        inicializarCalendario();
         ControladorEscenaSemanal controlador = loader.getController();
-        controlador.initEscenaSemanal(this);
+        controlador.initEscenaSemanal(this, calendario);
         stage.setScene(scene);
         stage.show();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void inicializarCalendario() {
         try {
             this.calendario = ProcesadorDeArchivoCalendario.leerCalendarioDeArchivo("serializa.cal");
         } catch (IOException | ClassNotFoundException e) {
             this.calendario = new Calendario();
         }
 
-        var elementos = calendario.elementosEntreFechas(hoy.atStartOfDay(), hoy.atTime(LocalTime.MAX));
+        Evento evento = calendario.crearEvento();
+        LocalDateTime dia = LocalDateTime.now().minusDays(3).truncatedTo(ChronoUnit.DAYS);
+        calendario.modificarFecha(evento, dia.plusHours(5));
+        calendario.modificarTitulo(evento, "Se aprueba el TP");
+        calendario.agregarRepeticionDiariaEvento(evento);
+        //var elementos = calendario.elementosEntreFechas(hoy.atStartOfDay(), hoy.atTime(LocalTime.MAX));
     }
         /*
         listaDeElementos.getItems().addAll(elementos);
