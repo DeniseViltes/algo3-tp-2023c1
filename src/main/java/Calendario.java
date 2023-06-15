@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Calendario implements Serializable {
     private final TreeSet<ElementoCalendario> elementosCalendario;
-    private final transient List<CalendarioListener> listeners;
+    private transient List<CalendarioListener> listeners;
 
     public Calendario() {
         listeners = new ArrayList<CalendarioListener>();
@@ -18,6 +18,9 @@ public class Calendario implements Serializable {
         listeners.add(listener);
     }
     public void notificarListeners(){
+        if(listeners == null)
+            listeners = new ArrayList<CalendarioListener>();
+
         for (CalendarioListener listener : listeners){
             listener.updateCalendario();
         }
