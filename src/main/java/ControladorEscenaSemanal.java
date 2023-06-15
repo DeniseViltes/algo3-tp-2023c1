@@ -1,10 +1,13 @@
 import Fechas.Dia;
 import Fechas.Mes;
+import com.sun.javafx.scene.control.SelectedCellsMap;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -147,20 +150,27 @@ public class ControladorEscenaSemanal{
     }
 
     public void limpiarCalendario(){
-        for(int i = 1 ; i < diaSabado.getChildren().size(); i++)
-            diaSabado.getChildren().remove(i);
-        for(int i = 1 ; i < diaViernes.getChildren().size(); i++)
-            diaViernes.getChildren().remove(i);
-        for(int i = 1 ; i < diaJueves.getChildren().size(); i++)
-            diaJueves.getChildren().remove(i);
-        for(int i = 1 ; i < diaMiercoles.getChildren().size(); i++)
-            diaMiercoles.getChildren().remove(i);
-        for(int i = 1 ; i < diaLunes.getChildren().size(); i++)
-            diaLunes.getChildren().remove(i);
-        for(int i = 1 ; i < diaMartes.getChildren().size(); i++)
-            diaMartes.getChildren().remove(i);
-        for(int i = 1 ; i < diaDomingo.getChildren().size(); i++)
-            diaDomingo.getChildren().remove(i);
+        while(diaSabado.getChildren().size() != 1){
+            diaSabado.getChildren().remove(diaSabado.getChildren().size()-1);
+        }
+        while(diaDomingo.getChildren().size() != 1){
+            diaDomingo.getChildren().remove(diaDomingo.getChildren().size()-1);
+        }
+        while(diaLunes.getChildren().size() != 1){
+            diaLunes.getChildren().remove(diaLunes.getChildren().size()-1);
+        }
+        while(diaMartes.getChildren().size() != 1){
+            diaMartes.getChildren().remove(diaMartes.getChildren().size()-1);
+        }
+        while(diaMiercoles.getChildren().size() != 1){
+            diaMiercoles.getChildren().remove(diaMiercoles.getChildren().size()-1);
+        }
+        while(diaJueves.getChildren().size() != 1){
+            diaJueves.getChildren().remove(diaJueves.getChildren().size()-1);
+        }
+        while(diaViernes.getChildren().size() != 1){
+            diaViernes.getChildren().remove(diaViernes.getChildren().size()-1);
+        }
     }
 
     public void actualizarCalendario(Calendario calendario, LocalDateTime dia){
@@ -189,35 +199,178 @@ public class ControladorEscenaSemanal{
         TreeSet<ElementoCalendario> sabado = calendario.elementosEntreFechas(dia, dia.plusDays(1));
 
         for (ElementoCalendario elemento : domingo){
-            Label lbl = new Label(elemento.getTitulo());
-            diaDomingo.getChildren().add(lbl);
+            if(elemento.isEsDeDiaCompleto()){
+                diaDomingo.getChildren().add(1, setear_texto_dia_completo(elemento, elemento.tieneVencimiento()));
+            } else{
+                diaDomingo.getChildren().add(setear_texto(elemento, elemento.tieneVencimiento()));
+            }
         }
         for (ElementoCalendario elemento : lunes){
-            Label lbl = new Label(elemento.getTitulo());
-            diaLunes.getChildren().add(lbl);
+            if(elemento.isEsDeDiaCompleto()){
+                diaLunes.getChildren().add(1, setear_texto_dia_completo(elemento, elemento.tieneVencimiento()));
+            } else{
+                diaLunes.getChildren().add(setear_texto(elemento, elemento.tieneVencimiento()));
+            }
         }
         for (ElementoCalendario elemento : martes){
-            Label lbl = new Label(elemento.getTitulo());
-            diaMartes.getChildren().add(lbl);
+            if(elemento.isEsDeDiaCompleto()){
+                diaMartes.getChildren().add(1, setear_texto_dia_completo(elemento, elemento.tieneVencimiento()));
+            } else{
+                diaMartes.getChildren().add(setear_texto(elemento, elemento.tieneVencimiento()));
+            }
         }
         for (ElementoCalendario elemento : miercoles){
-            Label lbl = new Label(elemento.getTitulo());
-            diaMiercoles.getChildren().add(lbl);
+            if(elemento.isEsDeDiaCompleto()){
+                diaMiercoles.getChildren().add(1, setear_texto_dia_completo(elemento, elemento.tieneVencimiento()));
+            } else{
+                diaMiercoles.getChildren().add(setear_texto(elemento, elemento.tieneVencimiento()));
+            }
         }
         for (ElementoCalendario elemento : jueves){
-            Label lbl = new Label(elemento.getTitulo());
-            diaJueves.getChildren().add(lbl);
+            if(elemento.isEsDeDiaCompleto()){
+                diaJueves.getChildren().add(1, setear_texto_dia_completo(elemento, elemento.tieneVencimiento()));
+            } else{
+                diaJueves.getChildren().add(setear_texto(elemento, elemento.tieneVencimiento()));
+            }
         }
         for (ElementoCalendario elemento : viernes){
-            Label lbl = new Label(elemento.getTitulo());
-            diaViernes.getChildren().add(lbl);
+            if(elemento.isEsDeDiaCompleto()){
+                diaViernes.getChildren().add(1, setear_texto_dia_completo(elemento, elemento.tieneVencimiento()));
+            } else{
+                diaViernes.getChildren().add(setear_texto(elemento, elemento.tieneVencimiento()));
+            }
         }
         for (ElementoCalendario elemento : sabado){
-            Label lbl = new Label(elemento.getTitulo());
-            diaSabado.getChildren().add(lbl);
+            if(elemento.isEsDeDiaCompleto()){
+                diaSabado.getChildren().add(1, setear_texto_dia_completo(elemento, elemento.tieneVencimiento()));
+            } else{
+                diaSabado.getChildren().add(setear_texto(elemento, elemento.tieneVencimiento()));
+            }
         }
 
+    }
 
+    public Node setear_texto(ElementoCalendario el, boolean tieneVencimiento){
+        if(tieneVencimiento){
+            Button btn = new Button();
+            btn.setMinWidth(150);
+            btn.setMinHeight(60);
+            btn.setPadding(new Insets(7));
+            btn.setStyle("-fx-cursor: hand; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;");
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setText(el.getTitulo() + '\n' + el.getFecha().getHour() + ":" + String.format("%02d", el.getFecha().getMinute()) + " - " + ((Evento)el).getFechaYHoraFinal().getHour() + ":" + String.format("%02d", ((Evento)el).getFechaYHoraFinal().getMinute()));
+            btn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    mostrar_informacion(el, tieneVencimiento);
+                }
+            });
+            return btn;
+        }
+        else{
+            CheckBox btn = new CheckBox();
+            btn.setMinWidth(150);
+            btn.setPadding(new Insets(7));
+            btn.setMinHeight(60);
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setStyle("-fx-cursor: hand; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #1a73e8;");
+            if(((Tarea) el).estaCompleta())
+                btn.setSelected(true);
+            btn.setText(el.getTitulo() + '\n' + el.getFecha().getHour() + ":" + String.format("%02d", el.getFecha().getMinute()));
+            btn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    mostrar_informacion(el, tieneVencimiento);
+                }
+            });
+            return btn;
+        }
+    }
+
+    public Node setear_texto_dia_completo(ElementoCalendario el, boolean tieneVencimiento){
+        if(tieneVencimiento){
+            Button btn = new Button();
+            btn.setMinWidth(150);
+            btn.setPadding(new Insets(7));
+            btn.setMinHeight(20);
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;-fx-cursor: hand; ");
+            btn.setText(el.getTitulo());
+            btn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    mostrar_informacion(el, tieneVencimiento);
+                }
+            });
+            return btn;
+        }
+        else{
+            CheckBox btn = new CheckBox();
+            btn.setMinWidth(150);
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setMinHeight(20);
+            btn.setPadding(new Insets(7));
+            if(((Tarea) el).estaCompleta())
+                btn.setSelected(true);
+            btn.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #1a73e8; -fx-cursor: hand; ");
+            btn.setText(el.getTitulo());
+            btn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    mostrar_informacion(el, tieneVencimiento);
+                }
+            });
+            return btn;
+        }
+    }
+    public void mostrar_informacion(ElementoCalendario el, boolean tieneVencimiento){
+        final Stage dialog = new Stage();
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.setAlignment(Pos.TOP_CENTER);
+
+        Label titulo = new Label(el.getTitulo());
+        titulo.setStyle("-fx-font-size: 30;");
+
+        CheckBox todoElDia = new CheckBox("Todo el dia");
+        if(el.isEsDeDiaCompleto())
+            todoElDia.setSelected(true);
+
+        Label descripcion = new Label(el.getDescripcion());
+        descripcion.setStyle("-fx-font-size: 15;");
+
+        dialogVbox.getChildren().add(titulo);
+
+        //alarmas
+
+        if(tieneVencimiento){
+            LocalDateTime dia = el.getFecha();
+            LocalDateTime diaFinal = ((Evento) el).getFechaYHoraFinal();
+            Label fecha = new Label(dia.getDayOfMonth() + " " + Mes.valueOf(dia.getMonth().toString()).getMesEspañol() +" "+ dia.getYear() + " a "+diaFinal.getDayOfMonth() + " " + Mes.valueOf(diaFinal.getMonth().toString()).getMesEspañol() +" "+ diaFinal.getYear());
+            fecha.setStyle("-fx-font-size: 15;");
+
+            dialogVbox.getChildren().add(fecha);
+            dialogVbox.getChildren().add(todoElDia);
+
+            Label repeticion = new Label(((Evento) el).descripcionRepeticion());
+            repeticion.setStyle("-fx-font-size: 15;");
+
+            dialogVbox.getChildren().add(repeticion);
+        }
+        else{
+            //fecha
+
+            //dialogVbox.getChildren().add(fecha);
+            dialogVbox.getChildren().add(todoElDia);
+
+            //completa
+        }
+
+        dialogVbox.getChildren().add(descripcion);
+
+        Scene dialogScene = new Scene(dialogVbox, 300, 200);
+        dialog.setTitle(el.getTitulo());
+        dialog.setScene(dialogScene);
+        dialog.show();
     }
 
     public void setearDia(String dia, int numero) {

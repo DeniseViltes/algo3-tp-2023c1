@@ -236,7 +236,7 @@
                               </Label>
                            </children>
                         </VBox>
-                        <VBox fx:id="dia19" alignment="TOP_CENTER" layoutX="470.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                        <VBox fx:id="dia19" alignment="TOP_CENTER" layoutX="470.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="3.0">
                            <children>
                               <Label fx:id="dia19Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
                                  <font>
@@ -245,7 +245,7 @@
                               </Label>
                            </children>
                         </VBox>
-                        <VBox fx:id="dia20" alignment="TOP_CENTER" layoutX="690.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                        <VBox fx:id="dia20" alignment="TOP_CENTER" layoutX="690.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="8.0">
                            <children>
                               <Label fx:id="dia20Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER">
                                  <font>

@@ -1,4 +1,7 @@
 import Repeticiones.*;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -126,7 +129,7 @@ public class Evento extends ElementoCalendario {
     }
 
     private boolean esIgualOEstaEntre(LocalDateTime inicio, LocalDateTime fin, LocalDateTime t){
-        return (t.equals(inicio) || t.isAfter(inicio)) && (t.equals(fin) || t.isBefore(fin));
+        return (t.equals(inicio) || t.isAfter(inicio)) && t.isBefore(fin);
     }
 
 
@@ -204,5 +207,13 @@ public class Evento extends ElementoCalendario {
             this.setRepeticionDiaria(intervalo);
             this.setRepeticionVencimiento(vencimiento);
         }
+
+    }
+    public boolean tieneVencimiento(){
+        return true;
+    }
+
+    public String descripcionRepeticion(){
+        return repeticion.descripcionRepeticion();
     }
 }

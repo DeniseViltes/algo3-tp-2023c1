@@ -3,7 +3,11 @@ import Fechas.Mes;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.VBox;
@@ -278,8 +282,9 @@ public class ControladorEscenaMensual {
 
     public void limpiarCalendario(){
         for(int i = 0; i < 35; i++){
-            for(int j = 1 ; j < dias[i].getChildren().size(); j++)
-                dias[i].getChildren().remove(j);
+            while(dias[i].getChildren().size() != 1){
+                dias[i].getChildren().remove(dias[i].getChildren().size()-1);
+            }
         }
     }
 
@@ -305,11 +310,64 @@ public class ControladorEscenaMensual {
 
         for(int i = 0; i < 35; i++){
             for (ElementoCalendario elemento : elementos.get(i)){
-                Label lbl = new Label(elemento.getTitulo());
-                dias[i].getChildren().add(lbl);
+                if(elemento.isEsDeDiaCompleto()){
+                    dias[i].getChildren().add(1, setear_texto_dia_completo(elemento, elemento.tieneVencimiento()));
+                } else{
+                    dias[i].getChildren().add(setear_texto(elemento, elemento.tieneVencimiento()));
+                }
             }
         }
 
+    }
+
+    public Node setear_texto(ElementoCalendario el, boolean tieneVencimiento){
+        if(tieneVencimiento){
+            Button btn = new Button();
+            btn.setMinWidth(150);
+            btn.setMinHeight(15);
+            btn.setPadding(new Insets(2,5,2,5));
+            btn.setStyle("-fx-font-size: 10; -fx-cursor: hand; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: black; -fx-background-color: white;");
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setText(el.getFecha().getHour()  + " - " + ((Evento)el).getFechaYHoraFinal().getHour() + " " + el.getTitulo() );
+            return btn;
+        }
+        else{
+            CheckBox btn = new CheckBox();
+            btn.setMinWidth(150);
+            btn.setMinHeight(20);
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setPadding(new Insets(3,5,3,5));
+            btn.setStyle("-fx-font-size: 10; -fx-cursor: hand; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: black; -fx-background-color: white;");
+            if(((Tarea) el).estaCompleta())
+                btn.setSelected(true);
+            btn.setText(el.getFecha().getHour() + " " + el.getTitulo());
+            return btn;
+        }
+    }
+
+    public Node setear_texto_dia_completo(ElementoCalendario el, boolean tieneVencimiento){
+        if(tieneVencimiento){
+            Button btn = new Button();
+            btn.setMinWidth(150);
+            btn.setPadding(new Insets(1,5,1,5));
+            btn.setMinHeight(15);
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setStyle("-fx-font-size: 10;-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;-fx-cursor: hand; ");
+            btn.setText(el.getTitulo());
+            return btn;
+        }
+        else{
+            CheckBox btn = new CheckBox();
+            btn.setMinWidth(150);
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setMinHeight(20);
+            btn.setPadding(new Insets(3,5,3,5));
+            if(((Tarea) el).estaCompleta())
+                btn.setSelected(true);
+            btn.setStyle("-fx-font-size: 10;-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #1a73e8; -fx-cursor: hand; ");
+            btn.setText(el.getTitulo());
+            return btn;
+        }
     }
 
 

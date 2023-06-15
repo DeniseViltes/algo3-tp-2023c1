@@ -23,4 +23,9 @@ public class RepeticionMensual extends Repeticion {
         else
             return null;
     }
+
+    @Override
+    public String descripcionRepeticion() {
+        return "Se repite mensualmente";
+    }
 }

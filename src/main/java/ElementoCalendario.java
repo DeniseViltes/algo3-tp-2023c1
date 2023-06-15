@@ -1,3 +1,7 @@
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -104,7 +108,7 @@ public abstract class ElementoCalendario implements Serializable {
         return esIgualOEstaEntre(inicio,fin,this.fechaYHoraCaracteristica);
     }
     private boolean esIgualOEstaEntre(LocalDateTime inicio, LocalDateTime fin, LocalDateTime t){
-        return (t.equals(inicio) || t.isAfter(inicio)) && (t.equals(fin) || t.isBefore(fin));
+        return (t.equals(inicio) || t.isAfter(inicio)) && t.isBefore(fin);
     }
 
     abstract void agregarElementoAlSet(Set<ElementoCalendario> elementos, LocalDateTime inicio, LocalDateTime fin);
@@ -150,5 +154,9 @@ public abstract class ElementoCalendario implements Serializable {
                 return elemento;
         }
         return null;
+    }
+
+    public boolean tieneVencimiento(){
+        return true;
     }
 }

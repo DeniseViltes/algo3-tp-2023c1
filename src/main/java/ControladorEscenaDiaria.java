@@ -7,7 +7,9 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.VBox;
@@ -124,8 +126,9 @@ public class ControladorEscenaDiaria {
     }
 
     public void limpiarCalendario(){
-        for(int i = 1 ; i < dia.getChildren().size(); i++)
-            dia.getChildren().remove(i);
+        while(dia.getChildren().size() != 1){
+            dia.getChildren().remove(dia.getChildren().size()-1);
+        }
     }
 
     public void actualizarCalendario(Calendario calendario, LocalDateTime dia_mostrar){
@@ -133,15 +136,65 @@ public class ControladorEscenaDiaria {
         TreeSet<ElementoCalendario> elementos = calendario.elementosEntreFechas(dia_mostrar, dia_mostrar.plusDays(1));
 
         for (ElementoCalendario elemento : elementos){
-            Button btn = new Button();
-            btn.setMinWidth(1000);
-            btn.setAlignment(Pos.CENTER_LEFT);
-            btn.setText(elemento.getTitulo() + '\n' + elemento.getFecha().getHour() + ":" + String.format("%02d", elemento.getFecha().getMinute()) + " - " + ((Evento) elemento).getFechaYHoraFinal().getHour() + ":" + String.format("%02d", ((Evento) elemento).getFechaYHoraFinal().getMinute()));
-            dia.getChildren().add(btn);
+            if(elemento.isEsDeDiaCompleto()){
+                dia.getChildren().add(1, setear_texto_dia_completo(elemento, elemento.tieneVencimiento()));
+            } else{
+                dia.getChildren().add(setear_texto(elemento, elemento.tieneVencimiento()));
+            }
 
         }
+    }
+
+    public Node setear_texto_dia_completo(ElementoCalendario el, boolean tieneVencimiento){
+        if(tieneVencimiento){
+            Button btn = new Button();
+            btn.setMinWidth(1000);
+            btn.setPadding(new Insets(7));
+            btn.setMinHeight(20);
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;-fx-cursor: hand; ");
+            btn.setText(el.getTitulo());
+            return btn;
+        }
+        else{
+            CheckBox btn = new CheckBox();
+            btn.setMinWidth(1000);
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setMinHeight(20);
+            btn.setPadding(new Insets(7));
+            if(((Tarea) el).estaCompleta())
+                btn.setSelected(true);
+            btn.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #1a73e8; -fx-cursor: hand; ");
+            btn.setText(el.getTitulo());
+            return btn;
+        }
+    }
 
 
+
+    public Node setear_texto(ElementoCalendario el, boolean tieneVencimiento){
+        if(tieneVencimiento){
+            Button btn = new Button();
+            btn.setMinWidth(1000);
+            btn.setMinHeight(60);
+            btn.setPadding(new Insets(7));
+            btn.setStyle("-fx-cursor: hand; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;");
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setText(el.getTitulo() + '\n' + el.getFecha().getHour() + ":" + String.format("%02d", el.getFecha().getMinute()) + " - " + ((Evento)el).getFechaYHoraFinal().getHour() + ":" + String.format("%02d", ((Evento)el).getFechaYHoraFinal().getMinute()));
+            return btn;
+        }
+        else{
+            CheckBox btn = new CheckBox();
+            btn.setMinWidth(1000);
+            btn.setPadding(new Insets(7));
+            btn.setMinHeight(60);
+            btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setStyle("-fx-cursor: hand; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #1a73e8;");
+            if(((Tarea) el).estaCompleta())
+                btn.setSelected(true);
+            btn.setText(el.getTitulo() + '\n' + el.getFecha().getHour() + ":" + String.format("%02d", el.getFecha().getMinute()));
+            return btn;
+        }
     }
 
     public void mostrarDia(LocalDateTime dia_mostrado) {
