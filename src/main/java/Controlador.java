@@ -97,7 +97,7 @@ public class Controlador {
         ControladorEscenaDiaria controlador = loader.getController();
 
 
-        controlador.initEscenaDiaria(this);
+        controlador.initEscenaDiaria(this, calendario);
         stage.setScene(scene);
         menuFecha.setText("Dia");
         stage.show();
@@ -180,7 +180,8 @@ public class Controlador {
         }
 
         Evento evento = calendario.crearEvento();
-        LocalDateTime dia = LocalDateTime.now().minusDays(3).truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime dia = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        System.out.println(dia);
         calendario.modificarFecha(evento, dia.plusHours(5));
         calendario.modificarTitulo(evento, "Se aprueba el TP");
         calendario.agregarRepeticionDiariaEvento(evento);

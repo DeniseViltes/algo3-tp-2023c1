@@ -58,9 +58,9 @@
          <content>
             <HBox prefHeight="926.0" prefWidth="1600.0" spacing="50.0">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="906.0" prefWidth="1543.0">
+                  <VBox fx:id="dia" alignment="TOP_CENTER" prefHeight="906.0" prefWidth="1543.0">
                      <children>
-                        <Label fx:id="dia" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="70.0" textAlignment="CENTER">
+                        <Label fx:id="diaLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="70.0" textAlignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>

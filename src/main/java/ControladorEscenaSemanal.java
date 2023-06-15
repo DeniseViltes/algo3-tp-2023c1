@@ -98,14 +98,14 @@ public class ControladorEscenaSemanal{
 
         label_mes.setText(Mes.valueOf(LocalDateTime.now().getMonth().toString()).getMesEspañol() + " " + LocalDateTime.now().getYear());
 
-        dia_mostrado = LocalDateTime.now();
+        dia_mostrado = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
         marcarDiaActual();
         mostrarSemana(dia_mostrado);
         actualizarCalendario(calendario, dia_mostrado);
         btn_hoy.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                dia_mostrado = LocalDateTime.now();
+                dia_mostrado = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
                 label_mes.setText(Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspañol() + " " + dia_mostrado.getYear());
                 mostrarSemana(dia_mostrado);
                 marcarDiaActual();
