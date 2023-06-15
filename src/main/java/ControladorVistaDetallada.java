@@ -4,17 +4,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ControladorVistaDetallada {
 
-    private ElementoCalendario elementoCalendario;
+abstract public class ControladorVistaDetallada {
 
-    @FXML
-    private Label label;
     @FXML
     void volverAVistaPrincipal(ActionEvent event) throws IOException {
 
@@ -24,8 +20,6 @@ public class ControladorVistaDetallada {
         stage.setScene(scene);
         stage.show();
     }
-    void initVista(ElementoCalendario elemento){
-        this.elementoCalendario = elemento;
-        label.setText(elemento.getTitulo());
-    }
+
+    public abstract void initVista(ElementoCalendario elemento);
 }

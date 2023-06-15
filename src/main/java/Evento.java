@@ -95,14 +95,18 @@ public class Evento extends ElementoCalendario {
         this.repeticion = new RepeticionAnual();
     }
 
+
+    public boolean tieneRepeticion(){
+        return repeticion != null;
+    }
     public void setRepeticionVencimiento(LocalDateTime vencimiento){
-        if(repeticion == null)
+        if(!tieneRepeticion())
                 return;
         this.repeticion.setVencimiento(vencimiento);
     }
 
     public void setRepeticionCantidad(int cantidadRepeticiones){
-        if(repeticion == null)
+        if(!tieneRepeticion())
             return;
         this.repeticion.setCantidadRepeticiones(getFecha(), cantidadRepeticiones);
     }
@@ -113,7 +117,7 @@ public class Evento extends ElementoCalendario {
 
 
     public boolean tieneRepeticionEntreLosHorarios(LocalDateTime inicio, LocalDateTime fin){
-        if(repeticion == null)
+        if(!tieneRepeticion())
             return false;
         var fechaRepeticion = repeticion.Repetir(inicio);
         if(fechaRepeticion == null)
@@ -130,7 +134,7 @@ public class Evento extends ElementoCalendario {
      * Devuelve la fecha de la proxima repeticion desde inicio.
      */
     public  LocalDateTime proximaRepeticion (LocalDateTime inicio){
-        if (repeticion == null)
+        if (!tieneRepeticion())
                 return null;
         return repeticion.Repetir(inicio);
     }
