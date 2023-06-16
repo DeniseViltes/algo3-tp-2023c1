@@ -91,6 +91,8 @@ public class ControladorEscenaEvento{
         this.tipoDeIntervalo.getItems().add("horas");
         this.tipoDeIntervalo.getItems().add("dias");
         this.tipoDeIntervalo.getItems().add("semanas");
+
+        this.tipoDeIntervalo.setValue("minutos");
     }
 
     //Scene dialogScene = new Scene(dialogVbox, 300, 200);
