@@ -1,17 +1,23 @@
 import fechas.Mes;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class ControladorMostrarInformacion {
@@ -20,7 +26,7 @@ public class ControladorMostrarInformacion {
         check.setSelected(!check.isSelected());
     }
 
-    public void mostrar_informacion(ElementoCalendario el, Node btn){
+    public void mostrar_informacion(Calendario calendario, ElementoCalendario el, Node btn){
         final Stage dialog = new Stage();
         VBox dialogVbox = new VBox(10);
         dialogVbox.setAlignment(Pos.TOP_LEFT);
@@ -43,6 +49,8 @@ public class ControladorMostrarInformacion {
 
         dialogVbox.getChildren().add(titulo);
         LocalDateTime dia = el.getFecha();
+
+
 
         if(el.tieneVencimiento()){
             HBox fecha = new HBox();
@@ -115,10 +123,64 @@ public class ControladorMostrarInformacion {
 
         if(!el.getDescripcion().isEmpty())
             dialogVbox.getChildren().add(descripcion);
+        var botonEliminar = botonEliminar(calendario,el);
+        var botonEditar = botorEditarElemento(calendario,el);
+
+        HBox editarEliminar = new HBox();
+        editarEliminar.getChildren().add(botonEditar);
+        editarEliminar.getChildren().add(botonEliminar);
+        dialogVbox.getChildren().add(editarEliminar);//TODO los puse en cualquier lado para ver como funciona
 
         Scene dialogScene = new Scene(dialogVbox, 500, 300);
         dialog.setTitle(el.getTitulo());
         dialog.setScene(dialogScene);
         dialog.show();
+    }
+
+    private Button botorEditarElemento(Calendario calendario, ElementoCalendario elemento){
+        Button editar = new Button("Editar");
+        editar.setMinWidth(25);
+        editar.setMinHeight(25);
+
+        FXMLLoader loader = new FXMLLoader();
+        String path = elemento.tieneVencimiento()? "/EscenaModificarEvento.fxml": "/EscenaModificarTarea.fxml";
+        loader.setLocation(getClass().getResource(path));
+        AnchorPane view = null;
+        try {
+            view = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        final Stage stage = new Stage();
+        Scene scene = new Scene(view,600,400);
+        if(elemento.tieneVencimiento()) {
+            ControladorEscenaEvento controlador = loader.getController();
+            controlador.initElemento(calendario, (Evento) elemento);
+        }
+        else {
+            ControladorEscenaTarea controlador = loader.getController();
+            controlador.initElemento(calendario, (Tarea) elemento);
+        }
+        stage.setScene(scene);
+        editar.setOnAction(event -> {
+            Stage viejo = (Stage) editar.getScene().getWindow();
+            stage.show();
+            viejo.close();
+        });
+
+        return editar;
+    }
+
+    private Button botonEliminar(Calendario calendario, ElementoCalendario elemento){
+        Button eliminar = new Button("Eliminar");
+        eliminar.setMinWidth(25);
+        eliminar.setMinHeight(25);
+
+        eliminar.setOnAction(event -> {
+            calendario.eliminarElementoCalendario(elemento);
+            Stage viejo = (Stage) eliminar.getScene().getWindow();
+            viejo.close();
+        });
+        return eliminar;
     }
 }

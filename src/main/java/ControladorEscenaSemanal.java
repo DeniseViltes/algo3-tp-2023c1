@@ -246,7 +246,7 @@ public class ControladorEscenaSemanal{
             btn.setText(el.getTitulo() + '\n' + el.getFecha().getHour() + ":" + String.format("%02d", el.getFecha().getMinute()) + " - " + ((Evento)el).getFechaYHoraFinal().getHour() + ":" + String.format("%02d", ((Evento)el).getFechaYHoraFinal().getMinute()));
             btn.setOnAction(actionEvent -> {
                 ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
-                controlador.mostrar_informacion(el, btn);
+                controlador.mostrar_informacion(this.controlador.getCalendario(), el, btn);
             });
             return btn;
         }
@@ -262,7 +262,7 @@ public class ControladorEscenaSemanal{
             btn.setText(el.getTitulo() + '\n' + el.getFecha().getHour() + ":" + String.format("%02d", el.getFecha().getMinute()));
             btn.setOnAction(actionEvent -> {
                 ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
-                controlador.mostrar_informacion(el, btn);
+                controlador.mostrar_informacion(this.controlador.getCalendario(), el, btn);
             });
             return btn;
         }
@@ -279,7 +279,7 @@ public class ControladorEscenaSemanal{
             btn.setText(el.getTitulo());
             btn.setOnAction(actionEvent -> {
                 ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
-                controlador.mostrar_informacion(el, btn);
+                controlador.mostrar_informacion(this.controlador.getCalendario(), el, btn);
             });
             return btn;
         }
@@ -295,7 +295,7 @@ public class ControladorEscenaSemanal{
             btn.setText(el.getTitulo());
             btn.setOnAction(actionEvent -> {
                 ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
-                controlador.mostrar_informacion(el, btn);
+                controlador.mostrar_informacion(this.controlador.getCalendario(), el, btn);
             });
             return btn;
         }

@@ -28,6 +28,10 @@ public class Controlador {
     @FXML
     private SplitMenuButton menuFecha;
 
+    public Calendario getCalendario(){
+        return calendario;
+    }
+
     @FXML
     void setSemana(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();

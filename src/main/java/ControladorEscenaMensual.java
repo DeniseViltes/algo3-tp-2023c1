@@ -316,7 +316,7 @@ public class ControladorEscenaMensual {
             btn.setText(el.getFecha().getHour()  + " - " + ((Evento)el).getFechaYHoraFinal().getHour() + " " + el.getTitulo() );
             btn.setOnAction(actionEvent -> {
                 ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
-                controlador.mostrar_informacion(el, btn);
+                controlador.mostrar_informacion(this.controlador.getCalendario(), el, btn);
             });
             return btn;
         }
@@ -332,7 +332,7 @@ public class ControladorEscenaMensual {
             btn.setText(el.getFecha().getHour() + " " + el.getTitulo());
             btn.setOnAction(actionEvent -> {
                 ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
-                controlador.mostrar_informacion(el, btn);
+                controlador.mostrar_informacion(this.controlador.getCalendario(), el, btn);
             });
             return btn;
         }
@@ -349,7 +349,7 @@ public class ControladorEscenaMensual {
             btn.setText(el.getTitulo());
             btn.setOnAction(actionEvent -> {
                 ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
-                controlador.mostrar_informacion(el, btn);
+                controlador.mostrar_informacion(this.controlador.getCalendario(), el, btn);
             });
             return btn;
         }
@@ -365,7 +365,7 @@ public class ControladorEscenaMensual {
             btn.setText(el.getTitulo());
             btn.setOnAction(actionEvent -> {
                 ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
-                controlador.mostrar_informacion(el, btn);
+                controlador.mostrar_informacion(this.controlador.getCalendario(), el, btn);
             });
             return btn;
         }
@@ -483,7 +483,7 @@ public class ControladorEscenaMensual {
         dia = dia.plusDays(1);
 
         for(int j = 7; j < 35; j++){
-            diasLabel[j].setText(""+dia.getDayOfMonth());
+            diasLabel[j].setText(" "+dia.getDayOfMonth());
             dia = dia.plusDays(1);
         }
 
