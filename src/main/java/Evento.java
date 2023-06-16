@@ -214,6 +214,8 @@ public class Evento extends ElementoCalendario {
     }
 
     public String descripcionRepeticion(){
+        if(repeticion == null)
+            return "No tiene repeticion";
         return repeticion.descripcionRepeticion();
     }
 }

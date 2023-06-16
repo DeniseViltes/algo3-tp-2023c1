@@ -329,6 +329,10 @@ public class ControladorEscenaMensual {
             btn.setStyle("-fx-font-size: 10; -fx-cursor: hand; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: black; -fx-background-color: white;");
             btn.setAlignment(Pos.CENTER_LEFT);
             btn.setText(el.getFecha().getHour()  + " - " + ((Evento)el).getFechaYHoraFinal().getHour() + " " + el.getTitulo() );
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
         else{
@@ -341,6 +345,10 @@ public class ControladorEscenaMensual {
             if(((Tarea) el).estaCompleta())
                 btn.setSelected(true);
             btn.setText(el.getFecha().getHour() + " " + el.getTitulo());
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
     }
@@ -354,6 +362,10 @@ public class ControladorEscenaMensual {
             btn.setAlignment(Pos.CENTER_LEFT);
             btn.setStyle("-fx-font-size: 10;-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;-fx-cursor: hand; ");
             btn.setText(el.getTitulo());
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
         else{
@@ -366,6 +378,10 @@ public class ControladorEscenaMensual {
                 btn.setSelected(true);
             btn.setStyle("-fx-font-size: 10;-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #1a73e8; -fx-cursor: hand; ");
             btn.setText(el.getTitulo());
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
     }

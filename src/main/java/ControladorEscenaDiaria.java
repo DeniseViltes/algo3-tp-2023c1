@@ -8,11 +8,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -154,6 +156,10 @@ public class ControladorEscenaDiaria {
             btn.setAlignment(Pos.CENTER_LEFT);
             btn.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;-fx-cursor: hand; ");
             btn.setText(el.getTitulo());
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
         else{
@@ -166,6 +172,10 @@ public class ControladorEscenaDiaria {
                 btn.setSelected(true);
             btn.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #1a73e8; -fx-cursor: hand; ");
             btn.setText(el.getTitulo());
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
     }
@@ -181,6 +191,10 @@ public class ControladorEscenaDiaria {
             btn.setStyle("-fx-cursor: hand; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;");
             btn.setAlignment(Pos.CENTER_LEFT);
             btn.setText(el.getTitulo() + '\n' + el.getFecha().getHour() + ":" + String.format("%02d", el.getFecha().getMinute()) + " - " + ((Evento)el).getFechaYHoraFinal().getHour() + ":" + String.format("%02d", ((Evento)el).getFechaYHoraFinal().getMinute()));
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
         else{
@@ -193,6 +207,10 @@ public class ControladorEscenaDiaria {
             if(((Tarea) el).estaCompleta())
                 btn.setSelected(true);
             btn.setText(el.getTitulo() + '\n' + el.getFecha().getHour() + ":" + String.format("%02d", el.getFecha().getMinute()));
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
     }

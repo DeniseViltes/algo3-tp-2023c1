@@ -10,6 +10,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -251,7 +254,10 @@ public class ControladorEscenaSemanal{
             btn.setStyle("-fx-cursor: hand; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;");
             btn.setAlignment(Pos.CENTER_LEFT);
             btn.setText(el.getTitulo() + '\n' + el.getFecha().getHour() + ":" + String.format("%02d", el.getFecha().getMinute()) + " - " + ((Evento)el).getFechaYHoraFinal().getHour() + ":" + String.format("%02d", ((Evento)el).getFechaYHoraFinal().getMinute()));
-            btn.setOnAction(actionEvent -> mostrar_informacion(el, tieneVencimiento));
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
         else{
@@ -264,7 +270,10 @@ public class ControladorEscenaSemanal{
             if(((Tarea) el).estaCompleta())
                 btn.setSelected(true);
             btn.setText(el.getTitulo() + '\n' + el.getFecha().getHour() + ":" + String.format("%02d", el.getFecha().getMinute()));
-            btn.setOnAction(actionEvent -> mostrar_informacion(el, tieneVencimiento));
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
     }
@@ -278,7 +287,10 @@ public class ControladorEscenaSemanal{
             btn.setAlignment(Pos.CENTER_LEFT);
             btn.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;-fx-cursor: hand; ");
             btn.setText(el.getTitulo());
-            btn.setOnAction(actionEvent -> mostrar_informacion(el, tieneVencimiento));
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
         else{
@@ -291,59 +303,14 @@ public class ControladorEscenaSemanal{
                 btn.setSelected(true);
             btn.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #1a73e8; -fx-cursor: hand; ");
             btn.setText(el.getTitulo());
-            btn.setOnAction(actionEvent -> mostrar_informacion(el, tieneVencimiento));
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
     }
-    public void mostrar_informacion(ElementoCalendario el, boolean tieneVencimiento){
-        final Stage dialog = new Stage();
-        VBox dialogVbox = new VBox(20);
-        dialogVbox.setAlignment(Pos.TOP_CENTER);
 
-        Label titulo = new Label(el.getTitulo());
-        titulo.setStyle("-fx-font-size: 30;");
-
-        CheckBox todoElDia = new CheckBox("Todo el dia");
-        if(el.isEsDeDiaCompleto())
-            todoElDia.setSelected(true);
-
-        Label descripcion = new Label(el.getDescripcion());
-        descripcion.setStyle("-fx-font-size: 15;");
-
-        dialogVbox.getChildren().add(titulo);
-
-        //alarmas
-
-        if(tieneVencimiento){
-            LocalDateTime dia = el.getFecha();
-            LocalDateTime diaFinal = ((Evento) el).getFechaYHoraFinal();
-            Label fecha = new Label(dia.getDayOfMonth() + " " + Mes.valueOf(dia.getMonth().toString()).getMesEspañol() +" "+ dia.getYear() + " a "+diaFinal.getDayOfMonth() + " " + Mes.valueOf(diaFinal.getMonth().toString()).getMesEspañol() +" "+ diaFinal.getYear());
-            fecha.setStyle("-fx-font-size: 15;");
-
-            dialogVbox.getChildren().add(fecha);
-            dialogVbox.getChildren().add(todoElDia);
-
-            Label repeticion = new Label(((Evento) el).descripcionRepeticion());
-            repeticion.setStyle("-fx-font-size: 15;");
-
-            dialogVbox.getChildren().add(repeticion);
-        }
-        else{
-            //fecha
-
-            //dialogVbox.getChildren().add(fecha);
-            dialogVbox.getChildren().add(todoElDia);
-
-            //completa
-        }
-
-        dialogVbox.getChildren().add(descripcion);
-
-        Scene dialogScene = new Scene(dialogVbox, 300, 200);
-        dialog.setTitle(el.getTitulo());
-        dialog.setScene(dialogScene);
-        dialog.show();
-    }
     private LocalDateTime finDelDia(LocalDateTime dia){
         return dia.toLocalDate().atTime(LocalTime.MAX);
     }
