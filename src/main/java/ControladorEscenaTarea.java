@@ -150,21 +150,20 @@ public class ControladorEscenaTarea{
         vBoxAlarmas.getChildren().add(contenedor);
     }
     private Node nodoAlarma(Alarma alarma){
-        var boton = new Label();
-        boton.setMinWidth(180);
-        boton.setMinHeight(20);
-        boton.setPadding(new Insets(2,5,2,5));
-        boton.setAlignment(Pos.CENTER_LEFT);
-        boton.setText(alarma.getEfecto().toString() + ", "+ alarma.getFechaYHora().format(formatterFecha));
-        return boton;
+        var label = new Label();
+        label.setMinWidth(180);
+        label.setMinHeight(25);
+        label.setPadding(new Insets(2,5,2,5));
+        label.setAlignment(Pos.CENTER_LEFT);
+        label.setText(alarma.getEfecto().toString() + ", "+ alarma.getFechaYHora().format(formatterFecha));
+        return label;
     }
 
     private Node nodoEliminar(Alarma alarma, Pane contenedor) {
-        Button boton = new Button();
+        Button boton = new Button("X");
         boton.setMinWidth(25);
-        boton.setMinHeight(20);
+        boton.setMinHeight(25);
         boton.setPadding(new Insets(2,5,2,5));
-        boton.setText("X");
         boton.setOnAction(event -> {
             calendario.eliminarAlarma(tarea,alarma);
             vBoxAlarmas.getChildren().remove(contenedor);
