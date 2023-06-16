@@ -1,7 +1,4 @@
-import Repeticiones.*;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
+import repeticiones.*;
 
 import java.time.DayOfWeek;
 import java.time.Duration;

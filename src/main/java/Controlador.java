@@ -16,14 +16,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
-
-import java.time.temporal.ChronoUnit;
-
-
-
 public class Controlador {
     private Calendario calendario;
 
@@ -147,7 +139,7 @@ public class Controlador {
             System.out.println("creacion");
             this.calendario = new Calendario();
         }
-
+/*
         Evento evento = calendario.crearEvento();
         Evento evento2 = calendario.crearEvento();
         Tarea tarea = calendario.crearTarea();
@@ -163,7 +155,7 @@ public class Controlador {
         calendario.modificarTitulo(tarea, "Buen dia");
         calendario.modificarTitulo(evento, "Se aprueba el TP");
         calendario.marcarTareaCompleta(tarea);
-        calendario.agregarRepeticionDiariaEvento(evento);
+        calendario.agregarRepeticionDiariaEvento(evento);*/
 
     }
 

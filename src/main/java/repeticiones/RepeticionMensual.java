@@ -1,4 +1,4 @@
-package Repeticiones;
+package repeticiones;
 
 import java.time.LocalDateTime;
 

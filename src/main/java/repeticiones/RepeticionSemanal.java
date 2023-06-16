@@ -1,7 +1,6 @@
-package Repeticiones;
+package repeticiones;
 
-import Fechas.Dia;
-import Fechas.Mes;
+import fechas.Dia;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -47,7 +46,7 @@ public class RepeticionSemanal extends Repeticion {
     public String descripcionRepeticion() {
         String dias_str = "";
         for (DayOfWeek dia : dias){
-            dias_str += Dia.valueOf(dia.toString()).getDiaEspañol() + " ";
+            dias_str += Dia.valueOf(dia.toString()).getDiaEspanol() + " ";
         }
         return "Se repite semanalmente los dias: " + dias_str;
     }

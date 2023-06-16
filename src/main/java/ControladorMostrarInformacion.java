@@ -1,4 +1,4 @@
-import Fechas.Mes;
+import fechas.Mes;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -17,10 +17,7 @@ import java.time.LocalDateTime;
 public class ControladorMostrarInformacion {
 
     public void setearEstadoCheck(CheckBox check){
-        if(check.isSelected() == false)
-            check.setSelected(true);
-        else
-            check.setSelected(false);
+        check.setSelected(!check.isSelected());
     }
 
     public void mostrar_informacion(ElementoCalendario el, Node btn){
@@ -51,14 +48,14 @@ public class ControladorMostrarInformacion {
             HBox fecha = new HBox();
             Label fechaInicio;
             if(el.isEsDeDiaCompleto()){
-                fechaInicio = new Label(dia.getDayOfMonth() + " " + Mes.valueOf(dia.getMonth().toString()).getMesEspañol() +" "+ dia.getYear());
+                fechaInicio = new Label(dia.getDayOfMonth() + " " + Mes.valueOf(dia.getMonth().toString()).getMesEspanol() +" "+ dia.getYear());
                 fecha.getChildren().add(fechaInicio);
             }
             else{
                 LocalDateTime diaFinal = ((Evento) el).getFechaYHoraFinal();
-                fechaInicio = new Label(dia.getDayOfMonth() + " " + Mes.valueOf(dia.getMonth().toString()).getMesEspañol() +" "+ dia.getYear() + " " + dia.getHour()+":"+ String.format("%02d", dia.getMinute()));
+                fechaInicio = new Label(dia.getDayOfMonth() + " " + Mes.valueOf(dia.getMonth().toString()).getMesEspanol() +" "+ dia.getYear() + " " + dia.getHour()+":"+ String.format("%02d", dia.getMinute()));
                 Label intermedia = new Label("  a  ");
-                Label fechaFinal = new Label( diaFinal.getDayOfMonth() + " " + Mes.valueOf(diaFinal.getMonth().toString()).getMesEspañol() +" "+ diaFinal.getYear()+ " " + diaFinal.getHour()+":"+ String.format("%02d", diaFinal.getMinute()));
+                Label fechaFinal = new Label( diaFinal.getDayOfMonth() + " " + Mes.valueOf(diaFinal.getMonth().toString()).getMesEspanol() +" "+ diaFinal.getYear()+ " " + diaFinal.getHour()+":"+ String.format("%02d", diaFinal.getMinute()));
 
                 fechaFinal.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: black; -fx-background-color: white; ");
                 fechaFinal.setPadding(new Insets(5));
@@ -85,9 +82,9 @@ public class ControladorMostrarInformacion {
         else{
             Label fecha;
             if(el.isEsDeDiaCompleto())
-                fecha = new Label(dia.getDayOfMonth() + " " + Mes.valueOf(dia.getMonth().toString()).getMesEspañol() +" "+ dia.getYear());
+                fecha = new Label(dia.getDayOfMonth() + " " + Mes.valueOf(dia.getMonth().toString()).getMesEspanol() +" "+ dia.getYear());
             else
-                fecha = new Label(dia.getDayOfMonth() + " " + Mes.valueOf(dia.getMonth().toString()).getMesEspañol() +" "+ dia.getYear() + " " + dia.getHour()+":"+ String.format("%02d", dia.getMinute()));
+                fecha = new Label(dia.getDayOfMonth() + " " + Mes.valueOf(dia.getMonth().toString()).getMesEspanol() +" "+ dia.getYear() + " " + dia.getHour()+":"+ String.format("%02d", dia.getMinute()));
 
             fecha.setStyle("-fx-font-size: 15;-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: black; -fx-background-color: white; ");
             fecha.setPadding(new Insets(5));
@@ -103,10 +100,7 @@ public class ControladorMostrarInformacion {
             completa.setOnAction(actionEvent -> setearEstadoCheck(completa));
 
             dialogVbox.getChildren().add(completa);
-            if(((CheckBox) btn).isSelected() == false)
-                ((CheckBox) btn).setSelected(true);
-            else
-                ((CheckBox) btn).setSelected(false);
+            ((CheckBox) btn).setSelected(!((CheckBox) btn).isSelected());
         }
 
         for(Alarma alarma : el.getAlarmas()){

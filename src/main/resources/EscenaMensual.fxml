@@ -34,7 +34,7 @@
               <items>
                  <MenuItem mnemonicParsing="false" onAction="#setDia" text="Dia" />
                  <MenuItem mnemonicParsing="false" onAction="#setSemana" text="Semana" />
-                 <MenuItem mnemonicParsing="false" onAction="#setMes" text="Mes" />
+                 <MenuItem mnemonicParsing="false" text="Mes" />
               </items>
                <HBox.margin>
                   <Insets left="800.0" />

@@ -1,9 +1,3 @@
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.layout.HBox;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Set;

@@ -50,9 +50,6 @@ public class Alarma implements Serializable {
     public LocalDateTime getFechaYHora() {
         return fechaYHora;
     }
-    public Duration getIntervalo() {
-        return intervalo;
-    }
 
     public EfectoAlarma sonar(LocalDateTime actual){
         if (actual.equals(this.fechaYHora))
@@ -60,7 +57,6 @@ public class Alarma implements Serializable {
         return null;
     }
 
-    public EfectoAlarma getEfecto() {return efecto; }
 
     public boolean esDeFechaAbsoluta(){
         return intervalo.isZero();

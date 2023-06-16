@@ -1,4 +1,4 @@
-package Repeticiones;
+package repeticiones;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +12,7 @@ public class RepeticionDiaria extends Repeticion {
     @Override
     public void setCantidadRepeticiones(LocalDateTime inicio, int cantidadRepeticiones) {
         super.setCantidadRepeticiones(inicio, cantidadRepeticiones);
-        this.vencimiento = inicio.plusDays((cantidadRepeticiones-1)*intervalo);
+        this.vencimiento = inicio.plusDays((long)(cantidadRepeticiones-1)*intervalo);
     }
 
     @Override

@@ -10,13 +10,13 @@ public class Calendario implements Serializable {
     private transient List<CalendarioListener> listeners;
 
     public Calendario() {
-        listeners = new ArrayList<CalendarioListener>();
+        listeners = new ArrayList<>();
         this.elementosCalendario = new TreeSet<>(new OrdenadorElementosPorHorario());
     }
 
     public void agregarListener(CalendarioListener listener){
         if(listeners == null)
-            listeners = new ArrayList<CalendarioListener>();
+            listeners = new ArrayList<>();
         listeners.add(listener);
     }
     public void notificarListeners(){
@@ -201,7 +201,7 @@ public class Calendario implements Serializable {
     // Devuelve un TreeSet con todos los elementos entre el inicio y el fin. Los elementos serian eventos
     // con sus repeticiones y tareas.
     public TreeSet<ElementoCalendario> elementosEntreFechas(LocalDateTime inicio, LocalDateTime fin){
-        var elementos = new TreeSet<ElementoCalendario>((new OrdenadorElementosPorHorario()));
+        var elementos = new TreeSet<>((new OrdenadorElementosPorHorario()));
         for (ElementoCalendario i : elementosCalendario) {
             i.agregarElementoAlSet(elementos,inicio,fin);
         }
@@ -227,8 +227,7 @@ public class Calendario implements Serializable {
 
     public static Calendario deserializar(InputStream is) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(is);
-        Calendario obj = (Calendario) ois.readObject();
-        return obj;
+        return (Calendario) ois.readObject();
     }
 
     public void serializar(OutputStream os) throws IOException {

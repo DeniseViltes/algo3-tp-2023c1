@@ -1,20 +1,14 @@
-import Fechas.Dia;
-import Fechas.Mes;
+import fechas.Dia;
+import fechas.Mes;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
@@ -73,10 +67,6 @@ public class ControladorEscenaSemanal{
     private VBox diaViernes;
 
     @FXML
-    void setSemana(ActionEvent event){
-    }
-
-    @FXML
     void setDia(ActionEvent event) throws IOException {
         controlador.setDia(event);
     }
@@ -102,7 +92,7 @@ public class ControladorEscenaSemanal{
 
         this.controlador = controlador;
 
-        label_mes.setText(Mes.valueOf(LocalDateTime.now().getMonth().toString()).getMesEspañol() + " " + LocalDateTime.now().getYear());
+        label_mes.setText(Mes.valueOf(LocalDateTime.now().getMonth().toString()).getMesEspanol() + " " + LocalDateTime.now().getYear());
 
         dia_mostrado = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
         marcarDiaActual();
@@ -110,7 +100,7 @@ public class ControladorEscenaSemanal{
         actualizarCalendario(calendario, dia_mostrado);
         btn_hoy.setOnAction(actionEvent -> {
             dia_mostrado = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
-            label_mes.setText(Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspañol() + " " + dia_mostrado.getYear());
+            label_mes.setText(Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspanol() + " " + dia_mostrado.getYear());
             mostrarSemana(dia_mostrado);
             marcarDiaActual();
             limpiarCalendario();
@@ -119,7 +109,7 @@ public class ControladorEscenaSemanal{
 
         btn_anterior.setOnAction(actionEvent -> {
             dia_mostrado = dia_mostrado.minusDays(7);
-            label_mes.setText(Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspañol() + " " + dia_mostrado.getYear());
+            label_mes.setText(Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspanol() + " " + dia_mostrado.getYear());
             mostrarSemana(dia_mostrado);
             marcarDiaNormal();
             if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
@@ -130,7 +120,7 @@ public class ControladorEscenaSemanal{
 
         btn_siguiente.setOnAction(actionEvent -> {
             dia_mostrado = dia_mostrado.plusDays(7);
-            label_mes.setText(Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspañol() + " " + dia_mostrado.getYear());
+            label_mes.setText(Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspanol() + " " + dia_mostrado.getYear());
             mostrarSemana(dia_mostrado);
             marcarDiaNormal();
             if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
@@ -338,18 +328,18 @@ public class ControladorEscenaSemanal{
             }
         }
 
-        setearDia(Dia.valueOf(dia.getDayOfWeek().toString()).getDiaEspañol(), dia.getDayOfMonth());
-        setearDia(Dia.valueOf(dia.plusDays(1).getDayOfWeek().toString()).getDiaEspañol(), dia.plusDays(1).getDayOfMonth());
-        setearDia(Dia.valueOf(dia.plusDays(2).getDayOfWeek().toString()).getDiaEspañol(), dia.plusDays(2).getDayOfMonth());
-        setearDia(Dia.valueOf(dia.plusDays(3).getDayOfWeek().toString()).getDiaEspañol(), dia.plusDays(3).getDayOfMonth());
-        setearDia(Dia.valueOf(dia.plusDays(4).getDayOfWeek().toString()).getDiaEspañol(), dia.plusDays(4).getDayOfMonth());
-        setearDia(Dia.valueOf(dia.plusDays(5).getDayOfWeek().toString()).getDiaEspañol(), dia.plusDays(5).getDayOfMonth());
-        setearDia(Dia.valueOf(dia.plusDays(6).getDayOfWeek().toString()).getDiaEspañol(), dia.plusDays(6).getDayOfMonth());
+        setearDia(Dia.valueOf(dia.getDayOfWeek().toString()).getDiaEspanol(), dia.getDayOfMonth());
+        setearDia(Dia.valueOf(dia.plusDays(1).getDayOfWeek().toString()).getDiaEspanol(), dia.plusDays(1).getDayOfMonth());
+        setearDia(Dia.valueOf(dia.plusDays(2).getDayOfWeek().toString()).getDiaEspanol(), dia.plusDays(2).getDayOfMonth());
+        setearDia(Dia.valueOf(dia.plusDays(3).getDayOfWeek().toString()).getDiaEspanol(), dia.plusDays(3).getDayOfMonth());
+        setearDia(Dia.valueOf(dia.plusDays(4).getDayOfWeek().toString()).getDiaEspanol(), dia.plusDays(4).getDayOfMonth());
+        setearDia(Dia.valueOf(dia.plusDays(5).getDayOfWeek().toString()).getDiaEspanol(), dia.plusDays(5).getDayOfMonth());
+        setearDia(Dia.valueOf(dia.plusDays(6).getDayOfWeek().toString()).getDiaEspanol(), dia.plusDays(6).getDayOfMonth());
 
     }
 
     public void marcarDiaActual(){
-        String dia = Dia.valueOf(LocalDateTime.now().getDayOfWeek().toString()).getDiaEspañol();
+        String dia = Dia.valueOf(LocalDateTime.now().getDayOfWeek().toString()).getDiaEspanol();
         switch (dia) {
             case "LUN" ->
                     diaLunesLabel.setStyle("-fx-background-radius: 80px; -fx-border-radius: 80px; -fx-text-fill: white; -fx-background-color: #1a73e8; ");
@@ -369,7 +359,7 @@ public class ControladorEscenaSemanal{
     }
 
     public void marcarDiaNormal(){
-        String dia = Dia.valueOf(LocalDateTime.now().getDayOfWeek().toString()).getDiaEspañol();
+        String dia = Dia.valueOf(LocalDateTime.now().getDayOfWeek().toString()).getDiaEspanol();
         switch (dia) {
             case "LUN" -> diaLunesLabel.setStyle(diaMartes.getStyle());
             case "MAR" -> diaMartesLabel.setStyle(diaLunes.getStyle());
