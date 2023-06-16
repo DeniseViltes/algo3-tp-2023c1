@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -44,8 +46,6 @@ public class ControladorEscenaEvento{
     private TextField horarioFinal;
 
 
-
-
     @FXML
     private Spinner<Integer> cantRepeticiones;
 
@@ -53,10 +53,9 @@ public class ControladorEscenaEvento{
     private final DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
 
-
-    void  initEvento ( Calendario calendario,Evento evento){
+    void  initElemento ( Calendario calendario,Evento evento){
         this.evento = evento;
-        this.calendario =calendario;
+        this.calendario = calendario;
         tituloEvento.setText(evento.getTitulo());
         var fechaEvento = evento.getFecha();
         this.fechaIncio.setText(fechaEvento.toLocalDate().format(formatterFecha));
@@ -74,12 +73,11 @@ public class ControladorEscenaEvento{
         this.intervaloAlarma.setValueFactory(spinnerAlarmas);
 
         initChoiceBoxAlarma();
-        var alarma = evento.getAlarmas().iterator();
-        if(alarma.hasNext()) {
-            var botonAlarma = nodoAlarma(alarma.next());
-            vBoxAlarmas.getChildren().add(botonAlarma);
-        }
+        for (Alarma value : evento.getAlarmas()) agregarBotonesDeAlarma(value);
 
+        if(evento.isEsDeDiaCompleto()){
+            checkDiaCompleto.setSelected(true);
+        }
     }
 
     private void initChoiceBoxAlarma(){
@@ -91,18 +89,7 @@ public class ControladorEscenaEvento{
         this.tipoDeIntervalo.setValue("minutos");
     }
 
-    //Scene dialogScene = new Scene(dialogVbox, 300, 200);
 
-    private Node nodoAlarma(Alarma alarma){
-        Button btn = new Button();
-        btn.setMinWidth(200);
-        btn.setMinHeight(20);
-        btn.setPadding(new Insets(2,5,2,5));
-        btn.setAlignment(Pos.CENTER_LEFT);
-        //Por ahora solo notificacion
-        btn.setText(alarma.getEfecto().toString() + ", "+ alarma.getFechaYHora().toString());
-        return btn;
-    }
 
     @FXML
     void volverAVistaPrincipal(ActionEvent event) throws IOException {
@@ -154,7 +141,7 @@ public class ControladorEscenaEvento{
 
     private void cargarAlertaFormato () throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/alertaFormatoFechas.fxml"));
+        loader.setLocation(getClass().getResource("/alertas/alertaFormatoFechas.fxml"));
         VBox view = loader.load();
         final Stage stage = new Stage();
         Scene scene = new Scene(view);
@@ -216,11 +203,41 @@ public class ControladorEscenaEvento{
         var tipoIntervalo = convertir(tipoDeIntervalo.getValue());
         var intervalo = Duration.of(intervaloAlarma.getValue(),tipoIntervalo);
         var alarma = calendario.agregarAlarma(evento,intervalo);
-        var botonAlarma = nodoAlarma(alarma);
-        vBoxAlarmas.getChildren().add(botonAlarma);
+        agregarBotonesDeAlarma(alarma);
     }
 
+    void agregarBotonesDeAlarma(Alarma alarma){
+        HBox contenedor = new HBox();
+        var botonAlarma = nodoAlarma(alarma);
+        var botonEliminar = nodoEliminar(alarma,contenedor);
+        contenedor.getChildren().add(botonAlarma);
+        contenedor.getChildren().add(botonEliminar);
 
+
+        vBoxAlarmas.getChildren().add(contenedor);
+    }
+    private Node nodoAlarma(Alarma alarma){
+        var boton = new Label();
+        boton.setMinWidth(180);
+        boton.setMinHeight(20);
+        boton.setPadding(new Insets(2,5,2,5));
+        boton.setAlignment(Pos.CENTER_LEFT);
+        boton.setText(alarma.getEfecto().toString() + ", "+ alarma.getFechaYHora().format(formatterFecha));
+        return boton;
+    }
+
+    private Node nodoEliminar(Alarma alarma, Pane contenedor) {
+        Button boton = new Button();
+        boton.setMinWidth(25);
+        boton.setMinHeight(20);
+        boton.setPadding(new Insets(2,5,2,5));
+        boton.setText("X");
+        boton.setOnAction(event -> {
+            calendario.eliminarAlarma(evento,alarma);
+            vBoxAlarmas.getChildren().remove(contenedor);
+        });
+        return boton;
+    }
     ChronoUnit convertir (String tipo ){
         switch (tipo){
             case "minutos" -> {
@@ -238,6 +255,5 @@ public class ControladorEscenaEvento{
         }
         return null;
     }
-
 
 }
