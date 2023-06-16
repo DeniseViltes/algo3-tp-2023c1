@@ -1,12 +1,9 @@
-import Fechas.Dia;
-import Fechas.Mes;
+import fechas.Dia;
+import fechas.Mes;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -15,10 +12,8 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
 import java.util.TreeSet;
 
 public class ControladorEscenaDiaria {
@@ -53,10 +48,6 @@ public class ControladorEscenaDiaria {
     }
 
     @FXML
-    void setDia(ActionEvent event) throws IOException {
-    }
-
-    @FXML
     void setMes(ActionEvent event) throws IOException {
         controlador.setMes(event);
     }
@@ -77,49 +68,40 @@ public class ControladorEscenaDiaria {
 
         this.controlador = controlador;
         dia_mostrado = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
-        label_mes.setText(dia_mostrado.getDayOfMonth() + " " + Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspañol() + " " + dia_mostrado.getYear());
+        label_mes.setText(dia_mostrado.getDayOfMonth() + " " + Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspanol() + " " + dia_mostrado.getYear());
         mostrarDia(dia_mostrado);
         marcarDia();
         actualizarCalendario(calendario, dia_mostrado);
 
-        btn_hoy.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                dia_mostrado = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
-                label_mes.setText(dia_mostrado.getDayOfMonth() + " " + Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspañol() + " " + dia_mostrado.getYear());
-                mostrarDia(dia_mostrado);
+        btn_hoy.setOnAction(actionEvent -> {
+            dia_mostrado = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+            label_mes.setText(dia_mostrado.getDayOfMonth() + " " + Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspanol() + " " + dia_mostrado.getYear());
+            mostrarDia(dia_mostrado);
+            marcarDia();
+            limpiarCalendario();
+            actualizarCalendario(calendario, dia_mostrado);
+        });
+
+        btn_anterior.setOnAction(actionEvent -> {
+            dia_mostrado = dia_mostrado.minusDays(1);
+            label_mes.setText(dia_mostrado.getDayOfMonth() + " " + Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspanol() + " " + dia_mostrado.getYear());
+            mostrarDia(dia_mostrado);
+            marcarDiaNormal();
+            if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
                 marcarDia();
-                limpiarCalendario();
-                actualizarCalendario(calendario, dia_mostrado);
-            }
+            limpiarCalendario();
+            actualizarCalendario(calendario, dia_mostrado);
         });
 
-        btn_anterior.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                dia_mostrado = dia_mostrado.minusDays(1);
-                label_mes.setText(dia_mostrado.getDayOfMonth() + " " + Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspañol() + " " + dia_mostrado.getYear());
-                mostrarDia(dia_mostrado);
-                marcarDiaNormal();
-                if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
-                    marcarDia();
-                limpiarCalendario();
-                actualizarCalendario(calendario, dia_mostrado);
-            }
-        });
-
-        btn_siguiente.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                dia_mostrado = dia_mostrado.plusDays(1);
-                label_mes.setText(dia_mostrado.getDayOfMonth() + " " + Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspañol() + " " + dia_mostrado.getYear());
-                mostrarDia(dia_mostrado);
-                marcarDiaNormal();
-                if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
-                    marcarDia();
-                limpiarCalendario();
-                actualizarCalendario(calendario, dia_mostrado);
-            }
+        btn_siguiente.setOnAction(actionEvent -> {
+            dia_mostrado = dia_mostrado.plusDays(1);
+            label_mes.setText(dia_mostrado.getDayOfMonth() + " " + Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspanol() + " " + dia_mostrado.getYear());
+            mostrarDia(dia_mostrado);
+            marcarDiaNormal();
+            if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
+                marcarDia();
+            limpiarCalendario();
+            actualizarCalendario(calendario, dia_mostrado);
         });
 
         menuFecha.setText("Dia");
@@ -154,6 +136,10 @@ public class ControladorEscenaDiaria {
             btn.setAlignment(Pos.CENTER_LEFT);
             btn.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;-fx-cursor: hand; ");
             btn.setText(el.getTitulo());
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
         else{
@@ -166,6 +152,10 @@ public class ControladorEscenaDiaria {
                 btn.setSelected(true);
             btn.setStyle("-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #1a73e8; -fx-cursor: hand; ");
             btn.setText(el.getTitulo());
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
     }
@@ -181,6 +171,10 @@ public class ControladorEscenaDiaria {
             btn.setStyle("-fx-cursor: hand; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;");
             btn.setAlignment(Pos.CENTER_LEFT);
             btn.setText(el.getTitulo() + '\n' + el.getFecha().getHour() + ":" + String.format("%02d", el.getFecha().getMinute()) + " - " + ((Evento)el).getFechaYHoraFinal().getHour() + ":" + String.format("%02d", ((Evento)el).getFechaYHoraFinal().getMinute()));
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
         else{
@@ -193,12 +187,16 @@ public class ControladorEscenaDiaria {
             if(((Tarea) el).estaCompleta())
                 btn.setSelected(true);
             btn.setText(el.getTitulo() + '\n' + el.getFecha().getHour() + ":" + String.format("%02d", el.getFecha().getMinute()));
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
     }
 
     public void mostrarDia(LocalDateTime dia_mostrado) {
-        diaLabel.setText(Dia.valueOf(dia_mostrado.getDayOfWeek().toString()).getDiaEspañol() + '\n' + dia_mostrado.getDayOfMonth());
+        diaLabel.setText(Dia.valueOf(dia_mostrado.getDayOfWeek().toString()).getDiaEspanol() + '\n' + dia_mostrado.getDayOfMonth());
     }
 
     public void marcarDia(){

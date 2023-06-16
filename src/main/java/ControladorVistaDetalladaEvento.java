@@ -5,7 +5,6 @@ import javafx.scene.control.ListView;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class ControladorVistaDetalladaEvento extends  ControladorVistaDetallada{
@@ -26,7 +25,7 @@ public class ControladorVistaDetalladaEvento extends  ControladorVistaDetallada{
     @FXML
     private ListView<String> listaAlarmas;
 
-    private  DateTimeFormatter formatter= DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private final DateTimeFormatter formatter= DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 
     @Override

@@ -1,7 +1,5 @@
-import Fechas.Dia;
-import Fechas.Mes;
+import fechas.Mes;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -197,10 +195,6 @@ public class ControladorEscenaMensual {
     }
 
     @FXML
-    void setMes(ActionEvent event) throws IOException {
-    }
-
-    @FXML
     void crearEvento(ActionEvent event) throws IOException {
         controlador.crearEvento(event);
     }
@@ -211,69 +205,60 @@ public class ControladorEscenaMensual {
     }
 
     private int mes_mostrado;
-    private int año_mostrado;
+    private int anio_mostrado;
 
     public void initEscenaMensual(Controlador controlador, Calendario calendario) {
 
         this.controlador = controlador;
 
-        label_mes.setText(Mes.valueOf(LocalDateTime.now().getMonth().toString()).getMesEspañol() + " " + LocalDateTime.now().getYear());
+        label_mes.setText(Mes.valueOf(LocalDateTime.now().getMonth().toString()).getMesEspanol() + " " + LocalDateTime.now().getYear());
         mes_mostrado = LocalDateTime.now().getMonthValue();
-        año_mostrado = LocalDateTime.now().getYear();
+        anio_mostrado = LocalDateTime.now().getYear();
         inicializarDiasLabel();
         inicializarDias();
         marcarDiaActual();
-        mostrarMes(mes_mostrado, año_mostrado);
+        mostrarMes(mes_mostrado, anio_mostrado);
         actualizarCalendario(calendario);
-        btn_hoy.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                label_mes.setText(Mes.valueOf(LocalDateTime.now().getMonth().toString()).getMesEspañol() + " " + LocalDateTime.now().getYear());
-                mes_mostrado = LocalDateTime.now().getMonthValue();
-                año_mostrado = LocalDateTime.now().getYear();
+        btn_hoy.setOnAction(actionEvent -> {
+            label_mes.setText(Mes.valueOf(LocalDateTime.now().getMonth().toString()).getMesEspanol() + " " + LocalDateTime.now().getYear());
+            mes_mostrado = LocalDateTime.now().getMonthValue();
+            anio_mostrado = LocalDateTime.now().getYear();
+            marcarDiaActual();
+            mostrarMes(mes_mostrado, anio_mostrado);
+            limpiarCalendario();
+            actualizarCalendario(calendario);
+        });
+
+        btn_anterior.setOnAction(actionEvent -> {
+            mes_mostrado = mes_mostrado - 1;
+            if(mes_mostrado == 0) {
+                mes_mostrado = 12;
+                anio_mostrado = anio_mostrado - 1;
+            }
+
+            label_mes.setText(Mes.valueOf(Month.of(mes_mostrado).toString()).getMesEspanol() + " " + anio_mostrado);
+            mostrarMes(mes_mostrado, anio_mostrado);
+            marcarDiaNormal();
+            if(mes_mostrado == (LocalDateTime.now().getMonthValue()))
                 marcarDiaActual();
-                mostrarMes(mes_mostrado, año_mostrado);
-                limpiarCalendario();
-                actualizarCalendario(calendario);
-            }
+            limpiarCalendario();
+            actualizarCalendario(calendario);
         });
 
-        btn_anterior.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                mes_mostrado = mes_mostrado - 1;
-                if(mes_mostrado == 0) {
-                    mes_mostrado = 12;
-                    año_mostrado = año_mostrado - 1;
-                }
-
-                label_mes.setText(Mes.valueOf(Month.of(mes_mostrado).toString()).getMesEspañol() + " " + año_mostrado);
-                mostrarMes(mes_mostrado, año_mostrado);
-                marcarDiaNormal();
-                if(mes_mostrado == (LocalDateTime.now().getMonthValue()))
-                    marcarDiaActual();
-                limpiarCalendario();
-                actualizarCalendario(calendario);
+        btn_siguiente.setOnAction(actionEvent -> {
+            mes_mostrado = mes_mostrado + 1;
+            if(mes_mostrado == 13) {
+                mes_mostrado = 1;
+                anio_mostrado = anio_mostrado + 1;
             }
-        });
 
-        btn_siguiente.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                mes_mostrado = mes_mostrado + 1;
-                if(mes_mostrado == 13) {
-                    mes_mostrado = 1;
-                    año_mostrado = año_mostrado + 1;
-                }
-
-                label_mes.setText(Mes.valueOf(Month.of(mes_mostrado).toString()).getMesEspañol() + " " + año_mostrado);
-                mostrarMes(mes_mostrado, año_mostrado);
-                marcarDiaNormal();
-                if(mes_mostrado == (LocalDateTime.now().getMonthValue()))
-                    marcarDiaActual();
-                limpiarCalendario();
-                actualizarCalendario(calendario);
-            }
+            label_mes.setText(Mes.valueOf(Month.of(mes_mostrado).toString()).getMesEspanol() + " " + anio_mostrado);
+            mostrarMes(mes_mostrado, anio_mostrado);
+            marcarDiaNormal();
+            if(mes_mostrado == (LocalDateTime.now().getMonthValue()))
+                marcarDiaActual();
+            limpiarCalendario();
+            actualizarCalendario(calendario);
         });
 
         menuFecha.setText("Mes");
@@ -290,10 +275,10 @@ public class ControladorEscenaMensual {
 
     public void actualizarCalendario(Calendario calendario){
         boolean esDomingo = false;
-        LocalDateTime dia = LocalDateTime.of(año_mostrado, mes_mostrado,1,1,1).truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime dia = LocalDateTime.of(anio_mostrado, mes_mostrado,1,1,1).truncatedTo(ChronoUnit.DAYS);
         int cant_dias = 0;
-        while(esDomingo == false){
-            if(dia.getDayOfWeek().toString() == "SUNDAY") {
+        while(!esDomingo){
+            if(dia.getDayOfWeek().toString().equals("SUNDAY")) {
                 esDomingo = true;
             }
             else {
@@ -301,7 +286,7 @@ public class ControladorEscenaMensual {
                 cant_dias++;
             }
         }
-        List<TreeSet<ElementoCalendario>> elementos = new ArrayList<TreeSet<ElementoCalendario>>();
+        List<TreeSet<ElementoCalendario>> elementos = new ArrayList<>();
 
         for(int i = 0; i < 35; i++){
             elementos.add(calendario.elementosEntreFechas(dia, dia.plusDays(1)));
@@ -329,6 +314,10 @@ public class ControladorEscenaMensual {
             btn.setStyle("-fx-font-size: 10; -fx-cursor: hand; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: black; -fx-background-color: white;");
             btn.setAlignment(Pos.CENTER_LEFT);
             btn.setText(el.getFecha().getHour()  + " - " + ((Evento)el).getFechaYHoraFinal().getHour() + " " + el.getTitulo() );
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
         else{
@@ -341,6 +330,10 @@ public class ControladorEscenaMensual {
             if(((Tarea) el).estaCompleta())
                 btn.setSelected(true);
             btn.setText(el.getFecha().getHour() + " " + el.getTitulo());
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
     }
@@ -354,6 +347,10 @@ public class ControladorEscenaMensual {
             btn.setAlignment(Pos.CENTER_LEFT);
             btn.setStyle("-fx-font-size: 10;-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #7988c6;-fx-cursor: hand; ");
             btn.setText(el.getTitulo());
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
         else{
@@ -366,6 +363,10 @@ public class ControladorEscenaMensual {
                 btn.setSelected(true);
             btn.setStyle("-fx-font-size: 10;-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-text-fill: white; -fx-background-color: #1a73e8; -fx-cursor: hand; ");
             btn.setText(el.getTitulo());
+            btn.setOnAction(actionEvent -> {
+                ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
+                controlador.mostrar_informacion(el, btn);
+            });
             return btn;
         }
     }
@@ -451,12 +452,12 @@ public class ControladorEscenaMensual {
         dias[i] = dia35;
     }
 
-    public void mostrarMes(int mes_mostrado, int año_mostrado){
+    public void mostrarMes(int mes_mostrado, int anio_mostrado){
         boolean esDomingo = false;
-        LocalDateTime dia = LocalDateTime.of(año_mostrado, mes_mostrado,1,1,1).truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime dia = LocalDateTime.of(anio_mostrado, mes_mostrado,1,1,1).truncatedTo(ChronoUnit.DAYS);
         int cant_dias = 0;
-        while(esDomingo == false){
-            if(dia.getDayOfWeek().toString() == "SUNDAY") {
+        while(!esDomingo){
+            if(dia.getDayOfWeek().toString().equals("SUNDAY")) {
                 esDomingo = true;
             }
             else {
@@ -492,8 +493,8 @@ public class ControladorEscenaMensual {
         boolean esDomingo = false;
         LocalDateTime dia = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),1, 1, 1).truncatedTo(ChronoUnit.DAYS);
         int cant_dias = 0;
-        while(esDomingo == false){
-            if(dia.getDayOfWeek().toString() == "SUNDAY") {
+        while(!esDomingo){
+            if(dia.getDayOfWeek().toString().equals("SUNDAY")) {
                 esDomingo = true;
             }
             else {
@@ -509,8 +510,8 @@ public class ControladorEscenaMensual {
         boolean esDomingo = false;
         LocalDateTime dia = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),1, 1, 1).truncatedTo(ChronoUnit.DAYS);
         int cant_dias = 0;
-        while(esDomingo == false){
-            if(dia.getDayOfWeek().toString() == "SUNDAY") {
+        while(!esDomingo){
+            if(dia.getDayOfWeek().toString().equals("SUNDAY")) {
                 esDomingo = true;
             }
             else {

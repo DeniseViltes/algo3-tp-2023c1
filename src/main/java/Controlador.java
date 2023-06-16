@@ -16,13 +16,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-import java.time.LocalDateTime;
-
-
-import java.time.temporal.ChronoUnit;
-
-
-
 public class Controlador {
     private Calendario calendario;
 
@@ -143,15 +136,18 @@ public class Controlador {
             this.calendario = ProcesadorDeArchivoCalendario.leerCalendarioDeArchivo("serializa.cal");
             System.out.println("archivo");
         } catch (IOException | ClassNotFoundException e) {
+            System.out.println("creacion");
             this.calendario = new Calendario();
         }
-
+/*
         Evento evento = calendario.crearEvento();
         Evento evento2 = calendario.crearEvento();
         Tarea tarea = calendario.crearTarea();
         Tarea tarea2 = calendario.crearTarea();
         LocalDateTime dia = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
         calendario.modificarFecha(evento, dia.plusHours(5));
+        calendario.modificarDescripcion(evento, "Esta es una descripcion de prueba");
+        calendario.modificarDescripcion(tarea2, "Esta es una descripcion de pruebaEsta es una descripcion de pruebaEsta es una descripcion de prueba");
         calendario.modificarFecha(evento2, dia.plusHours(2));
         calendario.marcarDeDiaCompleto(evento2);
         calendario.marcarDeDiaCompleto(tarea2);
@@ -159,7 +155,7 @@ public class Controlador {
         calendario.modificarTitulo(tarea, "Buen dia");
         calendario.modificarTitulo(evento, "Se aprueba el TP");
         calendario.marcarTareaCompleta(tarea);
-        calendario.agregarRepeticionDiariaEvento(evento);
+        calendario.agregarRepeticionDiariaEvento(evento);*/
 
     }
 

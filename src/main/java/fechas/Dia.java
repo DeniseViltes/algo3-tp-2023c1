@@ -1,4 +1,4 @@
-package Fechas;
+package fechas;
 
 public enum Dia {
     MONDAY("MONDAY", "LUN"),
@@ -8,16 +8,14 @@ public enum Dia {
     FRIDAY("FRIDAY", "VIE"),
     SATURDAY("SATURDAY", "SAB"),
     SUNDAY("SUNDAY", "DOM");
-    private Dia(String ingles, String español) {
-        this.ingles = ingles;
-        this.español = español;
+    Dia(String ingles, String espanol) {
+        this.espanol = espanol;
     }
 
-    private String ingles;
-    private String español;
+    private final String espanol;
 
-    public String getDiaEspañol() {
-        return español;
+    public String getDiaEspanol() {
+        return espanol;
     }
 
 }

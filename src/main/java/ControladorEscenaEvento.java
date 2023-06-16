@@ -9,20 +9,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class ControladorEscenaEvento{
@@ -54,8 +50,8 @@ public class ControladorEscenaEvento{
     private Spinner<Integer> cantRepeticiones;
 
 
-    private DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
+    private final DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
 
 
     void  initEvento ( Calendario calendario,Evento evento){

@@ -33,7 +33,7 @@
             <SplitMenuButton fx:id="menuFecha" mnemonicParsing="false" text="Semana">
               <items>
                  <MenuItem mnemonicParsing="false" onAction="#setDia" text="Dia" />
-                 <MenuItem mnemonicParsing="false" onAction="#setSemana" text="Semana" />
+                 <MenuItem mnemonicParsing="false" text="Semana" />
                  <MenuItem mnemonicParsing="false" onAction="#setMes" text="Mes" />
               </items>
                <HBox.margin>

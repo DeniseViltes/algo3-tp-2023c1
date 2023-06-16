@@ -1,4 +1,4 @@
-package Fechas;
+package fechas;
 
 public enum Mes {
     JANUARY("JANUARY", "Enero"),
@@ -14,16 +14,14 @@ public enum Mes {
     NOVEMBER("NOVEMBER", "Noviembre"),
     DECEMBER("DECEMBER", "Diciembre");
 
-    private Mes(String ingles, String español) {
-        this.ingles = ingles;
-        this.español = español;
+    Mes(String ingles, String espanol) {
+        this.espanol = espanol;
     }
 
-    private String ingles;
-    private String español;
+    private final String espanol;
 
-    public String getMesEspañol() {
-        return español;
+    public String getMesEspanol() {
+        return espanol;
     }
 
 }

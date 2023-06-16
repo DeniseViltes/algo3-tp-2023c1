@@ -57,6 +57,7 @@ public class Alarma implements Serializable {
         return null;
     }
 
+
     public boolean esDeFechaAbsoluta(){
         return intervalo.isZero();
     }
