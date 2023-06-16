@@ -34,7 +34,7 @@ public class Controlador {
         loader.setLocation(getClass().getResource("/EscenaSemanal.fxml"));
         VBox view = loader.load();
 
-        Scene scene = new Scene(view);
+        Scene scene = new Scene(view,600,400);
         ControladorEscenaSemanal controlador = loader.getController();
         menuFecha.setText("Semana");
 
@@ -49,7 +49,7 @@ public class Controlador {
         loader.setLocation(getClass().getResource("/EscenaDiaria.fxml"));
         VBox view = loader.load();
 
-        Scene scene = new Scene(view);
+        Scene scene = new Scene(view,600,400);
         ControladorEscenaDiaria controlador = loader.getController();
 
 
@@ -65,7 +65,7 @@ public class Controlador {
         loader.setLocation(getClass().getResource("/EscenaMensual.fxml"));
         VBox view = loader.load();
 
-        Scene scene = new Scene(view);
+        Scene scene = new Scene(view,600,400);
         ControladorEscenaMensual controlador = loader.getController();
         menuFecha.setText("Mes");
 
@@ -80,13 +80,13 @@ public class Controlador {
         var evento = calendario.crearEvento();
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/EscenaCrearEvento.fxml"));
+        loader.setLocation(getClass().getResource("/EscenaModificarEvento.fxml"));
         AnchorPane view = loader.load();
         final Stage stage = new Stage();
-        Scene scene = new Scene(view);
+        Scene scene = new Scene(view,600,400);
         ControladorEscenaEvento controlador = loader.getController();
 
-        controlador.initEvento(calendario,evento);
+        controlador.initElemento(calendario,evento);
         stage.setScene(scene);
         stage.show();
     }
@@ -96,67 +96,47 @@ public class Controlador {
         var tarea = calendario.crearTarea();
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/EscenaCrearTarea.fxml"));
+        loader.setLocation(getClass().getResource("/EscenaModificarTarea.fxml"));
         AnchorPane view = loader.load();
         final Stage stage = new Stage();
-        Scene scene = new Scene(view);
+        Scene scene = new Scene(view,600,400);
         ControladorEscenaTarea controlador = loader.getController();
-        controlador.initTarea(tarea);
+        controlador.initElemento(calendario,tarea);
         stage.setScene(scene);
         stage.show();
     }
 
 
-    public void init(Stage stage) throws IOException{
+    public void init(Stage stage, String pathArchivoCalendario) throws IOException{
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/EscenaSemanal.fxml"));
         VBox view = loader.load();
         this.stage = stage;
-        Scene scene = new Scene(view);
-        inicializarCalendario();
+        Scene scene = new Scene(view,600,400);
+        inicializarCalendario( pathArchivoCalendario);
         ControladorEscenaSemanal controlador = loader.getController();
         controlador.initEscenaSemanal(this, calendario);
-        initListeners();
+        initListeners(pathArchivoCalendario);
         stage.setScene(scene);
         stage.show();
     }
 
-    private void initListeners(){
+    private void initListeners(String fileName){
         calendario.agregarListener(() -> {
             try {
-                ProcesadorDeArchivoCalendario.guardarCalendarioEnArchivo(calendario,"serializa.cal");
+                ProcesadorDeArchivoCalendario.guardarCalendarioEnArchivo(calendario,fileName);
             } catch (IOException e) {
                 throw new RuntimeException(e); //TODO agregar alerta
             }
         });
     }
 
-    public void inicializarCalendario() {
+    public void inicializarCalendario(String fileName) {
         try {
-            this.calendario = ProcesadorDeArchivoCalendario.leerCalendarioDeArchivo("serializa.cal");
-            System.out.println("archivo");
+            this.calendario = ProcesadorDeArchivoCalendario.leerCalendarioDeArchivo(fileName);
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("creacion");
             this.calendario = new Calendario();
         }
-/*
-        Evento evento = calendario.crearEvento();
-        Evento evento2 = calendario.crearEvento();
-        Tarea tarea = calendario.crearTarea();
-        Tarea tarea2 = calendario.crearTarea();
-        LocalDateTime dia = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
-        calendario.modificarFecha(evento, dia.plusHours(5));
-        calendario.modificarDescripcion(evento, "Esta es una descripcion de prueba");
-        calendario.modificarDescripcion(tarea2, "Esta es una descripcion de pruebaEsta es una descripcion de pruebaEsta es una descripcion de prueba");
-        calendario.modificarFecha(evento2, dia.plusHours(2));
-        calendario.marcarDeDiaCompleto(evento2);
-        calendario.marcarDeDiaCompleto(tarea2);
-        calendario.modificarTitulo(tarea, "Se aprobó");
-        calendario.modificarTitulo(tarea, "Buen dia");
-        calendario.modificarTitulo(evento, "Se aprueba el TP");
-        calendario.marcarTareaCompleta(tarea);
-        calendario.agregarRepeticionDiariaEvento(evento);*/
-
     }
 
 }
