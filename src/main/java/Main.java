@@ -4,6 +4,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 
 public class Main extends Application {
     @Override
@@ -15,8 +17,8 @@ public class Main extends Application {
         var scene = new Scene(view,1920,1080);
         stage.setScene(scene);
         stage.setTitle("Calendario-Algo3");
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-        controlador.init(stage);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
+        controlador.init(stage, "serializa.cal");
         stage.show();
     }
 }
