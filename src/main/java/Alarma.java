@@ -69,4 +69,11 @@ public class Alarma implements Serializable {
         return nueva;
     }
 
+    public Duration getIntervalo() {
+        return intervalo;
+    }
+
+    public EfectoAlarma getEfecto() {
+        return efecto;
+    }
 }
