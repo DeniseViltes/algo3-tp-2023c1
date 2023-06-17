@@ -114,7 +114,9 @@ public abstract class ElementoCalendario implements Serializable {
         var alarma = proximaAlarma(fecha);
         if (alarma == null)
             return null;
-        return  alarma.sonar(fecha);
+        var efecto = alarma.sonar(fecha);
+        alarmas.remove(fecha);
+        return efecto;
     }
 
     // Devuelve la proxima alarma del elemento.
