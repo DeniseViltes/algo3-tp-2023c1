@@ -6,33 +6,31 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="Controlador">
-   <children>
-      <HBox prefHeight="2.0" prefWidth="1600.0" spacing="25.0">
-         <children>
-            <SplitMenuButton fx:id="menuFecha" mnemonicParsing="false" text="Semana">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Dia" onAction="#setDia"/>
-                  <MenuItem mnemonicParsing="false" text="Semana" onAction="#setSemana"/>
-                  <MenuItem mnemonicParsing="false" text="Mes" onAction="#setMes"/>
-               </items>
-               <HBox.margin>
-                  <Insets left="800.0" />
-               </HBox.margin>
-            </SplitMenuButton>
-            <SplitMenuButton fx:id="menuCrear" mnemonicParsing="false" text="Crear">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#crearEvento" text="Evento" />
-                  <MenuItem mnemonicParsing="false" onAction="#crearTarea" text="Tarea" />
-               </items>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </SplitMenuButton>
-         </children>
-         <VBox.margin>
-            <Insets bottom="20.0" top="20.0" />
-         </VBox.margin>
-      </HBox>
-   </children>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0"
+      prefWidth="1600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controlador">
+   <HBox prefHeight="2.0" prefWidth="1600.0" spacing="25.0">
+      <VBox.margin>
+         <Insets bottom="20.0" top="20.0"/>
+      </VBox.margin>
+      <SplitMenuButton fx:id="menuFecha" mnemonicParsing="false" text="Semana">
+         <items>
+            <MenuItem mnemonicParsing="false" text="Dia" onAction="#setDia"/>
+            <MenuItem mnemonicParsing="false" text="Semana" onAction="#setSemana"/>
+            <MenuItem mnemonicParsing="false" text="Mes" onAction="#setMes"/>
+         </items>
+         <HBox.margin>
+            <Insets left="800.0"/>
+         </HBox.margin>
+      </SplitMenuButton>
+      <SplitMenuButton fx:id="menuCrear" mnemonicParsing="false" text="Crear">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#crearEvento" text="Evento"/>
+            <MenuItem mnemonicParsing="false" onAction="#crearTarea" text="Tarea"/>
+         </items>
+         <HBox.margin>
+            <Insets/>
+         </HBox.margin>
+      </SplitMenuButton>
+   </HBox>
 </VBox>

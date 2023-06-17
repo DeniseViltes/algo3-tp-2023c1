@@ -1,6 +1,5 @@
 import fechas.Mes;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -145,7 +144,7 @@ public class ControladorMostrarInformacion {
         FXMLLoader loader = new FXMLLoader();
         String path = elemento.tieneVencimiento()? "/EscenaModificarEvento.fxml": "/EscenaModificarTarea.fxml";
         loader.setLocation(getClass().getResource(path));
-        AnchorPane view = null;
+        AnchorPane view;
         try {
             view = loader.load();
         } catch (IOException e) {
