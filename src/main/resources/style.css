@@ -1,3 +1,31 @@
-.label{
+* {
+    dark-primary-color:#536974ff;
+    default-primary-color: #a6b5b2ff;
+    text-primary-color:#1a150fff;
+    light-primary-color:#eadfecff;
+    accent-color: #bb7c8bff;
+    secondary-text-color: #eadfecff;
+    divider-color: #BDBDBD;
+}
 
+
+
+.root{
+    -fx-background-color:light-primary-color;
+}
+
+
+.button{
+    -fx-background-color:  accent-color;
+    -fx-text-fill: secondary-text-color;
+}
+.label{
+    -fx-text-fill:text-primary-color ;
+    -fx-font-family: "Century Schoolbook";
+}
+.scroll-pane{
+    -fx-background-color:light-primary-color;
+}
+.choice-box{
+    -fx-background-color: default-primary-color;
 }
