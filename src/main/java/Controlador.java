@@ -153,7 +153,7 @@ public class Controlador {
         var timer = new AnimationTimer() {
             @Override
             public void handle(long tiempo) {
-                LocalDateTime localDateTime =getLocalDateTime(tiempo);
+                LocalDateTime localDateTime =getLocalDateTime();
                 var p = calendario.sonarProximaAlarma(localDateTime.minusSeconds(1), localDateTime.plusMinutes(1));
                 if (p != null) {
                 System.out.println(p);
@@ -199,7 +199,7 @@ public class Controlador {
 
     }
 
-    private LocalDateTime getLocalDateTime(long tiempo){
+    private LocalDateTime getLocalDateTime(){
         return LocalDateTime.now();
     }
 
