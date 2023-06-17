@@ -217,9 +217,10 @@ public class Calendario implements Serializable {
         LocalDateTime date = fin;
         for (ElementoCalendario i : elementos){
             var horarioAlarma = i.horarioProximaAlarma(fechaYHora);
-            if (!horarioAlarma.isAfter(date)){
+            if (horarioAlarma!=null && !horarioAlarma.isAfter(date)){
                 date = horarioAlarma;
                 efecto = i.sonarProximaAlarma(horarioAlarma);
+
             }
         }
         return efecto;

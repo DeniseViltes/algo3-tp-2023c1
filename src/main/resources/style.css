@@ -1,14 +1,13 @@
 * {
-    dark-primary-color:#536974ff;
-    default-primary-color: #a6b5b2ff;
-    text-primary-color:#1a150fff;
-    light-primary-color:#eadfecff;
-    accent-color: #bb7c8bff;
-    secondary-text-color: #eadfecff;
-    divider-color: #BDBDBD;
+    head-primary-color: #bdd5eaff;
+    default-primary-color: #ACBED8;
+    text-primary-color:#212121;
+    light-primary-color:   #f7fff7ff;
+    accent-color: #9055a2ff;
+    secondary-text-color: #757575;
+    primary-text-color: #FFFFFF;
+    divider-color:#c5d8d1ff;
 }
-
-
 
 .root{
     -fx-background-color:light-primary-color;
@@ -16,16 +15,54 @@
 
 
 .button{
-    -fx-background-color:  accent-color;
-    -fx-text-fill: secondary-text-color;
+    -fx-background-color:  default-primary-color;
+    -fx-text-fill: text-primary-color;
+    -fx-border-radius: 10px;
 }
 .label{
     -fx-text-fill:text-primary-color ;
     -fx-font-family: "Century Schoolbook";
 }
-.scroll-pane{
+
+.choice-box{
+    -fx-background-color: default-primary-color; /* Cambia el color de fondo */
+}
+
+.choice-box .text{
+    -fx-fill:text-primary-color; /* Cambia el color del texto */
+}
+.choice-box .menu-item .text{
+    -fx-background-color:light-primary-color; /* Cambia el color de fondo */
+    -fx-fill:text-primary-color; /* Cambia el color del texto */
+}
+
+/*.tool-bar{*/
+/*    -fx-background-color:dark-primary-color;*/
+/*}*/
+
+.split-menu-button{
+    -fx-background-color:  default-primary-color;
+    -fx-text-fill: primary-text-color;
+}
+.menu-button{
+    -fx-background-color:  default-primary-color;
+    -fx-text-fill: primary-text-color;
+}
+.check-box.box{
+    -fx-background-color:divider-color;
+}
+.scroll-bar{
     -fx-background-color:light-primary-color;
 }
-.choice-box{
-    -fx-background-color: default-primary-color;
+.scroll-bar:vertical .thumb{
+    -fx-background-color:divider-color;
+}
+
+#vBoxAlarmas{
+    -fx-background-color:light-primary-color;
+}
+
+#btn_hoy{
+    -fx-background-color:  accent-color;
+    -fx-text-fill: primary-text-color;
 }

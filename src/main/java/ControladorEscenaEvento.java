@@ -67,7 +67,7 @@ public class ControladorEscenaEvento{
 
 
         cantRepeticiones.setDisable(true);
-        var spinnerRepeticiones = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,Integer.MAX_VALUE,0);
+        var spinnerRepeticiones = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,Integer.MAX_VALUE);
         this.cantRepeticiones.setValueFactory(spinnerRepeticiones);
         var spinnerAlarmas = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,Integer.MAX_VALUE,10);
         this.intervaloAlarma.setValueFactory(spinnerAlarmas);
@@ -96,12 +96,13 @@ public class ControladorEscenaEvento{
         //para evitar problemas, los pongo aca en vez de guardarse automaticamente
         modificarFinal();
         modificarInicio();
+        setearDeDiaCompleto();
         Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
         stage.close();
     }
 
-    @FXML
-    void setearDeDiaCompleto(ActionEvent event) {
+
+    void setearDeDiaCompleto() {
         if(checkDiaCompleto.isSelected())
             calendario.marcarDeDiaCompleto(evento);
         else{
@@ -129,7 +130,7 @@ public class ControladorEscenaEvento{
         var fechaInicial = LocalDate.parse(this.fechaIncio.getText(), formatterFecha);
         var horarioInicial = LocalTime.parse(this.horarioInicio.getText(), formatterHora);
         var horarioFinal = LocalTime.parse(this.horarioFinal.getText(), formatterHora);
-        var duracion = Duration.between(fechaFinal.atTime(horarioFinal),fechaInicial.atTime(horarioInicial));
+        var duracion = Duration.between(fechaInicial.atTime(horarioInicial),fechaFinal.atTime(horarioFinal));
         calendario.modificarDuracion(evento,duracion);
 
         }
@@ -138,7 +139,7 @@ public class ControladorEscenaEvento{
         }
 
     }
-
+    //TODO revisar alertas
     private void cargarAlertaFormato () throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/alertas/alertaFormatoFechas.fxml"));
@@ -147,7 +148,6 @@ public class ControladorEscenaEvento{
         Scene scene = new Scene(view);
         stage.setScene(scene);
         stage.show();
-        calendario.eliminarElementoCalendario(evento);
     }
 
     @FXML

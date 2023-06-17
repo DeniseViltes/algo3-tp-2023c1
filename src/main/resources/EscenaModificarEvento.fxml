@@ -49,7 +49,7 @@
                     <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5">
                         <Spinner fx:id="cantRepeticiones" onMouseClicked="#guardarCantRepeticiones" prefHeight="25.0" prefWidth="183.0" />
                     </HBox>
-                    <CheckBox fx:id="checkDiaCompleto" contentDisplay="CENTER" mnemonicParsing="false" onAction="#setearDeDiaCompleto" prefHeight="17.0" prefWidth="289.0" text="De dia completo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <CheckBox fx:id="checkDiaCompleto" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="17.0" prefWidth="289.0" text="De dia completo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                     <HBox alignment="CENTER" GridPane.rowIndex="6">
                         <Button mnemonicParsing="false" onAction="#agregarAlarma" prefHeight="25.0" prefWidth="108.0" text="Agregar Alarma" />
                     </HBox>
@@ -68,9 +68,9 @@
                 </GridPane>
                 <AnchorPane prefHeight="177.0" prefWidth="353.0">
                     <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                        <ScrollPane hbarPolicy="NEVER" prefHeight="171.0" prefWidth="230.0">
-                            <AnchorPane prefHeight="200.0" prefWidth="225.0">
-                                <VBox fx:id="vBoxAlarmas" layoutX="6.0" prefHeight="200.0" prefWidth="269.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0" />
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="128.0" prefWidth="230.0">
+                            <AnchorPane prefHeight="167.0" prefWidth="228.0">
+                                <VBox fx:id="vBoxAlarmas" layoutX="6.0" prefHeight="200.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                             </AnchorPane>
                         </ScrollPane>
                     </HBox>

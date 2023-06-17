@@ -1,3 +1,4 @@
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,12 +15,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.*;
 
 
 public class Controlador {
     private Calendario calendario;
 
     public Stage stage;
+
+    private String mail;
 
 
     @FXML
@@ -82,12 +86,11 @@ public class Controlador {
     @FXML
     void crearEvento(ActionEvent event) throws IOException {
         var evento = calendario.crearEvento();
-
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/EscenaModificarEvento.fxml"));
         AnchorPane view = loader.load();
         final Stage stage = new Stage();
-        Scene scene = new Scene(view,600,400);
+        Scene scene = new Scene(view);
         ControladorEscenaEvento controlador = loader.getController();
 
         controlador.initElemento(calendario,evento);
@@ -103,7 +106,7 @@ public class Controlador {
         loader.setLocation(getClass().getResource("/EscenaModificarTarea.fxml"));
         AnchorPane view = loader.load();
         final Stage stage = new Stage();
-        Scene scene = new Scene(view,600,400);
+        Scene scene = new Scene(view);
         ControladorEscenaTarea controlador = loader.getController();
         controlador.initElemento(calendario,tarea);
         stage.setScene(scene);
@@ -121,6 +124,9 @@ public class Controlador {
         ControladorEscenaSemanal controlador = loader.getController();
         controlador.initEscenaSemanal(this, calendario);
         initListeners(pathArchivoCalendario);
+
+        iniciarTimer();
+
         stage.setScene(scene);
         stage.show();
     }
@@ -141,6 +147,60 @@ public class Controlador {
         } catch (IOException | ClassNotFoundException e) {
             this.calendario = new Calendario();
         }
+    }
+
+    private void iniciarTimer(){
+        var timer = new AnimationTimer() {
+            @Override
+            public void handle(long tiempo) {
+                LocalDateTime localDateTime =getLocalDateTime(tiempo);
+                var p = calendario.sonarProximaAlarma(localDateTime.minusSeconds(1), localDateTime.plusMinutes(1));
+                if (p != null) {
+                System.out.println(p);
+                    try {
+                        ejecutarAlarma(p);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                }
+            };
+            
+       timer.start();
+    }
+
+
+    //puedo agregar esto en Efecto Alarma???? o mejor hacer otro enum?
+    private void ejecutarAlarma(EfectoAlarma p) throws IOException {
+        switch (p){
+            case NOTIFICACION -> mostrarVentana();
+            case SONIDO -> sonarAlarma();
+            case MAIL -> mandarMail();
+        }
+
+    }
+    private void mostrarVentana() throws IOException {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/Alarma.fxml"));
+        VBox view = loader.load();
+        final Stage stage = new Stage();
+        Scene scene = new Scene(view);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    private void sonarAlarma(){
+
+    }
+
+    private void mandarMail(){
+
+    }
+
+    private LocalDateTime getLocalDateTime(long tiempo){
+        return LocalDateTime.now();
     }
 
 }
