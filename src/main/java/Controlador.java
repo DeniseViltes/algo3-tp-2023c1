@@ -23,7 +23,8 @@ public class Controlador {
 
     public Stage stage;
 
-    private String mail;
+    private ControladorTipoDeVista controladorActual;
+    private String mail; //TODO agregar enviar mail
 
 
     @FXML
@@ -47,6 +48,7 @@ public class Controlador {
         menuFecha.setText("Semana");
 
         controlador.initEscenaSemanal(this, calendario);
+        controladorActual = controlador;
         stage.setScene(scene);
         stage.show();
     }
@@ -59,9 +61,8 @@ public class Controlador {
 
         Scene scene = new Scene(view,600,400);
         ControladorEscenaDiaria controlador = loader.getController();
-
-
         controlador.initEscenaDiaria(this, calendario);
+        controladorActual = controlador;
         stage.setScene(scene);
         menuFecha.setText("Dia");
         stage.show();
@@ -78,6 +79,7 @@ public class Controlador {
         menuFecha.setText("Mes");
 
         controlador.initEscenaMensual(this, calendario);
+        controladorActual = controlador;
         stage.setScene(scene);
         stage.show();
     }
@@ -89,13 +91,18 @@ public class Controlador {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/EscenaModificarEvento.fxml"));
         AnchorPane view = loader.load();
-        final Stage stage = new Stage();
+        final Stage stageEvento = new Stage();
         Scene scene = new Scene(view);
-        ControladorEscenaEvento controlador = loader.getController();
+        ControladorEscenaCrearEvento controlador = loader.getController();
 
         controlador.initElemento(calendario,evento);
-        stage.setScene(scene);
-        stage.show();
+        stageEvento.setResizable(false);
+        stageEvento.setScene(scene);
+        stageEvento.setTitle("Nuevo evento");
+        stageEvento.showAndWait();
+        controladorActual.limpiarCalendario();
+        controladorActual.actualizarCalendario(calendario);
+
     }
 
     @FXML
@@ -105,12 +112,16 @@ public class Controlador {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/EscenaModificarTarea.fxml"));
         AnchorPane view = loader.load();
-        final Stage stage = new Stage();
+        final Stage stageTarea = new Stage();
         Scene scene = new Scene(view);
-        ControladorEscenaTarea controlador = loader.getController();
+        ControladorEscenaCrearTarea controlador = loader.getController();
         controlador.initElemento(calendario,tarea);
-        stage.setScene(scene);
-        stage.show();
+        stageTarea.setResizable(false);
+        stageTarea.setScene(scene);
+        stageTarea.showAndWait();
+        controladorActual.limpiarCalendario();
+        controladorActual.actualizarCalendario(calendario);
+
     }
 
 
@@ -123,15 +134,14 @@ public class Controlador {
         inicializarCalendario( pathArchivoCalendario);
         ControladorEscenaSemanal controlador = loader.getController();
         controlador.initEscenaSemanal(this, calendario);
-        initListeners(pathArchivoCalendario);
-
+        controladorActual = controlador;
+        initListener(pathArchivoCalendario);
         iniciarTimer();
-
         stage.setScene(scene);
         stage.show();
     }
 
-    private void initListeners(String fileName){
+    private void initListener(String fileName){
         calendario.agregarListener(() -> {
             try {
                 ProcesadorDeArchivoCalendario.guardarCalendarioEnArchivo(calendario,fileName);
@@ -153,10 +163,9 @@ public class Controlador {
         var timer = new AnimationTimer() {
             @Override
             public void handle(long tiempo) {
-                LocalDateTime localDateTime =getLocalDateTime();
+                LocalDateTime localDateTime = getLocalDateTime();
                 var p = calendario.sonarProximaAlarma(localDateTime.minusSeconds(1), localDateTime.plusMinutes(1));
                 if (p != null) {
-                System.out.println(p);
                     try {
                         ejecutarAlarma(p);
                     } catch (IOException e) {
@@ -173,13 +182,13 @@ public class Controlador {
     //puedo agregar esto en Efecto Alarma???? o mejor hacer otro enum?
     private void ejecutarAlarma(EfectoAlarma p) throws IOException {
         switch (p){
-            case NOTIFICACION -> mostrarVentana();
+            case NOTIFICACION -> mostrarNotificacion();
             case SONIDO -> sonarAlarma();
             case MAIL -> mandarMail();
         }
 
     }
-    private void mostrarVentana() throws IOException {
+    private void mostrarNotificacion() throws IOException {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Alarma.fxml"));

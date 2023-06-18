@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.TreeSet;
 
-public class ControladorEscenaDiaria {
+public class ControladorEscenaDiaria implements ControladorTipoDeVista{
 
     private Controlador controlador;
 
@@ -71,7 +71,7 @@ public class ControladorEscenaDiaria {
         label_mes.setText(dia_mostrado.getDayOfMonth() + " " + Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspanol() + " " + dia_mostrado.getYear());
         mostrarDia(dia_mostrado);
         marcarDia();
-        actualizarCalendario(calendario, dia_mostrado);
+        actualizarCalendario(calendario);
 
         btn_hoy.setOnAction(actionEvent -> {
             dia_mostrado = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
@@ -79,7 +79,7 @@ public class ControladorEscenaDiaria {
             mostrarDia(dia_mostrado);
             marcarDia();
             limpiarCalendario();
-            actualizarCalendario(calendario, dia_mostrado);
+            actualizarCalendario(calendario);
         });
 
         btn_anterior.setOnAction(actionEvent -> {
@@ -90,7 +90,7 @@ public class ControladorEscenaDiaria {
             if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
                 marcarDia();
             limpiarCalendario();
-            actualizarCalendario(calendario, dia_mostrado);
+            actualizarCalendario(calendario);
         });
 
         btn_siguiente.setOnAction(actionEvent -> {
@@ -101,7 +101,7 @@ public class ControladorEscenaDiaria {
             if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
                 marcarDia();
             limpiarCalendario();
-            actualizarCalendario(calendario, dia_mostrado);
+            actualizarCalendario(calendario);
         });
 
         menuFecha.setText("Dia");
@@ -113,9 +113,9 @@ public class ControladorEscenaDiaria {
         }
     }
 
-    public void actualizarCalendario(Calendario calendario, LocalDateTime dia_mostrar){
+    public void actualizarCalendario(Calendario calendario){
 
-        TreeSet<ElementoCalendario> elementos = calendario.elementosEntreFechas(dia_mostrar, dia_mostrar.plusDays(1));
+        TreeSet<ElementoCalendario> elementos = calendario.elementosEntreFechas(dia_mostrado, dia_mostrado.plusDays(1));
 
         for (ElementoCalendario elemento : elementos){
             if(elemento.isEsDeDiaCompleto()){

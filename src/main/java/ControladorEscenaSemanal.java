@@ -18,7 +18,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.TreeSet;
 
 
-public class ControladorEscenaSemanal{
+public class ControladorEscenaSemanal implements  ControladorTipoDeVista{
 
     private Controlador controlador;
 
@@ -97,14 +97,14 @@ public class ControladorEscenaSemanal{
         dia_mostrado = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
         marcarDiaActual();
         mostrarSemana(dia_mostrado);
-        actualizarCalendario(calendario, dia_mostrado);
+        actualizarCalendario(calendario);
         btn_hoy.setOnAction(actionEvent -> {
             dia_mostrado = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
             label_mes.setText(Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspanol() + " " + dia_mostrado.getYear());
             mostrarSemana(dia_mostrado);
             marcarDiaActual();
             limpiarCalendario();
-            actualizarCalendario(calendario, dia_mostrado);
+            actualizarCalendario(calendario);
         });
 
         btn_anterior.setOnAction(actionEvent -> {
@@ -115,7 +115,7 @@ public class ControladorEscenaSemanal{
             if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
                 marcarDiaActual();
             limpiarCalendario();
-            actualizarCalendario(calendario, dia_mostrado);
+            actualizarCalendario(calendario);
         });
 
         btn_siguiente.setOnAction(actionEvent -> {
@@ -126,7 +126,7 @@ public class ControladorEscenaSemanal{
             if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
                 marcarDiaActual();
             limpiarCalendario();
-            actualizarCalendario(calendario, dia_mostrado);
+            actualizarCalendario(calendario);
         });
 
         menuFecha.setText("Semana");
@@ -157,31 +157,31 @@ public class ControladorEscenaSemanal{
         }
     }
 
-    public void actualizarCalendario(Calendario calendario, LocalDateTime dia){
+    public void actualizarCalendario(Calendario calendario){
         boolean esDomingo = false;
         while(!esDomingo){
-            if(dia.getDayOfWeek()== DayOfWeek.SUNDAY) {
+            if(dia_mostrado.getDayOfWeek()== DayOfWeek.SUNDAY) {
                 esDomingo = true;
             }
             else {
-                dia = dia.minusDays(1);
+                dia_mostrado = dia_mostrado.minusDays(1);
             }
         }
 
 
-        TreeSet<ElementoCalendario> domingo = calendario.elementosEntreFechas(dia,finDelDia(dia));
-        dia = dia.plusDays(1);
-        TreeSet<ElementoCalendario> lunes = calendario.elementosEntreFechas(dia, finDelDia(dia));
-        dia = dia.plusDays(1);
-        TreeSet<ElementoCalendario> martes = calendario.elementosEntreFechas(dia, finDelDia(dia));
-        dia = dia.plusDays(1);
-        TreeSet<ElementoCalendario> miercoles = calendario.elementosEntreFechas(dia, finDelDia(dia));
-        dia = dia.plusDays(1);
-        TreeSet<ElementoCalendario> jueves = calendario.elementosEntreFechas(dia, finDelDia(dia));
-        dia = dia.plusDays(1);
-        TreeSet<ElementoCalendario> viernes = calendario.elementosEntreFechas(dia, finDelDia(dia));
-        dia = dia.plusDays(1);
-        TreeSet<ElementoCalendario> sabado = calendario.elementosEntreFechas(dia, finDelDia(dia));
+        TreeSet<ElementoCalendario> domingo = calendario.elementosEntreFechas(dia_mostrado,finDelDia(dia_mostrado));
+        dia_mostrado = dia_mostrado.plusDays(1);
+        TreeSet<ElementoCalendario> lunes = calendario.elementosEntreFechas(dia_mostrado, finDelDia(dia_mostrado));
+        dia_mostrado = dia_mostrado.plusDays(1);
+        TreeSet<ElementoCalendario> martes = calendario.elementosEntreFechas(dia_mostrado, finDelDia(dia_mostrado));
+        dia_mostrado = dia_mostrado.plusDays(1);
+        TreeSet<ElementoCalendario> miercoles = calendario.elementosEntreFechas(dia_mostrado, finDelDia(dia_mostrado));
+        dia_mostrado = dia_mostrado.plusDays(1);
+        TreeSet<ElementoCalendario> jueves = calendario.elementosEntreFechas(dia_mostrado, finDelDia(dia_mostrado));
+        dia_mostrado = dia_mostrado.plusDays(1);
+        TreeSet<ElementoCalendario> viernes = calendario.elementosEntreFechas(dia_mostrado, finDelDia(dia_mostrado));
+        dia_mostrado = dia_mostrado.plusDays(1);
+        TreeSet<ElementoCalendario> sabado = calendario.elementosEntreFechas(dia_mostrado, finDelDia(dia_mostrado));
 
         for (ElementoCalendario elemento : domingo){
             if(elemento.isEsDeDiaCompleto()){

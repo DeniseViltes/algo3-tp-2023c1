@@ -54,7 +54,7 @@
 .scroll-bar{
     -fx-background-color:light-primary-color;
 }
-.scroll-bar:vertical .thumb{
+.scroll-bar .thumb{
     -fx-background-color:divider-color;
 }
 
@@ -65,4 +65,7 @@
 #btn_hoy{
     -fx-background-color:  accent-color;
     -fx-text-fill: primary-text-color;
+}
+#guardado{
+    -fx-text-fill: #757575;
 }
