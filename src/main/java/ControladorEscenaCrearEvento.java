@@ -23,7 +23,7 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 
 
-public class ControladorEscenaEvento{
+public class ControladorEscenaCrearEvento {
     private Evento evento;
     private Calendario calendario;
 

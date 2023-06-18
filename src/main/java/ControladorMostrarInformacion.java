@@ -153,11 +153,11 @@ public class ControladorMostrarInformacion {
         final Stage stage = new Stage();
         Scene scene = new Scene(view,600,400);
         if(elemento.tieneVencimiento()) {
-            ControladorEscenaEvento controlador = loader.getController();
+            ControladorEscenaCrearEvento controlador = loader.getController();
             controlador.initElemento(calendario, (Evento) elemento);
         }
         else {
-            ControladorEscenaTarea controlador = loader.getController();
+            ControladorEscenaCrearTarea controlador = loader.getController();
             controlador.initElemento(calendario, (Tarea) elemento);
         }
         stage.setScene(scene);

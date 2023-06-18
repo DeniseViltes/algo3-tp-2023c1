@@ -22,7 +22,7 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 
 
-public class ControladorEscenaTarea{
+public class ControladorEscenaCrearTarea {
     private Tarea tarea;
     private Calendario calendario;
 
