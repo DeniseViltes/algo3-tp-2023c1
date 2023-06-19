@@ -39,6 +39,7 @@ public class ControladorEscenaCrearTarea {
 
     @FXML
     private TextField horarioVencimiento;
+    //TODO vale la pena pasar el controlador aca?
 
     private final DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
@@ -63,27 +64,24 @@ public class ControladorEscenaCrearTarea {
        }
    }
 
-
-
-
-
     @FXML
     void volverAVistaPrincipal(ActionEvent event) throws IOException {
         //para evitar problemas, los pongo aca en vez de guardarse automaticamente
         modificarInicio();
+        setearDeDiaCompleto();
         Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
         stage.close();
     }
 
-    @FXML
-    void setearDeDiaCompleto(ActionEvent event) {
+
+    void setearDeDiaCompleto() {
         if(checkDiaCompleto.isSelected())
             calendario.marcarDeDiaCompleto(tarea);
         else{
             calendario.desmarcarDeDiaCompleto(tarea);
         }
-    }
 
+    }
 
     @FXML
     void modificarDescripcion(KeyEvent event) {

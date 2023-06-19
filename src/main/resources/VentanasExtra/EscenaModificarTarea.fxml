@@ -43,7 +43,7 @@
                     <TextField fx:id="tituloEvento" onKeyPressed="#modificarTitulo" GridPane.columnIndex="1" />
                     <TextField fx:id="descripcionEvento" onKeyTyped="#modificarDescripcion" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="145.0" text="Fecha de Vencimiento:" GridPane.rowIndex="3" />
-                    <CheckBox fx:id="checkDiaCompleto" contentDisplay="CENTER" mnemonicParsing="false" onAction="#setearDeDiaCompleto" prefHeight="17.0" prefWidth="289.0" text="De dia completo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <CheckBox fx:id="checkDiaCompleto" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="17.0" prefWidth="289.0" text="De dia completo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                     <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
                         <TextField fx:id="fechaVencimiento" />
                         <TextField fx:id="horarioVencimiento" prefHeight="25.0" prefWidth="80.0" />
