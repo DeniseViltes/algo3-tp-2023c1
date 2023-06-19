@@ -13,6 +13,8 @@ Viltes Denise, 106943
 Strategy 
 Observer
 
+Mediator? (controlador, con las vistas e informacion detallada)
+
 
 
 

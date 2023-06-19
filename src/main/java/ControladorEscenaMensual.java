@@ -316,7 +316,7 @@ public class ControladorEscenaMensual implements ControladorTipoDeVista{
             btn.setText(el.getFecha().getHour()  + " - " + ((Evento)el).getFechaYHoraFinal().getHour() + " " + el.getTitulo() );
             btn.setOnAction(actionEvent -> {
                 ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
-                controlador.mostrar_informacion(this.controlador.getCalendario(), el, btn);
+                controlador.mostrar_informacion(this.controlador, el, btn);
             });
             return btn;
         }
@@ -332,7 +332,7 @@ public class ControladorEscenaMensual implements ControladorTipoDeVista{
             btn.setText(el.getFecha().getHour() + " " + el.getTitulo());
             btn.setOnAction(actionEvent -> {
                 ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
-                controlador.mostrar_informacion(this.controlador.getCalendario(), el, btn);
+                controlador.mostrar_informacion(this.controlador, el, btn);
             });
             return btn;
         }
@@ -349,7 +349,7 @@ public class ControladorEscenaMensual implements ControladorTipoDeVista{
             btn.setText(el.getTitulo());
             btn.setOnAction(actionEvent -> {
                 ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
-                controlador.mostrar_informacion(this.controlador.getCalendario(), el, btn);
+                controlador.mostrar_informacion(this.controlador, el, btn);
             });
             return btn;
         }
@@ -365,7 +365,7 @@ public class ControladorEscenaMensual implements ControladorTipoDeVista{
             btn.setText(el.getTitulo());
             btn.setOnAction(actionEvent -> {
                 ControladorMostrarInformacion controlador = new ControladorMostrarInformacion();
-                controlador.mostrar_informacion(this.controlador.getCalendario(), el, btn);
+                controlador.mostrar_informacion(this.controlador, el, btn);
             });
             return btn;
         }

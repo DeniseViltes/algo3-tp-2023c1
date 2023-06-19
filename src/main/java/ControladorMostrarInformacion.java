@@ -1,6 +1,4 @@
 import fechas.Mes;
-
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -22,11 +19,16 @@ import java.time.LocalDateTime;
 
 public class ControladorMostrarInformacion {
 
+
+
+    private Controlador controlador;
+
     public void setearEstadoCheck(CheckBox check){
         check.setSelected(!check.isSelected());
     }
 
-    public void mostrar_informacion(Calendario calendario, ElementoCalendario el, Node btn){
+    public void mostrar_informacion(Controlador controlador, ElementoCalendario el, Node btn){
+        this.controlador = controlador;
         final Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -125,8 +127,8 @@ public class ControladorMostrarInformacion {
 
         if(!el.getDescripcion().isEmpty())
             dialogVbox.getChildren().add(descripcion);
-        var botonEliminar = botonEliminar(calendario,el);
-        var botonEditar = botorEditarElemento(calendario,el);
+        var botonEliminar = botonEliminar(el);
+        var botonEditar = botorEditarElemento(el);
 
         HBox editarEliminar = new HBox();
         editarEliminar.getChildren().add(botonEditar);
@@ -139,47 +141,35 @@ public class ControladorMostrarInformacion {
         dialog.show();
     }
 
-    private Button botorEditarElemento(Calendario calendario, ElementoCalendario elemento){
+    private Button botorEditarElemento(ElementoCalendario elemento) {
         Button editar = new Button("Editar");
         editar.setMinWidth(25);
         editar.setMinHeight(25);
 
-        FXMLLoader loader = new FXMLLoader();
-        String path = elemento.tieneVencimiento() ? "/VentanasExtra/EscenaModificarEvento.fxml" : "/VentanasExtra/EscenaModificarTarea.fxml";
-        loader.setLocation(getClass().getResource(path));
-        AnchorPane view;
-        try {
-            view = loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        final Stage stage = new Stage();
-        Scene scene = new Scene(view,600,400);
-        if(elemento.tieneVencimiento()) {
-            ControladorEscenaCrearEvento controlador = loader.getController();
-            controlador.initElemento(calendario, (Evento) elemento);
-        }
-        else {
-            ControladorEscenaCrearTarea controlador = loader.getController();
-            controlador.initElemento(calendario, (Tarea) elemento);
-        }
-        stage.setScene(scene);
         editar.setOnAction(event -> {
+            try{
+            if(elemento.tieneVencimiento()) {
+                controlador.modificarEvento((Evento) elemento);
+            }
+            else {
+                controlador.modificarTarea((Tarea)elemento);
+            }}catch (IOException e){
+                System.out.println("error");//TODO agregar alerta
+            }
             Stage viejo = (Stage) editar.getScene().getWindow();
-            stage.show();
             viejo.close();
         });
 
         return editar;
     }
 
-    private Button botonEliminar(Calendario calendario, ElementoCalendario elemento){
+    private Button botonEliminar(ElementoCalendario elemento){
         Button eliminar = new Button("Eliminar");
         eliminar.setMinWidth(25);
         eliminar.setMinHeight(25);
 
         eliminar.setOnAction(event -> {
-            calendario.eliminarElementoCalendario(elemento);//TODO fijarse si se eliminan todos los eventos aveces se buggea
+            controlador.eliminarElementoCalendario(elemento);//TODO fijarse si se eliminan todos los eventos aveces se buggea
             Stage  stageViejo = (Stage) eliminar.getScene().getWindow();
             stageViejo.close();
         });

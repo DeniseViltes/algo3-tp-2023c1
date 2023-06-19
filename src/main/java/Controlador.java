@@ -36,10 +36,6 @@ public class Controlador {
     @FXML
     private SplitMenuButton menuFecha;
 
-    public Calendario getCalendario(){
-        return calendario;
-    }
-
     public void init(Stage stage, String pathArchivoCalendario) throws IOException{
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/EscenaSemanal.fxml"));
@@ -55,6 +51,10 @@ public class Controlador {
         iniciarTimer();
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void eliminarElementoCalendario (ElementoCalendario elemento){
+        calendario.eliminarElementoCalendario(elemento);
     }
     @FXML
     void setSemana(ActionEvent event) throws IOException {
@@ -107,6 +107,17 @@ public class Controlador {
     @FXML
     void crearEvento(ActionEvent event) throws IOException {
         var evento = calendario.crearEvento();
+       modificarEvento(evento);
+    }
+
+    @FXML
+    void crearTarea(ActionEvent event) throws IOException {
+        var tarea = calendario.crearTarea();
+        modificarTarea(tarea);
+    }
+
+
+    public void modificarEvento(Evento evento) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/VentanasExtra/EscenaModificarEvento.fxml"));
         AnchorPane view = loader.load();
@@ -122,10 +133,7 @@ public class Controlador {
         setearStageSecundario(stageEvento);
     }
 
-    @FXML
-    void crearTarea(ActionEvent event) throws IOException {
-        var tarea = calendario.crearTarea();
-
+    public void modificarTarea(Tarea tarea) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/VentanasExtra/EscenaModificarTarea.fxml"));
         AnchorPane view = loader.load();
@@ -137,7 +145,6 @@ public class Controlador {
         stageTarea.setScene(scene);
         setearStageSecundario(stageTarea);
     }
-
 
 
     private void initListener(String fileName){
@@ -170,7 +177,7 @@ public class Controlador {
                     try {
                         ejecutarAlarma(p);
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        throw new RuntimeException(e);//TODO execepcion
                     }
                 }
                 }
@@ -180,7 +187,6 @@ public class Controlador {
     }
 
 
-    //puedo agregar esto en Efecto Alarma???? o mejor hacer otro enum?
     private void ejecutarAlarma(EfectoAlarma p) throws IOException {
         switch (p){
             case NOTIFICACION -> mostrarNotificacion();
