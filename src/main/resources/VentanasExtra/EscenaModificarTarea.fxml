@@ -8,6 +8,8 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -16,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" scaleShape="false" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControladorEscenaCrearTarea">
+<AnchorPane maxHeight="510.0" maxWidth="710.0" minHeight="400.0" minWidth="600.0" prefHeight="510.0" prefWidth="710.0" scaleShape="false" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControladorEscenaCrearTarea">
     <BorderPane layoutX="200.0" layoutY="54.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
             <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -35,7 +37,6 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <Label prefHeight="17.0" prefWidth="146.0" text="Título:" />
                     <Label prefHeight="17.0" prefWidth="170.0" text="Descripción:" GridPane.rowIndex="1" />
@@ -43,18 +44,27 @@
                     <TextField fx:id="descripcionEvento" onKeyTyped="#modificarDescripcion" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="145.0" text="Fecha de Vencimiento:" GridPane.rowIndex="3" />
                     <CheckBox fx:id="checkDiaCompleto" contentDisplay="CENTER" mnemonicParsing="false" onAction="#setearDeDiaCompleto" prefHeight="17.0" prefWidth="289.0" text="De dia completo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    <HBox alignment="CENTER" GridPane.rowIndex="4">
-                        <Button mnemonicParsing="false" onAction="#agregarAlarma" prefHeight="25.0" prefWidth="108.0" text="Agregar Alarma" />
-                    </HBox>
-                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                        <Spinner fx:id="intervaloAlarma" prefHeight="25.0" prefWidth="80.0" />
-                        <ChoiceBox fx:id="tipoDeIntervalo" prefHeight="25.0" prefWidth="150.0" />
-                    </HBox>
                     <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
                         <TextField fx:id="fechaVencimiento" />
                         <TextField fx:id="horarioVencimiento" prefHeight="25.0" prefWidth="80.0" />
                     </HBox>
                 </GridPane>
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="474.0">
+               <children>
+                  <ImageView fitHeight="29.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../alarma.png" />
+                     </image>
+                  </ImageView>
+                  <AnchorPane prefHeight="30.0" prefWidth="34.0" />
+                  <ChoiceBox fx:id="tipoDeEfecto" prefHeight="23.0" prefWidth="157.0" />
+                  <AnchorPane prefHeight="30.0" prefWidth="22.0" />
+                        <Spinner fx:id="intervaloAlarma" prefHeight="25.0" prefWidth="64.0" />
+                        <ChoiceBox fx:id="tipoDeIntervalo" prefHeight="25.0" prefWidth="150.0" />
+                  <AnchorPane prefHeight="30.0" prefWidth="32.0" />
+                        <Button mnemonicParsing="false" onAction="#agregarAlarma" prefHeight="25.0" prefWidth="26.0" text="+" />
+               </children>
+            </HBox>
                 <AnchorPane prefHeight="177.0" prefWidth="355.0">
                     <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <ScrollPane hbarPolicy="NEVER" prefHeight="171.0" prefWidth="230.0">
