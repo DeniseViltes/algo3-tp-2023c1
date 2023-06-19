@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,6 +28,8 @@ public class ControladorMostrarInformacion {
 
     public void mostrar_informacion(Calendario calendario, ElementoCalendario el, Node btn){
         final Stage dialog = new Stage();
+        dialog.setResizable(false);
+        dialog.initModality(Modality.APPLICATION_MODAL);
         VBox dialogVbox = new VBox(10);
         dialogVbox.setAlignment(Pos.TOP_LEFT);
         dialogVbox.setPadding(new Insets(25));
@@ -111,7 +114,7 @@ public class ControladorMostrarInformacion {
         }
 
         for(Alarma alarma : el.getAlarmas()){
-            Image img = new Image("Alarma.jpg");
+            Image img = new Image("alarma.png");
             ImageView view = new ImageView(img);
             view.setFitHeight(20);
             view.setPreserveRatio(true);
@@ -142,7 +145,7 @@ public class ControladorMostrarInformacion {
         editar.setMinHeight(25);
 
         FXMLLoader loader = new FXMLLoader();
-        String path = elemento.tieneVencimiento()? "/EscenaModificarEvento.fxml": "/EscenaModificarTarea.fxml";
+        String path = elemento.tieneVencimiento() ? "/VentanasExtra/EscenaModificarEvento.fxml" : "/VentanasExtra/EscenaModificarTarea.fxml";
         loader.setLocation(getClass().getResource(path));
         AnchorPane view;
         try {
@@ -176,9 +179,9 @@ public class ControladorMostrarInformacion {
         eliminar.setMinHeight(25);
 
         eliminar.setOnAction(event -> {
-            calendario.eliminarElementoCalendario(elemento);
-            Stage viejo = (Stage) eliminar.getScene().getWindow();
-            viejo.close();
+            calendario.eliminarElementoCalendario(elemento);//TODO fijarse si se eliminan todos los eventos aveces se buggea
+            Stage  stageViejo = (Stage) eliminar.getScene().getWindow();
+            stageViejo.close();
         });
         return eliminar;
     }

@@ -129,13 +129,16 @@ public class ControladorEscenaCrearTarea {
 
     @FXML
     private VBox vBoxAlarmas;
+    @FXML
+    private ChoiceBox<String> tipoDeEfecto;
 
 
     @FXML
     void agregarAlarma(ActionEvent event) {
-        var tipoIntervalo = convertir(tipoDeIntervalo.getValue());
-        var intervalo = Duration.of(intervaloAlarma.getValue(),tipoIntervalo);
+        var intervalo = convertirStringADuracion(tipoDeIntervalo.getValue(),intervaloAlarma.getValue());
         var alarma = calendario.agregarAlarma(tarea,intervalo);
+        var efecto = tipoDeEfecto.getValue();
+        calendario.modificarAlarmaEfecto(tarea,alarma,EfectoAlarma.convertirStringAEfectoAlarma(efecto));
         agregarBotonesDeAlarma(alarma);
     }
 
@@ -177,22 +180,28 @@ public class ControladorEscenaCrearTarea {
         this.tipoDeIntervalo.getItems().add("semanas");
 
         this.tipoDeIntervalo.setValue("minutos");
+
+        this.tipoDeEfecto.getItems().add("Notificacion");
+        this.tipoDeEfecto.getItems().add("Mail");
+        this.tipoDeEfecto.getItems().add("Sonido");
+        this.tipoDeEfecto.setValue("Notificacion");
     }
 
 
-    ChronoUnit convertir (String tipo ){
+
+    Duration convertirStringADuracion (String tipo , long intervalo){
         switch (tipo){
             case "minutos" -> {
-                return ChronoUnit.MINUTES;
+                return Duration.of(intervalo, ChronoUnit.MINUTES);
             }
             case "horas" -> {
-                return ChronoUnit.HOURS;
+                return Duration.of(intervalo, ChronoUnit.HOURS);
             }
             case "dias" -> {
-                return ChronoUnit.DAYS;
+                return Duration.of(intervalo, ChronoUnit.DAYS);
             }
             case "semanas"-> {
-                return ChronoUnit.WEEKS;
+                return Duration.of(intervalo*7, ChronoUnit.DAYS);
             }
         }
         return null;

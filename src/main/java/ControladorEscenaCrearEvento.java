@@ -44,6 +44,8 @@ public class ControladorEscenaCrearEvento {
     private TextField horarioInicio;
     @FXML
     private TextField horarioFinal;
+    @FXML
+    private ChoiceBox<String> tipoDeEfecto;
 
 
     @FXML
@@ -85,8 +87,12 @@ public class ControladorEscenaCrearEvento {
         this.tipoDeIntervalo.getItems().add("horas");
         this.tipoDeIntervalo.getItems().add("dias");
         this.tipoDeIntervalo.getItems().add("semanas");
-
         this.tipoDeIntervalo.setValue("minutos");
+
+        this.tipoDeEfecto.getItems().add("Notificacion");
+        this.tipoDeEfecto.getItems().add("Mail");
+        this.tipoDeEfecto.getItems().add("Sonido");
+        this.tipoDeEfecto.setValue("Notificacion");
     }
 
 
@@ -197,12 +203,12 @@ public class ControladorEscenaCrearEvento {
     @FXML
     private VBox vBoxAlarmas;
 
-
     @FXML
     void agregarAlarma(ActionEvent event) {
-        var tipoIntervalo = convertir(tipoDeIntervalo.getValue());
-        var intervalo = Duration.of(intervaloAlarma.getValue(),tipoIntervalo);
+        var intervalo = convertirStringADuracion(tipoDeIntervalo.getValue(),intervaloAlarma.getValue());
+        var efecto = tipoDeEfecto.getValue();
         var alarma = calendario.agregarAlarma(evento,intervalo);
+        calendario.modificarAlarmaEfecto(evento,alarma,EfectoAlarma.convertirStringAEfectoAlarma(efecto));
         agregarBotonesDeAlarma(alarma);
     }
 
@@ -212,8 +218,6 @@ public class ControladorEscenaCrearEvento {
         var botonEliminar = nodoEliminar(alarma,contenedor);
         contenedor.getChildren().add(botonAlarma);
         contenedor.getChildren().add(botonEliminar);
-
-
         vBoxAlarmas.getChildren().add(contenedor);
     }
     private Node nodoAlarma(Alarma alarma){
@@ -237,22 +241,25 @@ public class ControladorEscenaCrearEvento {
         });
         return boton;
     }
-    ChronoUnit convertir (String tipo ){
+    Duration convertirStringADuracion (String tipo , long intervalo){
         switch (tipo){
             case "minutos" -> {
-                return ChronoUnit.MINUTES;
+                return Duration.of(intervalo, ChronoUnit.MINUTES);
             }
             case "horas" -> {
-                return ChronoUnit.HOURS;
+                return Duration.of(intervalo, ChronoUnit.HOURS);
             }
             case "dias" -> {
-                return ChronoUnit.DAYS;
+                return Duration.of(intervalo, ChronoUnit.DAYS);
             }
             case "semanas"-> {
-                return ChronoUnit.WEEKS;
+                //La semana no tiene duracion especifica en chronoUnit
+                return Duration.of(intervalo*7, ChronoUnit.DAYS);
             }
         }
         return null;
     }
+
+
 
 }
