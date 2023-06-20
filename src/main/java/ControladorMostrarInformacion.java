@@ -14,7 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class ControladorMostrarInformacion {
@@ -145,14 +144,11 @@ public class ControladorMostrarInformacion {
         editar.setGraphic(new ImageView(lapiz));
 
         editar.setOnAction(event -> {
-            try{
             if(elemento.tieneVencimiento()) {
                 controlador.modificarEvento((Evento) elemento);
             }
             else {
                 controlador.modificarTarea((Tarea)elemento);
-            }}catch (IOException e){
-                System.out.println("error");//TODO agregar alerta
             }
             Stage viejo = (Stage) editar.getScene().getWindow();
             viejo.close();
