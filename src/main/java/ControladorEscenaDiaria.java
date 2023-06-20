@@ -43,12 +43,12 @@ public class ControladorEscenaDiaria implements ControladorTipoDeVista{
     private VBox dia;
 
     @FXML
-    void setSemana(ActionEvent event) throws IOException {
+    void setSemana(ActionEvent event) {
         controlador.setSemana(event);
     }
 
     @FXML
-    void setMes(ActionEvent event) throws IOException {
+    void setMes(ActionEvent event)  {
         controlador.setMes(event);
     }
 

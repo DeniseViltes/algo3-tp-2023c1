@@ -67,12 +67,12 @@ public class ControladorEscenaSemanal implements  ControladorTipoDeVista{
     private VBox diaViernes;
 
     @FXML
-    void setDia(ActionEvent event) throws IOException {
+    void setDia(ActionEvent event) {
         controlador.setDia(event);
     }
 
     @FXML
-    void setMes(ActionEvent event) throws IOException {
+    void setMes(ActionEvent event) {
         controlador.setMes(event);
     }
 

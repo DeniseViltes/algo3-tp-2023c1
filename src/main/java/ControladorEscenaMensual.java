@@ -185,12 +185,12 @@ public class ControladorEscenaMensual implements ControladorTipoDeVista{
 
 
     @FXML
-    void setSemana(ActionEvent event) throws IOException {
+    void setSemana(ActionEvent event) {
         controlador.setSemana(event);
     }
 
     @FXML
-    void setDia(ActionEvent event) throws IOException {
+    void setDia(ActionEvent event) {
         controlador.setDia(event);
     }
 
