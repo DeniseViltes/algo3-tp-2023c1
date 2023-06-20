@@ -54,6 +54,7 @@ public class ControladorEscenaCrearEvento {
 
     private final DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
+    private final DateTimeFormatter formatterFechaYHora = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     void  initElemento ( Calendario calendario,Evento evento){
         this.evento = evento;
@@ -98,11 +99,9 @@ public class ControladorEscenaCrearEvento {
 
 
     @FXML
-    void volverAVistaPrincipal(ActionEvent event) throws IOException {
-        //para evitar problemas, los pongo aca en vez de guardarse automaticamente
-        modificarFinal();
-        modificarInicio();
-        setearDeDiaCompleto();
+    void volverAVistaPrincipal(ActionEvent event){
+        guardarCambios();
+        System.out.println(evento.getAlarmas().size());
         Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
         stage.close();
     }
@@ -205,6 +204,7 @@ public class ControladorEscenaCrearEvento {
 
     @FXML
     void agregarAlarma(ActionEvent event) {
+        guardarCambios();
         var intervalo = convertirStringADuracion(tipoDeIntervalo.getValue(),intervaloAlarma.getValue());
         var efecto = tipoDeEfecto.getValue();
         var alarma = calendario.agregarAlarma(evento,intervalo);
@@ -226,7 +226,7 @@ public class ControladorEscenaCrearEvento {
         label.setMinHeight(25);
         label.setPadding(new Insets(2,5,2,5));
         label.setAlignment(Pos.CENTER_LEFT);
-        label.setText(alarma.getEfecto().toString() + ", "+ alarma.getFechaYHora().format(formatterFecha));
+        label.setText(alarma.getEfecto().toString() + ", "+ alarma.getFechaYHora().format(formatterFechaYHora));
         return label;
     }
 
@@ -258,6 +258,16 @@ public class ControladorEscenaCrearEvento {
             }
         }
         return null;
+    }
+
+    private void guardarCambios(){
+        try {
+            modificarFinal();
+            modificarInicio();
+            setearDeDiaCompleto();
+        } catch (IOException e) {
+            throw new RuntimeException(e); //TODO AGREGAR ALERTA
+        }
     }
 
 
