@@ -97,9 +97,13 @@ public class ControladorEscenaCrearEvento {
 
     @FXML
     void volverAVistaPrincipal(ActionEvent event){
-        guardarCambios();
-        Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
-        stage.close();
+        try {
+            guardarCambios();
+            Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
+            stage.close();
+        }catch (DateTimeParseException e){
+            cargarAlertaFormato();
+        }
     }
 
 
@@ -125,20 +129,12 @@ public class ControladorEscenaCrearEvento {
 
     @FXML
     void modificarFinal(){
-
-        try{
         var fechaFinal = LocalDate.parse(this.fechaFinal.getText(), formatterFecha);
         var fechaInicial = LocalDate.parse(this.fechaIncio.getText(), formatterFecha);
         var horarioInicial = LocalTime.parse(this.horarioInicio.getText(), formatterHora);
         var horarioFinal = LocalTime.parse(this.horarioFinal.getText(), formatterHora);
         var duracion = Duration.between(fechaInicial.atTime(horarioInicial),fechaFinal.atTime(horarioFinal));
         calendario.modificarDuracion(evento,duracion);
-
-        }
-        catch (DateTimeParseException e){
-            cargarAlertaFormato();
-        }
-
     }
 
     private void cargarAlertaFormato (){
@@ -151,13 +147,9 @@ public class ControladorEscenaCrearEvento {
 
     @FXML
     void modificarInicio(){
-        try {
         var fechaInicial = LocalDate.parse(this.fechaIncio.getText(), formatterFecha);
         var horarioInicial = LocalTime.parse(this.horarioInicio.getText(), formatterHora);
         calendario.modificarFecha(evento, fechaInicial.atTime(horarioInicial));
-        }catch (DateTimeParseException e){
-            cargarAlertaFormato();
-        }
     }
 
 
@@ -198,12 +190,16 @@ public class ControladorEscenaCrearEvento {
 
     @FXML
     void agregarAlarma(ActionEvent event) {
+        try {
         guardarCambios();
         var intervalo = convertirStringADuracion(tipoDeIntervalo.getValue(),intervaloAlarma.getValue());
         var efecto = tipoDeEfecto.getValue();
         var alarma = calendario.agregarAlarma(evento,intervalo);
         calendario.modificarAlarmaEfecto(evento,alarma,EfectoAlarma.convertirStringAEfectoAlarma(efecto));
         agregarBotonesDeAlarma(alarma);
+        }catch (DateTimeParseException e){
+            cargarAlertaFormato();
+        }
     }
 
     void agregarBotonesDeAlarma(Alarma alarma){
@@ -254,11 +250,10 @@ public class ControladorEscenaCrearEvento {
         return null;
     }
 
-    private void guardarCambios(){
-            modificarFinal();
-            modificarInicio();
-            setearDeDiaCompleto();
-
+    private void guardarCambios() throws DateTimeParseException{
+        modificarFinal();
+        modificarInicio();
+        setearDeDiaCompleto();
     }
 
 

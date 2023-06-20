@@ -63,11 +63,15 @@ public class ControladorEscenaCrearTarea {
 
     @FXML
     void volverAVistaPrincipal(ActionEvent event){
-        //para evitar problemas, los pongo aca en vez de guardarse automaticamente
-        modificarInicio();
-        setearDeDiaCompleto();
-        Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
-        stage.close();
+       try {
+           guardarCambios();
+           modificarInicio();
+           setearDeDiaCompleto();
+           Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
+           stage.close();
+       }catch (DateTimeParseException e){
+           cargarAlertaFormato();
+       }
     }
 
 
@@ -101,14 +105,9 @@ public class ControladorEscenaCrearTarea {
 
     @FXML
     void modificarInicio(){
-        try {
         var fechaInicial = LocalDate.parse(this.fechaVencimiento.getText(), formatterFecha);
         var horarioInicial = LocalTime.parse(this.horarioVencimiento.getText(), formatterHora);
         calendario.modificarFecha(tarea, fechaInicial.atTime(horarioInicial));
-        }catch (DateTimeParseException e){
-            cargarAlertaFormato();
-            calendario.eliminarElementoCalendario(tarea);
-        }
     }
 
 
@@ -128,11 +127,17 @@ public class ControladorEscenaCrearTarea {
 
     @FXML
     void agregarAlarma(ActionEvent event) {
-        var intervalo = convertirStringADuracion(tipoDeIntervalo.getValue(),intervaloAlarma.getValue());
-        var alarma = calendario.agregarAlarma(tarea,intervalo);
-        var efecto = tipoDeEfecto.getValue();
-        calendario.modificarAlarmaEfecto(tarea,alarma,EfectoAlarma.convertirStringAEfectoAlarma(efecto));
-        agregarBotonesDeAlarma(alarma);
+        try {
+            guardarCambios();
+            var intervalo = convertirStringADuracion(tipoDeIntervalo.getValue(), intervaloAlarma.getValue());
+            var alarma = calendario.agregarAlarma(tarea, intervalo);
+            var efecto = tipoDeEfecto.getValue();
+            calendario.modificarAlarmaEfecto(tarea, alarma, EfectoAlarma.convertirStringAEfectoAlarma(efecto));
+            agregarBotonesDeAlarma(alarma);
+        }
+        catch (DateTimeParseException e){
+            cargarAlertaFormato();
+        }
     }
 
     void agregarBotonesDeAlarma(Alarma alarma){
@@ -141,8 +146,6 @@ public class ControladorEscenaCrearTarea {
         var botonEliminar = nodoEliminar(alarma,contenedor);
         contenedor.getChildren().add(botonAlarma);
         contenedor.getChildren().add(botonEliminar);
-
-
         vBoxAlarmas.getChildren().add(contenedor);
     }
     private Node nodoAlarma(Alarma alarma){
@@ -198,6 +201,10 @@ public class ControladorEscenaCrearTarea {
             }
         }
         return null;
+    }
+    private void guardarCambios() throws DateTimeParseException{
+        modificarInicio();
+        setearDeDiaCompleto();
     }
 
 

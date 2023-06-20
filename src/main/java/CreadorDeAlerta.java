@@ -46,7 +46,8 @@ public class CreadorDeAlerta {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();    }
+        stage.showAndWait();
+    }
 
 }
 
