@@ -35,7 +35,7 @@ public class Controlador {
         loader.setLocation(getClass().getResource("/EscenaSemanal.fxml"));
         VBox view = loader.load();
         this.stage = stage;
-        Scene scene = new Scene(view,600,400);
+        Scene scene = new Scene(view,1600,1000);
         inicializarCalendario( pathArchivoCalendario);
         ControladorEscenaSemanal controlador = loader.getController();
         controlador.initEscenaSemanal(this, calendario);
@@ -56,7 +56,7 @@ public class Controlador {
         loader.setLocation(getClass().getResource("/EscenaSemanal.fxml"));
         VBox view = loader.load();
 
-        Scene scene = new Scene(view,600,400);
+        Scene scene = new Scene(view,1600,1000);
         ControladorEscenaSemanal controlador = loader.getController();
         menuFecha.setText("Semana");
 
@@ -72,7 +72,7 @@ public class Controlador {
         loader.setLocation(getClass().getResource("/EscenaDiaria.fxml"));
         VBox view = loader.load();
 
-        Scene scene = new Scene(view,600,400);
+        Scene scene = new Scene(view,1600,1000);
         ControladorEscenaDiaria controlador = loader.getController();
         controlador.initEscenaDiaria(this, calendario);
         controladorActual = controlador;
@@ -87,7 +87,7 @@ public class Controlador {
         loader.setLocation(getClass().getResource("/EscenaMensual.fxml"));
         VBox view = loader.load();
 
-        Scene scene = new Scene(view,600,400);
+        Scene scene = new Scene(view,1600,1000);
         ControladorEscenaMensual controlador = loader.getController();
         menuFecha.setText("Mes");
 
