@@ -43,7 +43,7 @@ public class Controlador {
             controlador.initEscenaSemanal(this, calendario);
             controladorActual = controlador;
             initListener(pathArchivoCalendario);
-            this.sonidoPath = "src/main/resources/pacman-dies.mp3";
+            this.sonidoPath = "src/main/resources/otros/pacman-dies.mp3";
             iniciarTimer();
             stage.setScene(scene);
             stage.setFullScreen(true);

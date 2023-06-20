@@ -17,7 +17,7 @@ public class Main extends Application {
         var scene = new Scene(view,1920,1080);
         stage.setScene(scene);
         stage.setTitle("Calendario-Algo3");
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("otros/style.css")).toExternalForm());
         controlador.init(stage, "serializa.cal");
         stage.show();
     }

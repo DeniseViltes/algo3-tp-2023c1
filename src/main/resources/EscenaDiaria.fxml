@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControladorEscenaDiaria">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1600.0" stylesheets="@otros/style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControladorEscenaDiaria">
    <HBox minHeight="-Infinity" prefHeight="40.0" prefWidth="1600.0" spacing="25.0">
       <VBox.margin>
          <Insets bottom="20.0" top="20.0" />
@@ -23,15 +23,15 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Button fx:id="btn_hoy" mnemonicParsing="false" prefHeight="40.0" prefWidth="58.0" stylesheets="@style.css" text="Hoy" textAlignment="CENTER" />
-      <Button fx:id="btn_anterior" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" stylesheets="@style.css" text="&lt;" textAlignment="CENTER">
+      <Button fx:id="btn_hoy" mnemonicParsing="false" prefHeight="40.0" prefWidth="58.0" stylesheets="@otros/style.css" text="Hoy" textAlignment="CENTER" />
+      <Button fx:id="btn_anterior" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" stylesheets="@otros/style.css" text="&lt;" textAlignment="CENTER">
          <HBox.margin>
             <Insets />
          </HBox.margin>
          <font>
             <Font size="18.0" />
          </font></Button>
-      <Button fx:id="btn_siguiente" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" stylesheets="@style.css" text="&gt;" textAlignment="CENTER">
+      <Button fx:id="btn_siguiente" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" stylesheets="@otros/style.css" text="&gt;" textAlignment="CENTER">
          <font>
             <Font size="18.0" />
          </font></Button>

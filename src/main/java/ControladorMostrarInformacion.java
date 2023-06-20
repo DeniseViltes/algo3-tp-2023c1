@@ -108,7 +108,7 @@ public class ControladorMostrarInformacion {
         }
 
         for(Alarma alarma : el.getAlarmas()){
-            Image img = new Image("alarma.png");
+            Image img = new Image("otros/alarma.png");
             ImageView view = new ImageView(img);
             view.setFitHeight(20);
             view.setPreserveRatio(true);
@@ -137,7 +137,7 @@ public class ControladorMostrarInformacion {
     }
 
     private Button botorEditarElemento(ElementoCalendario elemento) {
-        Image lapiz = new Image("alertas/pencil.png");
+        Image lapiz = new Image("otros/pencil.png");
         Button editar = new Button();
         editar.setMinWidth(25);
         editar.setMinHeight(25);
@@ -159,7 +159,7 @@ public class ControladorMostrarInformacion {
 
     private Button botonEliminar(ElementoCalendario elemento){
         Button eliminar = new Button();
-        Image bin = new Image("alertas/bin.png");
+        Image bin = new Image("otros/bin.png");
         eliminar.setMinWidth(25);
         eliminar.setMinHeight(25);
         eliminar.setGraphic(new ImageView(bin));
