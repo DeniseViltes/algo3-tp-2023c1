@@ -276,14 +276,14 @@ public class ControladorEscenaMensual implements ControladorTipoDeVista{
     public void actualizarCalendario(Calendario calendario){
         boolean esDomingo = false;
         LocalDateTime dia = LocalDateTime.of(anio_mostrado, mes_mostrado,1,1,1).truncatedTo(ChronoUnit.DAYS);
-        int cant_dias = 0;
+
         while(!esDomingo){
             if(dia.getDayOfWeek().toString().equals("SUNDAY")) {
                 esDomingo = true;
             }
             else {
                 dia = dia.minusDays(1);
-                cant_dias++;
+
             }
         }
         List<TreeSet<ElementoCalendario>> elementos = new ArrayList<>();
@@ -455,14 +455,12 @@ public class ControladorEscenaMensual implements ControladorTipoDeVista{
     public void mostrarMes(int mes_mostrado, int anio_mostrado){
         boolean esDomingo = false;
         LocalDateTime dia = LocalDateTime.of(anio_mostrado, mes_mostrado,1,1,1).truncatedTo(ChronoUnit.DAYS);
-        int cant_dias = 0;
         while(!esDomingo){
             if(dia.getDayOfWeek().toString().equals("SUNDAY")) {
                 esDomingo = true;
             }
             else {
                 dia = dia.minusDays(1);
-                cant_dias++;
             }
         }
 
