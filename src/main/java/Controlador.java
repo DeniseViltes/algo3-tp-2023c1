@@ -2,14 +2,8 @@ import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-
-
 import javafx.scene.Scene;
-
-
-
 import javafx.scene.control.SplitMenuButton;
-
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -133,6 +127,12 @@ public class Controlador {
         setearStageSecundario(stageEvento);
     }
 
+
+    public void cambiarEstadoTarea(Tarea tarea, boolean estado){
+        if (estado)
+            calendario.marcarTareaCompleta(tarea);
+        else calendario.marcarTareaIncompleta(tarea);
+    }
     public void modificarTarea(Tarea tarea) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/VentanasExtra/EscenaModificarTarea.fxml"));
@@ -145,7 +145,6 @@ public class Controlador {
         stageTarea.setScene(scene);
         setearStageSecundario(stageTarea);
     }
-
 
     private void initListener(String fileName){
         calendario.agregarListener(() -> {
