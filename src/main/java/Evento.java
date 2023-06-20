@@ -126,8 +126,7 @@ public class Evento extends ElementoCalendario {
     }
 
     private boolean esIgualOEstaEntre(LocalDateTime inicio, LocalDateTime fin, LocalDateTime t){
-        return (t.equals(inicio) || t.isAfter(inicio)) && t.isBefore(fin);
-    }
+        return (t.equals(inicio) || t.isAfter(inicio)) && (t.equals(fin) || t.isBefore(fin));    }
 
 
     /**
