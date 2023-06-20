@@ -14,6 +14,8 @@ public class Alarma implements Serializable {
     // La fecha del elemento para el cual se utiliza la alarma.
     private LocalDateTime referencia;
     private EfectoAlarma efecto;
+
+
     /*
     Crea una alarma a partir de una fecha de referencia que suena un intervalo
      antes de esta fecha con un efecto del tipo Notificacion
@@ -29,16 +31,24 @@ public class Alarma implements Serializable {
        this.fechaYHora = this.referencia.minus(this.intervalo);
     }
 
+    /*
+    Define la fecha de referencia a la cual se le restara el intervalo
+     */
     public void setReferencia(LocalDateTime referencia) {
         this.referencia = referencia;
         fechaASonar();
     }
-
+    /*
+    Define un nuevo intervalo
+     */
     public void setIntervalo(Duration intervalo) {
         this.intervalo = intervalo;
         fechaASonar();
     }
-
+    /*
+    Define una fecha absoluta para que suene la alarma, sin importar
+    el intervalo previamente definido
+     */
     public void setAlarmaAbsoluta(LocalDateTime fechaYHora){
         this.intervalo = Duration.ZERO;
         this.fechaYHora = fechaYHora;
