@@ -112,7 +112,7 @@ public class ControladorEscenaSemanal implements  ControladorTipoDeVista{
             label_mes.setText(Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspanol() + " " + dia_mostrado.getYear());
             mostrarSemana(dia_mostrado);
             marcarDiaNormal();
-            if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
+            if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).getDayOfYear()))
                 marcarDiaActual();
             limpiarCalendario();
             actualizarCalendario(calendario);
@@ -123,7 +123,9 @@ public class ControladorEscenaSemanal implements  ControladorTipoDeVista{
             label_mes.setText(Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspanol() + " " + dia_mostrado.getYear());
             mostrarSemana(dia_mostrado);
             marcarDiaNormal();
-            if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().getDayOfYear()))
+            System.out.println(dia_mostrado.getDayOfYear());
+            System.out.println(LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).getDayOfYear());
+            if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).getDayOfYear()))
                 marcarDiaActual();
             limpiarCalendario();
             actualizarCalendario(calendario);
@@ -158,30 +160,31 @@ public class ControladorEscenaSemanal implements  ControladorTipoDeVista{
     }
 
     public void actualizarCalendario(Calendario calendario){
+        LocalDateTime dia = dia_mostrado;
         boolean esDomingo = false;
         while(!esDomingo){
-            if(dia_mostrado.getDayOfWeek()== DayOfWeek.SUNDAY) {
+            if(dia.getDayOfWeek()== DayOfWeek.SUNDAY) {
                 esDomingo = true;
             }
             else {
-                dia_mostrado = dia_mostrado.minusDays(1);
+                dia = dia.minusDays(1);
             }
         }
 
 
-        TreeSet<ElementoCalendario> domingo = calendario.elementosEntreFechas(dia_mostrado,finDelDia(dia_mostrado));
-        dia_mostrado = dia_mostrado.plusDays(1);
-        TreeSet<ElementoCalendario> lunes = calendario.elementosEntreFechas(dia_mostrado, finDelDia(dia_mostrado));
-        dia_mostrado = dia_mostrado.plusDays(1);
-        TreeSet<ElementoCalendario> martes = calendario.elementosEntreFechas(dia_mostrado, finDelDia(dia_mostrado));
-        dia_mostrado = dia_mostrado.plusDays(1);
-        TreeSet<ElementoCalendario> miercoles = calendario.elementosEntreFechas(dia_mostrado, finDelDia(dia_mostrado));
-        dia_mostrado = dia_mostrado.plusDays(1);
-        TreeSet<ElementoCalendario> jueves = calendario.elementosEntreFechas(dia_mostrado, finDelDia(dia_mostrado));
-        dia_mostrado = dia_mostrado.plusDays(1);
-        TreeSet<ElementoCalendario> viernes = calendario.elementosEntreFechas(dia_mostrado, finDelDia(dia_mostrado));
-        dia_mostrado = dia_mostrado.plusDays(1);
-        TreeSet<ElementoCalendario> sabado = calendario.elementosEntreFechas(dia_mostrado, finDelDia(dia_mostrado));
+        TreeSet<ElementoCalendario> domingo = calendario.elementosEntreFechas(dia,finDelDia(dia));
+        dia = dia.plusDays(1);
+        TreeSet<ElementoCalendario> lunes = calendario.elementosEntreFechas(dia, finDelDia(dia));
+        dia = dia.plusDays(1);
+        TreeSet<ElementoCalendario> martes = calendario.elementosEntreFechas(dia, finDelDia(dia));
+        dia = dia.plusDays(1);
+        TreeSet<ElementoCalendario> miercoles = calendario.elementosEntreFechas(dia, finDelDia(dia));
+        dia = dia.plusDays(1);
+        TreeSet<ElementoCalendario> jueves = calendario.elementosEntreFechas(dia, finDelDia(dia));
+        dia = dia.plusDays(1);
+        TreeSet<ElementoCalendario> viernes = calendario.elementosEntreFechas(dia, finDelDia(dia));
+        dia = dia.plusDays(1);
+        TreeSet<ElementoCalendario> sabado = calendario.elementosEntreFechas(dia, finDelDia(dia));
 
         for (ElementoCalendario elemento : domingo){
             if(elemento.isEsDeDiaCompleto()){

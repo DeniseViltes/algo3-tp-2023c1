@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControladorEscenaDiaria">
-   <HBox prefHeight="2.0" prefWidth="1600.0" spacing="25.0">
+   <HBox minHeight="-Infinity" prefHeight="40.0" prefWidth="1600.0" spacing="25.0">
       <VBox.margin>
          <Insets bottom="20.0" top="20.0" />
       </VBox.margin>
@@ -23,9 +23,18 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Button fx:id="btn_hoy" mnemonicParsing="false" prefHeight="35.0" prefWidth="58.0" stylesheets="@style.css" text="Hoy" textAlignment="CENTER" />
-      <Button fx:id="btn_anterior" alignment="CENTER" mnemonicParsing="false" text="&lt;" textAlignment="CENTER" />
-      <Button fx:id="btn_siguiente" mnemonicParsing="false" text="&gt;" />
+      <Button fx:id="btn_hoy" mnemonicParsing="false" prefHeight="40.0" prefWidth="58.0" stylesheets="@style.css" text="Hoy" textAlignment="CENTER" />
+      <Button fx:id="btn_anterior" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" stylesheets="@style.css" text="&lt;" textAlignment="CENTER">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <Button fx:id="btn_siguiente" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" stylesheets="@style.css" text="&gt;" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
       <Label fx:id="label_mes" prefHeight="45.0" prefWidth="159.0" text="Junio 2023">
          <font>
             <Font size="17.0" />
@@ -59,7 +68,7 @@
          <VBox fx:id="dia" alignment="TOP_CENTER" prefHeight="906.0" prefWidth="1550.0" spacing="15.0">
             <Label fx:id="diaLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="70.0" textAlignment="CENTER">
                <font>
-                  <Font size="16.0" />
+                  <Font size="17.0" />
                </font>
             </Label>
          </VBox>
