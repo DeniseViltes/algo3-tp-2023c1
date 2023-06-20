@@ -123,8 +123,6 @@ public class ControladorEscenaSemanal implements  ControladorTipoDeVista{
             label_mes.setText(Mes.valueOf(dia_mostrado.getMonth().toString()).getMesEspanol() + " " + dia_mostrado.getYear());
             mostrarSemana(dia_mostrado);
             marcarDiaNormal();
-            System.out.println(dia_mostrado.getDayOfYear());
-            System.out.println(LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).getDayOfYear());
             if(dia_mostrado.getDayOfYear() == (LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).getDayOfYear()))
                 marcarDiaActual();
             limpiarCalendario();

@@ -1,11 +1,8 @@
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -14,13 +11,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 
 
 public class ControladorEscenaCrearEvento {
@@ -101,7 +98,6 @@ public class ControladorEscenaCrearEvento {
     @FXML
     void volverAVistaPrincipal(ActionEvent event){
         guardarCambios();
-        System.out.println(evento.getAlarmas().size());
         Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
         stage.close();
     }
@@ -128,7 +124,7 @@ public class ControladorEscenaCrearEvento {
     }
 
     @FXML
-    void modificarFinal() throws IOException {
+    void modificarFinal(){
 
         try{
         var fechaFinal = LocalDate.parse(this.fechaFinal.getText(), formatterFecha);
@@ -144,19 +140,17 @@ public class ControladorEscenaCrearEvento {
         }
 
     }
-    //TODO revisar alertas
-    private void cargarAlertaFormato () throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/alertas/alertaFormatoFechas.fxml"));
-        VBox view = loader.load();
-        final Stage stage = new Stage();
-        Scene scene = new Scene(view);
-        stage.setScene(scene);
-        stage.show();
+
+    private void cargarAlertaFormato (){
+        String uno= "Para las fechas utilice el formato: yyyy-MM-dd ";
+        String dos ="Para los horarios utilice : HH:mm";
+        var alerta = new CreadorDeAlerta();
+        alerta.mostrarAlerta("Formato de texto incorrecto", Arrays.asList(uno,dos));
+
     }
 
     @FXML
-    void modificarInicio() throws IOException {
+    void modificarInicio(){
         try {
         var fechaInicial = LocalDate.parse(this.fechaIncio.getText(), formatterFecha);
         var horarioInicial = LocalTime.parse(this.horarioInicio.getText(), formatterHora);
@@ -261,13 +255,10 @@ public class ControladorEscenaCrearEvento {
     }
 
     private void guardarCambios(){
-        try {
             modificarFinal();
             modificarInicio();
             setearDeDiaCompleto();
-        } catch (IOException e) {
-            throw new RuntimeException(e); //TODO AGREGAR ALERTA
-        }
+
     }
 
 

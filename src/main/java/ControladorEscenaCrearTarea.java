@@ -1,11 +1,8 @@
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -20,6 +17,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 
 
 public class ControladorEscenaCrearTarea {
@@ -94,25 +92,23 @@ public class ControladorEscenaCrearTarea {
             calendario.modificarTitulo(tarea,tituloEvento.getText());
     }
 
-    private void cargarAlertaFormato () throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/alertas/alertaFormatoFechas.fxml"));
-        VBox view = loader.load();
-        final Stage stage = new Stage();
-        Scene scene = new Scene(view);
-        stage.setScene(scene);
-        stage.show();
-        calendario.eliminarElementoCalendario(tarea);
+    private void cargarAlertaFormato () {
+        String uno= "Para las fechas utilice el formato: yyyy-MM-dd ";
+        String dos ="Para los horarios utilice : HH:mm";
+        var alerta = new CreadorDeAlerta();
+        alerta.mostrarAlerta("Formato de texto incorrecto", Arrays.asList(uno,dos));
+
     }
 
     @FXML
-    void modificarInicio() throws IOException {
+    void modificarInicio(){
         try {
         var fechaInicial = LocalDate.parse(this.fechaVencimiento.getText(), formatterFecha);
         var horarioInicial = LocalTime.parse(this.horarioVencimiento.getText(), formatterHora);
         calendario.modificarFecha(tarea, fechaInicial.atTime(horarioInicial));
         }catch (DateTimeParseException e){
             cargarAlertaFormato();
+            calendario.eliminarElementoCalendario(tarea);
         }
     }
 
