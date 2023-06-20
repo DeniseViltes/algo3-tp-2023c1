@@ -86,7 +86,7 @@ public class Controlador {
     }
 
     @FXML
-    void setDia(ActionEvent event) throws IOException {
+    void setDia(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/EscenaDiaria.fxml"));
@@ -106,7 +106,7 @@ public class Controlador {
     }
 
     @FXML
-    void setMes(ActionEvent event) throws IOException {
+    void setMes(ActionEvent event)  {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/EscenaMensual.fxml"));

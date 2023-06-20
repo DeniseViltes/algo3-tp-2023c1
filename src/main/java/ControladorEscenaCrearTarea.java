@@ -10,7 +10,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -63,7 +62,7 @@ public class ControladorEscenaCrearTarea {
    }
 
     @FXML
-    void volverAVistaPrincipal(ActionEvent event) throws IOException {
+    void volverAVistaPrincipal(ActionEvent event){
         //para evitar problemas, los pongo aca en vez de guardarse automaticamente
         modificarInicio();
         setearDeDiaCompleto();
