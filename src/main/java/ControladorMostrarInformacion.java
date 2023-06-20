@@ -19,13 +19,8 @@ import java.time.LocalDateTime;
 
 public class ControladorMostrarInformacion {
 
-
-
     private Controlador controlador;
 
-    public void setearEstadoCheck(CheckBox check){
-        check.setSelected(!check.isSelected());
-    }
 
     public void mostrar_informacion(Controlador controlador, ElementoCalendario el, Node btn){
         this.controlador = controlador;
@@ -39,11 +34,9 @@ public class ControladorMostrarInformacion {
         Label titulo = new Label(el.getTitulo());
         titulo.setStyle("-fx-font-size: 30;");
 
-        CheckBox todoElDia = new CheckBox("Todo el dia");
-        if(el.isEsDeDiaCompleto())
-            todoElDia.setSelected(true);
-
-        todoElDia.setOnAction(actionEvent -> setearEstadoCheck(todoElDia));
+        Label todoElDia = new Label("Es de dia completo");
+        if(!el.isEsDeDiaCompleto())
+            todoElDia.setText("No es de dia completo");
 
         TextArea descripcion = new TextArea(el.getDescripcion());
         descripcion.setWrapText(true);
@@ -109,7 +102,7 @@ public class ControladorMostrarInformacion {
                 completa.setSelected(true);
                 completa.setText("Completa");
             }
-            completa.setOnAction(actionEvent -> setearEstadoCheck(completa));
+            completa.setOnAction(actionEvent -> setearEstadoTarea(completa,(Tarea) el));
 
             dialogVbox.getChildren().add(completa);
             ((CheckBox) btn).setSelected(!((CheckBox) btn).isSelected());
@@ -134,17 +127,22 @@ public class ControladorMostrarInformacion {
         editarEliminar.getChildren().add(botonEditar);
         editarEliminar.getChildren().add(botonEliminar);
         dialogVbox.getChildren().add(editarEliminar);//TODO los puse en cualquier lado para ver como funciona
-
         Scene dialogScene = new Scene(dialogVbox, 500, 300);
         dialog.setTitle(el.getTitulo());
         dialog.setScene(dialogScene);
         dialog.show();
     }
 
+    private void setearEstadoTarea(CheckBox estado, Tarea tarea){
+        controlador.cambiarEstadoTarea(tarea,estado.isSelected());
+    }
+
     private Button botorEditarElemento(ElementoCalendario elemento) {
-        Button editar = new Button("Editar");
+        Image lapiz = new Image("alertas/pencil.png");
+        Button editar = new Button();
         editar.setMinWidth(25);
         editar.setMinHeight(25);
+        editar.setGraphic(new ImageView(lapiz));
 
         editar.setOnAction(event -> {
             try{
@@ -164,10 +162,11 @@ public class ControladorMostrarInformacion {
     }
 
     private Button botonEliminar(ElementoCalendario elemento){
-        Button eliminar = new Button("Eliminar");
+        Button eliminar = new Button();
+        Image bin = new Image("alertas/bin.png");
         eliminar.setMinWidth(25);
         eliminar.setMinHeight(25);
-
+        eliminar.setGraphic(new ImageView(bin));
         eliminar.setOnAction(event -> {
             controlador.eliminarElementoCalendario(elemento);//TODO fijarse si se eliminan todos los eventos aveces se buggea
             Stage  stageViejo = (Stage) eliminar.getScene().getWindow();
