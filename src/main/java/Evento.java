@@ -206,6 +206,10 @@ public class Evento extends ElementoCalendario {
         }
 
     }
+
+    public int getIntervaloRepeticionDiaria(){
+        return ((RepeticionDiaria) this.repeticion).getIntervalo();
+    }
     public boolean tieneVencimiento(){
         return true;
     }

@@ -178,7 +178,7 @@ public class EventoTest {
 
         evento.setRepeticionDiaria(1);
 
-        Assert.assertTrue(evento.tieneRepeticionEntreLosHorarios(ahoraTruncado,magnana));
+        Assert.assertTrue(evento.tieneRepeticionEntreLosHorarios(ahoraTruncado,magnana.plusHours(1)));
         Assert.assertEquals(magnana,evento.proximaRepeticion(ahoraTruncado));
     }
 

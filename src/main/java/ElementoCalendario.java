@@ -120,7 +120,7 @@ public abstract class ElementoCalendario implements Serializable {
     }
 
     // Devuelve la proxima alarma del elemento.
-    private Alarma proximaAlarma(LocalDateTime fecha){
+    public Alarma proximaAlarma(LocalDateTime fecha){
         var par = this.alarmas.ceilingEntry(fecha);
         if(par == null)
             return  null;

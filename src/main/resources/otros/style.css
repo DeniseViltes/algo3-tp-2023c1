@@ -10,7 +10,12 @@
 }
 
 .root{
-    -fx-background-color:light-primary-color;
+    -fx-background-color:#f1f3f4;
+    -fx-font-size: 18px;
+}
+
+#titulo{
+    -fx-font-size: 32px;
 }
 
 

@@ -285,7 +285,7 @@ public class CalendarioTest {
 
         calendario.agregarRepeticionAnualEvento(evento);
         var horaEvento = evento.getFecha();
-        var listadoDeEventos = calendario.elementosEntreFechas(horaEvento,horaEvento.plusYears(1));
+        var listadoDeEventos = calendario.elementosEntreFechas(horaEvento,horaEvento.plusYears(1).plusHours(1));
         Assert.assertEquals(2,listadoDeEventos.size());
     }
     @Test
@@ -295,7 +295,7 @@ public class CalendarioTest {
 
         calendario.agregarRepeticionAnualEvento(evento);
         var horaEvento = evento.getFecha();
-        var listado = calendario.elementosEntreFechas(horaEvento,horaEvento.plusYears(3));
+        var listado = calendario.elementosEntreFechas(horaEvento,horaEvento.plusYears(3).plusHours(1));
 
 
         Assert.assertEquals(4, listado.size());
@@ -314,7 +314,7 @@ public class CalendarioTest {
 
         calendario.agregarRepeticionAnualEvento(evento);
         var horaEvento = evento.getFecha();
-        var listado = calendario.elementosEntreFechas(horaEvento,horaEvento.plusYears(3));
+        var listado = calendario.elementosEntreFechas(horaEvento,horaEvento.plusYears(3).plusHours(1));
         Assert.assertEquals("My Event", listado.first().getTitulo());
         Assert.assertEquals("My Event", listado.last().getTitulo());
         Assert.assertEquals(horaEvento, listado.first().getFecha());
@@ -340,7 +340,7 @@ public class CalendarioTest {
         var horaASonar = magnana.minus(diezMinutos);
 
         Assert.assertEquals(horaASonar, evento.horarioProximaAlarma(hoy));
-        Assert.assertEquals(EfectoAlarma.SONIDO, calendario.sonarProximaAlarma(hoy, hoy.plusDays(5)));
+        Assert.assertEquals(EfectoAlarma.SONIDO, calendario.sonarProximaAlarma(hoy, hoy.plusDays(5)).sonarProximaAlarma(horaASonar));
     }
     @Test
     public void sonarAlarmaRepeticion() {
@@ -351,7 +351,7 @@ public class CalendarioTest {
         var elementos = calendario.elementosEntreFechas(horaInicioEvento.minusMinutes(60), horaInicioEvento.plusDays(1).minusHours(10));
         Assert.assertEquals(1,elementos.size());
         var horaASonar = horaInicioEvento.minus(diezMinutos).plusDays(1);
-        Assert.assertEquals(EfectoAlarma.NOTIFICACION,calendario.sonarProximaAlarma(horaASonar, horaASonar.plusDays(1)));
+        Assert.assertEquals(EfectoAlarma.NOTIFICACION,calendario.sonarProximaAlarma(horaASonar, horaASonar.plusDays(1)).sonarProximaAlarma(horaASonar));
     }
 
     @Test

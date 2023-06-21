@@ -15,7 +15,7 @@
       <VBox.margin>
          <Insets bottom="20.0" top="20.0" />
       </VBox.margin>
-      <Label prefHeight="45.0" prefWidth="163.0" text="Calendario">
+      <Label fx:id="titulo" prefHeight="45.0" prefWidth="163.0" text="Calendario">
          <HBox.margin>
             <Insets left="20.0" />
          </HBox.margin>
@@ -23,12 +23,15 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Button fx:id="btn_hoy" mnemonicParsing="false" prefHeight="35.0" prefWidth="58.0" text="Hoy" textAlignment="CENTER" />
-      <Button fx:id="btn_anterior" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="&lt;" textAlignment="CENTER">
+      <Button fx:id="btn_hoy" mnemonicParsing="false" prefHeight="40.0" prefWidth="60.0" text="Hoy" textAlignment="CENTER">
+         <HBox.margin>
+            <Insets top="3.0" />
+         </HBox.margin></Button>
+      <Button fx:id="btn_anterior" alignment="CENTER" mnemonicParsing="false" prefHeight="46.0" prefWidth="46.0" text="&lt;" textAlignment="CENTER">
          <font>
             <Font size="18.0" />
          </font></Button>
-      <Button fx:id="btn_siguiente" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="&gt;">
+      <Button fx:id="btn_siguiente" mnemonicParsing="false" prefHeight="46.0" prefWidth="46.0" text="&gt;">
          <font>
             <Font size="18.0" />
          </font></Button>
@@ -44,7 +47,7 @@
             <MenuItem mnemonicParsing="false" text="Mes" />
          </items>
          <HBox.margin>
-            <Insets left="800.0" />
+            <Insets left="600.0" top="5.0" />
          </HBox.margin>
       </SplitMenuButton>
       <SplitMenuButton fx:id="menuCrear" mnemonicParsing="false" text="Crear">
@@ -53,7 +56,7 @@
             <MenuItem mnemonicParsing="false" onAction="#crearTarea" text="Tarea" />
          </items>
          <HBox.margin>
-            <Insets />
+            <Insets top="5.0" />
          </HBox.margin>
       </SplitMenuButton>
    </HBox>

@@ -11,12 +11,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.lang.reflect.Array;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -24,10 +26,13 @@ public class ControladorEscenaCrearEvento {
     private Evento evento;
     private Calendario calendario;
 
+    private ArrayList alarmas;
+
     @FXML
     private CheckBox checkDiaCompleto;
+
     @FXML
-    private TextField descripcionEvento;
+    private TextArea descripcionEvento;
 
     @FXML
     private TextField tituloEvento;
@@ -46,7 +51,7 @@ public class ControladorEscenaCrearEvento {
 
 
     @FXML
-    private Spinner<Integer> cantRepeticiones;
+    private Spinner<Integer> intervalo;
 
 
     private final DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -60,15 +65,13 @@ public class ControladorEscenaCrearEvento {
         var fechaEvento = evento.getFecha();
         this.fechaIncio.setText(fechaEvento.toLocalDate().format(formatterFecha));
         this.horarioInicio.setText(fechaEvento.toLocalTime().format(formatterHora));
+        alarmas = new ArrayList<>();
 
         var fechaFinalEvento = evento.getFechaYHoraFinal();
         this.fechaFinal.setText(fechaFinalEvento.toLocalDate().format(formatterFecha));
         this.horarioFinal.setText(fechaFinalEvento.toLocalTime().format(formatterHora));
+        descripcionEvento.setText(evento.getDescripcion());
 
-
-        cantRepeticiones.setDisable(true);
-        var spinnerRepeticiones = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,Integer.MAX_VALUE);
-        this.cantRepeticiones.setValueFactory(spinnerRepeticiones);
         var spinnerAlarmas = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,Integer.MAX_VALUE,10);
         this.intervaloAlarma.setValueFactory(spinnerAlarmas);
 
@@ -78,6 +81,19 @@ public class ControladorEscenaCrearEvento {
         if(evento.isEsDeDiaCompleto()){
             checkDiaCompleto.setSelected(true);
         }
+
+        var spinnerIntervalo = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE);
+        if(evento.tieneRepeticion()){
+            botonRepeticion.setSelected(true);
+            intervalo.setDisable(false);
+            spinnerIntervalo.setValue(evento.getIntervaloRepeticionDiaria());
+
+        }
+        else{
+            botonRepeticion.setSelected(false);
+            intervalo.setDisable(true);
+        }
+        this.intervalo.setValueFactory(spinnerIntervalo);
     }
 
     private void initChoiceBoxAlarma(){
@@ -88,17 +104,34 @@ public class ControladorEscenaCrearEvento {
         this.tipoDeIntervalo.setValue("minutos");
 
         this.tipoDeEfecto.getItems().add("Notificacion");
-        this.tipoDeEfecto.getItems().add("Mail");
-        this.tipoDeEfecto.getItems().add("Sonido");
         this.tipoDeEfecto.setValue("Notificacion");
     }
 
 
 
     @FXML
-    void volverAVistaPrincipal(ActionEvent event){
+    void guardar(ActionEvent event){
         try {
             guardarCambios();
+            Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
+            stage.close();
+        }catch (DateTimeParseException e){
+            cargarAlertaFormato();
+        }
+    }
+
+    @FXML
+    void activarIntervalo(){
+        if(!botonRepeticion.isSelected()) {
+            intervalo.setDisable(true);
+        }
+        else
+            intervalo.setDisable(false);
+    }
+
+    @FXML
+    void cancelar(ActionEvent event){
+        try {
             Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
             stage.close();
         }catch (DateTimeParseException e){
@@ -116,18 +149,15 @@ public class ControladorEscenaCrearEvento {
     }
 
 
-    @FXML
-    void modificarDescripcion(KeyEvent event) {
+    void modificarDescripcion() {
         if(descripcionEvento.getText()!= null)
             calendario.modificarDescripcion(evento,descripcionEvento.getText());
     }
-    @FXML
-    void modificarTitulo(KeyEvent event) {
+    void modificarTitulo() {
         if(tituloEvento.getText()!= null)
             calendario.modificarTitulo(evento,tituloEvento.getText());
     }
 
-    @FXML
     void modificarFinal(){
         var fechaFinal = LocalDate.parse(this.fechaFinal.getText(), formatterFecha);
         var fechaInicial = LocalDate.parse(this.fechaIncio.getText(), formatterFecha);
@@ -145,7 +175,6 @@ public class ControladorEscenaCrearEvento {
 
     }
 
-    @FXML
     void modificarInicio(){
         var fechaInicial = LocalDate.parse(this.fechaIncio.getText(), formatterFecha);
         var horarioInicial = LocalTime.parse(this.horarioInicio.getText(), formatterHora);
@@ -157,23 +186,23 @@ public class ControladorEscenaCrearEvento {
     @FXML
     private CheckBox botonRepeticion;
 
-    @FXML
-    void tieneRepeticion(ActionEvent event) {
+
+    void tieneRepeticion() {
         if(!botonRepeticion.isSelected()) {
-            cantRepeticiones.setDisable(true);
+            intervalo.setDisable(true);
             calendario.eliminarRepeticion(evento);
         }else {
-            cantRepeticiones.setDisable(false);
+            intervalo.setDisable(false);
             calendario.agregarRepeticionDiariaEvento(evento);
         }
     }
 
-    @FXML
-    void guardarCantRepeticiones(MouseEvent event) {
-        if(cantRepeticiones.getValue() == null){
-            calendario.modificarCantidadRepeticiones(evento,0); //TODO agregar alerta
+
+    void guardarIntervalo() {
+        if(intervalo.getValue() == null){
+            calendario.modificarIntervaloRepeticionDiaria(evento,1); //TODO agregar alerta
         }
-        calendario.modificarCantidadRepeticiones(evento,cantRepeticiones.getValue());
+        calendario.modificarIntervaloRepeticionDiaria(evento,intervalo.getValue());
     }
 
 
@@ -191,11 +220,12 @@ public class ControladorEscenaCrearEvento {
     @FXML
     void agregarAlarma(ActionEvent event) {
         try {
-        guardarCambios();
+        var fechaInicial = LocalDate.parse(this.fechaIncio.getText(), formatterFecha);
+        var horarioInicial = LocalTime.parse(this.horarioInicio.getText(), formatterHora);
         var intervalo = convertirStringADuracion(tipoDeIntervalo.getValue(),intervaloAlarma.getValue());
         var efecto = tipoDeEfecto.getValue();
-        var alarma = calendario.agregarAlarma(evento,intervalo);
-        calendario.modificarAlarmaEfecto(evento,alarma,EfectoAlarma.convertirStringAEfectoAlarma(efecto));
+        var alarma = new Alarma(fechaInicial.atTime(horarioInicial), intervalo);
+        alarma.setEfecto(EfectoAlarma.convertirStringAEfectoAlarma(efecto.toString()));
         agregarBotonesDeAlarma(alarma);
         }catch (DateTimeParseException e){
             cargarAlertaFormato();
@@ -208,6 +238,7 @@ public class ControladorEscenaCrearEvento {
         var botonEliminar = nodoEliminar(alarma,contenedor);
         contenedor.getChildren().add(botonAlarma);
         contenedor.getChildren().add(botonEliminar);
+        alarmas.add(alarma);
         vBoxAlarmas.getChildren().add(contenedor);
     }
     private Node nodoAlarma(Alarma alarma){
@@ -222,11 +253,12 @@ public class ControladorEscenaCrearEvento {
 
     private Node nodoEliminar(Alarma alarma, Pane contenedor) {
         Button boton = new Button("X");
-        boton.setMinWidth(25);
-        boton.setMinHeight(25);
+        boton.setMinWidth(15);
+        boton.setMinHeight(15);
         boton.setPadding(new Insets(2,5,2,5));
         boton.setOnAction(event -> {
             calendario.eliminarAlarma(evento,alarma);
+            alarmas.remove(alarma);
             vBoxAlarmas.getChildren().remove(contenedor);
         });
         return boton;
@@ -254,6 +286,15 @@ public class ControladorEscenaCrearEvento {
         modificarFinal();
         modificarInicio();
         setearDeDiaCompleto();
+        modificarDescripcion();
+        modificarTitulo();
+        tieneRepeticion();
+        if(botonRepeticion.isSelected())
+            guardarIntervalo();
+        for(Object al : alarmas){
+            calendario.agregarAlarma(evento, ((Alarma) al).getIntervalo());
+            calendario.modificarAlarmaEfecto(evento,((Alarma) al),EfectoAlarma.convertirStringAEfectoAlarma(((Alarma) al).getEfecto().toString()));
+        }
     }
 
 

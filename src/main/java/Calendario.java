@@ -209,21 +209,20 @@ public class Calendario implements Serializable {
     }
 
     // Devuelve el efecto de la proxima alarma a sonar entre las fechas dadas.
-    public EfectoAlarma sonarProximaAlarma(LocalDateTime fechaYHora, LocalDateTime fin){
+    public ElementoCalendario sonarProximaAlarma(LocalDateTime fechaYHora, LocalDateTime fin){
         var elementos = elementosEntreFechas(fechaYHora,fin);
         if(elementos == null)
             return null;
-        EfectoAlarma efecto = null;
+        ElementoCalendario el = null;
         LocalDateTime date = fin;
         for (ElementoCalendario i : elementos){
             var horarioAlarma = i.horarioProximaAlarma(fechaYHora);
             if (horarioAlarma!=null && !horarioAlarma.isAfter(date)){
                 date = horarioAlarma;
-                efecto = i.sonarProximaAlarma(horarioAlarma);
-
+                el = i;
             }
         }
-        return efecto;
+        return el;
     }
 
     public static Calendario deserializar(InputStream is) throws IOException, ClassNotFoundException {

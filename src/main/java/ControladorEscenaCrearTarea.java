@@ -16,6 +16,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -23,10 +24,14 @@ public class ControladorEscenaCrearTarea {
     private Tarea tarea;
     private Calendario calendario;
 
+    private ArrayList alarmas;
     @FXML
     private CheckBox checkDiaCompleto;
+
     @FXML
-    private TextField descripcionEvento;
+    private CheckBox checkCompleta;
+    @FXML
+    private TextArea descripcionEvento;
 
     @FXML
     private TextField tituloEvento;
@@ -41,6 +46,8 @@ public class ControladorEscenaCrearTarea {
     private final DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
 
+    private final DateTimeFormatter formatterFechaYHora = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
 
    void initElemento(Calendario calendario, Tarea tarea){
        this.tarea = tarea;
@@ -49,6 +56,9 @@ public class ControladorEscenaCrearTarea {
        var fecha = tarea.getFecha();
        this.fechaVencimiento.setText(fecha.toLocalDate().format(formatterFecha));
        this.horarioVencimiento.setText(fecha.toLocalTime().format(formatterHora));
+
+       alarmas = new ArrayList<>();
+       descripcionEvento.setText(tarea.getDescripcion());
 
        var spinnerAlarmas = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,Integer.MAX_VALUE,10);
        this.intervaloAlarma.setValueFactory(spinnerAlarmas);
@@ -59,19 +69,31 @@ public class ControladorEscenaCrearTarea {
        if(tarea.isEsDeDiaCompleto()){
            checkDiaCompleto.setSelected(true);
        }
+
+       if(tarea.isEsDeDiaCompleto()){
+           checkCompleta.setSelected(true);
+       }
    }
 
     @FXML
-    void volverAVistaPrincipal(ActionEvent event){
-       try {
-           guardarCambios();
-           modificarInicio();
-           setearDeDiaCompleto();
-           Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
-           stage.close();
-       }catch (DateTimeParseException e){
-           cargarAlertaFormato();
-       }
+    void guardar(ActionEvent event){
+        try {
+            guardarCambios();
+            Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
+            stage.close();
+        }catch (DateTimeParseException e){
+            cargarAlertaFormato();
+        }
+    }
+
+    @FXML
+    void cancelar(ActionEvent event){
+        try {
+            Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
+            stage.close();
+        }catch (DateTimeParseException e){
+            cargarAlertaFormato();
+        }
     }
 
 
@@ -84,13 +106,22 @@ public class ControladorEscenaCrearTarea {
 
     }
 
-    @FXML
-    void modificarDescripcion(KeyEvent event) {
+    void setearCompleta() {
+        if(checkCompleta.isSelected())
+            calendario.marcarTareaCompleta(tarea);
+        else{
+            calendario.marcarTareaIncompleta(tarea);
+        }
+
+    }
+
+
+    void modificarDescripcion() {
         if(descripcionEvento.getText()!= null)
             calendario.modificarDescripcion(tarea,descripcionEvento.getText());
     }
-    @FXML
-    void modificarTitulo(KeyEvent event) {
+
+    void modificarTitulo() {
         if(tituloEvento.getText()!= null)
             calendario.modificarTitulo(tarea,tituloEvento.getText());
     }
@@ -103,8 +134,8 @@ public class ControladorEscenaCrearTarea {
 
     }
 
-    @FXML
-    void modificarInicio(){
+
+    void modificarFecha(){
         var fechaInicial = LocalDate.parse(this.fechaVencimiento.getText(), formatterFecha);
         var horarioInicial = LocalTime.parse(this.horarioVencimiento.getText(), formatterHora);
         calendario.modificarFecha(tarea, fechaInicial.atTime(horarioInicial));
@@ -128,14 +159,14 @@ public class ControladorEscenaCrearTarea {
     @FXML
     void agregarAlarma(ActionEvent event) {
         try {
-            guardarCambios();
-            var intervalo = convertirStringADuracion(tipoDeIntervalo.getValue(), intervaloAlarma.getValue());
-            var alarma = calendario.agregarAlarma(tarea, intervalo);
+            var fechaInicial = LocalDate.parse(this.fechaVencimiento.getText(), formatterFecha);
+            var horarioInicial = LocalTime.parse(this.horarioVencimiento.getText(), formatterHora);
+            var intervalo = convertirStringADuracion(tipoDeIntervalo.getValue(),intervaloAlarma.getValue());
             var efecto = tipoDeEfecto.getValue();
-            calendario.modificarAlarmaEfecto(tarea, alarma, EfectoAlarma.convertirStringAEfectoAlarma(efecto));
+            var alarma = new Alarma(fechaInicial.atTime(horarioInicial), intervalo);
+            alarma.setEfecto(EfectoAlarma.convertirStringAEfectoAlarma(efecto.toString()));
             agregarBotonesDeAlarma(alarma);
-        }
-        catch (DateTimeParseException e){
+        }catch (DateTimeParseException e){
             cargarAlertaFormato();
         }
     }
@@ -146,6 +177,7 @@ public class ControladorEscenaCrearTarea {
         var botonEliminar = nodoEliminar(alarma,contenedor);
         contenedor.getChildren().add(botonAlarma);
         contenedor.getChildren().add(botonEliminar);
+        alarmas.add(alarma);
         vBoxAlarmas.getChildren().add(contenedor);
     }
     private Node nodoAlarma(Alarma alarma){
@@ -154,17 +186,18 @@ public class ControladorEscenaCrearTarea {
         label.setMinHeight(25);
         label.setPadding(new Insets(2,5,2,5));
         label.setAlignment(Pos.CENTER_LEFT);
-        label.setText(alarma.getEfecto().toString() + ", "+ alarma.getFechaYHora().format(formatterFecha));
+        label.setText(alarma.getEfecto().toString() + ", "+ alarma.getFechaYHora().format(formatterFechaYHora));
         return label;
     }
 
     private Node nodoEliminar(Alarma alarma, Pane contenedor) {
         Button boton = new Button("X");
-        boton.setMinWidth(25);
-        boton.setMinHeight(25);
+        boton.setMinWidth(15);
+        boton.setMinHeight(15);
         boton.setPadding(new Insets(2,5,2,5));
         boton.setOnAction(event -> {
             calendario.eliminarAlarma(tarea,alarma);
+            alarmas.remove(alarma);
             vBoxAlarmas.getChildren().remove(contenedor);
         });
         return boton;
@@ -203,8 +236,15 @@ public class ControladorEscenaCrearTarea {
         return null;
     }
     private void guardarCambios() throws DateTimeParseException{
-        modificarInicio();
+        modificarFecha();
         setearDeDiaCompleto();
+        modificarDescripcion();
+        modificarTitulo();
+        setearCompleta();
+        for(Object al : alarmas){
+            calendario.agregarAlarma(tarea, ((Alarma) al).getIntervalo());
+            calendario.modificarAlarmaEfecto(tarea,((Alarma) al),EfectoAlarma.convertirStringAEfectoAlarma(((Alarma) al).getEfecto().toString()));
+        }
     }
 
 

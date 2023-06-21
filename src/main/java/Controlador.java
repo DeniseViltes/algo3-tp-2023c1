@@ -14,11 +14,12 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
 
 public class Controlador {
-    private Calendario calendario;
+    public Calendario calendario;
 
     public Stage stage;
 
@@ -46,7 +47,7 @@ public class Controlador {
             this.sonidoPath = "src/main/resources/otros/pacman-dies.mp3";
             iniciarTimer();
             stage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.setFullScreen(false);
             stage.show();
         }catch (IOException e){
             cargarAlertaEscenaNoEncontrada();
@@ -77,7 +78,7 @@ public class Controlador {
             controlador.initEscenaSemanal(this, calendario);
             controladorActual = controlador;
             stage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.setFullScreen(false);
             stage.show();
         }
         catch (IOException e){
@@ -97,7 +98,7 @@ public class Controlador {
             controlador.initEscenaDiaria(this, calendario);
             controladorActual = controlador;
             stage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.setFullScreen(false);
             menuFecha.setText("Dia");
             stage.show();
         }catch (IOException e){
@@ -119,7 +120,7 @@ public class Controlador {
             controlador.initEscenaMensual(this, calendario);
             controladorActual = controlador;
             stage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.setFullScreen(false);
             stage.show();
         }catch (IOException e){
             cargarAlertaEscenaNoEncontrada();
@@ -151,10 +152,10 @@ public class Controlador {
             ControladorEscenaCrearEvento controlador = loader.getController();
 
             controlador.initElemento(calendario, evento);
-            stageEvento.setTitle("Nuevo evento");
+            stageEvento.setTitle("Modificar evento");
             stageEvento.setScene(scene);
+            stageEvento.show();
 
-            setearStageSecundario(stageEvento);
         }catch (IOException e){
             cargarAlertaEscenaNoEncontrada();
         }
@@ -166,6 +167,13 @@ public class Controlador {
             calendario.marcarTareaCompleta(tarea);
         else calendario.marcarTareaIncompleta(tarea);
     }
+
+    public void cambiarDiaCompleto(ElementoCalendario el, boolean estado){
+        if (estado)
+            calendario.marcarDeDiaCompleto(el);
+        else calendario.desmarcarDeDiaCompleto(el);
+    }
+
     public void modificarTarea(Tarea tarea) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -177,7 +185,8 @@ public class Controlador {
             ControladorEscenaCrearTarea controlador = loader.getController();
             controlador.initElemento(calendario, tarea);
             stageTarea.setScene(scene);
-            setearStageSecundario(stageTarea);
+            stageTarea.show();
+
         }
         catch (IOException e){
             cargarAlertaEscenaNoEncontrada();
@@ -208,27 +217,35 @@ public class Controlador {
         var timer = new AnimationTimer() {
             @Override
             public void handle(long tiempo) {
-                LocalDateTime localDateTime = getLocalDateTime();
-                var p = calendario.sonarProximaAlarma(localDateTime.minusSeconds(1), localDateTime.plusMinutes(1));
-                if (p != null) {
-                    ejecutarAlarma(p);
+                long deciSegundos = tiempo/100000000;
+                if(deciSegundos%60 == 0){
+                    LocalDateTime localDateTime = getLocalDateTime();
+                    var p = calendario.sonarProximaAlarma(localDateTime.minusMinutes(1), localDateTime.plusMonths(1));
+                    if (p != null && localDateTime.truncatedTo(ChronoUnit.MINUTES).equals(p.horarioProximaAlarma(localDateTime.minusMinutes(1)))) {
+                        ControladorMostrarNotificacion controlador = new ControladorMostrarNotificacion();
+                        controlador.mostrar_informacion(p);
+                        calendario.eliminarAlarma(p, p.proximaAlarma(localDateTime.minusMinutes(1)));
+
+                    }
                 }
+
                 }
             };
             
        timer.start();
     }
+/*
 
-
-    private void ejecutarAlarma(EfectoAlarma p) {
+    private void ejecutarAlarma(ElementoCalendario el, EfectoAlarma p) {
+        ControladorMostrarNotificacion controlador = new ControladorMostrarNotificacion();
         switch (p){
-            case NOTIFICACION -> mostrarNotificacion();
+            case NOTIFICACION -> controlador.mostrar_informacion(el);
             case SONIDO -> sonarAlarma();
             case MAIL -> mandarMail();
         }
 
     }
-    private void mostrarNotificacion(){
+    private void mostrarNotificacion(ElementoCalendario el){
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/VentanasExtra/Alarma.fxml"));
@@ -236,12 +253,13 @@ public class Controlador {
             final Stage stage = new Stage();
             Scene scene = new Scene(view);
             stage.setScene(scene);
-            setearStageSecundario(stage);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
         }
         catch (IOException e){
             cargarAlertaEscenaNoEncontrada();
         }
-    }
+    }*/
 
     private void sonarAlarma(){
         Media sonido = new Media(new File(sonidoPath).toURI().toString());//TODO probar alarmas con sonido
@@ -267,13 +285,6 @@ public class Controlador {
         return LocalDateTime.now();
     }
 
-
-    private void setearStageSecundario(Stage stage){
-        this.stage.toBack();
-        stage.setResizable(false);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
-    }
 
 
     //TODO agregar como funciona el calendario
