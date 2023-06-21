@@ -40,7 +40,7 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <SplitMenuButton fx:id="menuFecha" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="Semana">
+      <SplitMenuButton fx:id="menuFecha" mnemonicParsing="false" text="Semana">
          <items>
             <MenuItem mnemonicParsing="false" onAction="#setDia" text="Dia" />
             <MenuItem mnemonicParsing="false" text="Semana" />

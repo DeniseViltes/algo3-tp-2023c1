@@ -4,7 +4,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -24,7 +23,7 @@ public class ControladorEscenaCrearTarea {
     private Tarea tarea;
     private Calendario calendario;
 
-    private ArrayList alarmas;
+    private ArrayList<Alarma> alarmas;
     @FXML
     private CheckBox checkDiaCompleto;
 
@@ -164,7 +163,7 @@ public class ControladorEscenaCrearTarea {
             var intervalo = convertirStringADuracion(tipoDeIntervalo.getValue(),intervaloAlarma.getValue());
             var efecto = tipoDeEfecto.getValue();
             var alarma = new Alarma(fechaInicial.atTime(horarioInicial), intervalo);
-            alarma.setEfecto(EfectoAlarma.convertirStringAEfectoAlarma(efecto.toString()));
+            alarma.setEfecto(EfectoAlarma.convertirStringAEfectoAlarma(efecto));
             agregarBotonesDeAlarma(alarma);
         }catch (DateTimeParseException e){
             cargarAlertaFormato();
@@ -241,9 +240,9 @@ public class ControladorEscenaCrearTarea {
         modificarDescripcion();
         modificarTitulo();
         setearCompleta();
-        for(Object al : alarmas){
-            calendario.agregarAlarma(tarea, ((Alarma) al).getIntervalo());
-            calendario.modificarAlarmaEfecto(tarea,((Alarma) al),EfectoAlarma.convertirStringAEfectoAlarma(((Alarma) al).getEfecto().toString()));
+        for(Alarma al : alarmas){
+            calendario.agregarAlarma(tarea, al.getIntervalo());
+            calendario.modificarAlarmaEfecto(tarea, al,EfectoAlarma.convertirStringAEfectoAlarma(al.getEfecto().toString()));
         }
     }
 

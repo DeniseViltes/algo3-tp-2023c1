@@ -154,7 +154,5 @@ public abstract class ElementoCalendario implements Serializable {
         return null;
     }
 
-    public boolean tieneVencimiento(){
-        return true;
-    }
+    abstract public boolean tieneVencimiento();
 }

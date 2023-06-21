@@ -6,12 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -23,8 +20,9 @@ public class Controlador {
 
     public Stage stage;
 
+    private final int alturaEscena = 1000;
+    private final int anchoEscena = 1600;
     private ControladorTipoDeVista controladorActual;
-    private String sonidoPath; //TODO agregar pantalla principal
 
     @FXML
     private SplitMenuButton menuCrear;
@@ -38,16 +36,14 @@ public class Controlador {
             loader.setLocation(getClass().getResource("/EscenaSemanal.fxml"));
             VBox view = loader.load();
             this.stage = stage;
-            Scene scene = new Scene(view);
+            Scene scene = new Scene(view, anchoEscena, alturaEscena);
             inicializarCalendario(pathArchivoCalendario);
             ControladorEscenaSemanal controlador = loader.getController();
             controlador.initEscenaSemanal(this, calendario);
             controladorActual = controlador;
             initListener(pathArchivoCalendario);
-            this.sonidoPath = "src/main/resources/otros/pacman-dies.mp3";
             iniciarTimer();
             stage.setScene(scene);
-            stage.setFullScreen(false);
             stage.show();
         }catch (IOException e){
             cargarAlertaEscenaNoEncontrada();
@@ -71,14 +67,13 @@ public class Controlador {
             loader.setLocation(getClass().getResource("/EscenaSemanal.fxml"));
             VBox view = loader.load();
 
-            Scene scene = new Scene(view, 1600, 1000);
+            Scene scene = new Scene(view, anchoEscena, alturaEscena);
             ControladorEscenaSemanal controlador = loader.getController();
             menuFecha.setText("Semana");
 
             controlador.initEscenaSemanal(this, calendario);
             controladorActual = controlador;
             stage.setScene(scene);
-            stage.setFullScreen(false);
             stage.show();
         }
         catch (IOException e){
@@ -93,12 +88,11 @@ public class Controlador {
             loader.setLocation(getClass().getResource("/EscenaDiaria.fxml"));
             VBox view = loader.load();
 
-            Scene scene = new Scene(view, 1600, 1000);
+            Scene scene = new Scene(view, anchoEscena, alturaEscena);
             ControladorEscenaDiaria controlador = loader.getController();
             controlador.initEscenaDiaria(this, calendario);
             controladorActual = controlador;
             stage.setScene(scene);
-            stage.setFullScreen(false);
             menuFecha.setText("Dia");
             stage.show();
         }catch (IOException e){
@@ -113,14 +107,13 @@ public class Controlador {
             loader.setLocation(getClass().getResource("/EscenaMensual.fxml"));
             VBox view = loader.load();
 
-            Scene scene = new Scene(view, 1600, 1000);
+            Scene scene = new Scene(view, anchoEscena, alturaEscena);
             ControladorEscenaMensual controlador = loader.getController();
             menuFecha.setText("Mes");
 
             controlador.initEscenaMensual(this, calendario);
             controladorActual = controlador;
             stage.setScene(scene);
-            stage.setFullScreen(false);
             stage.show();
         }catch (IOException e){
             cargarAlertaEscenaNoEncontrada();
@@ -200,7 +193,7 @@ public class Controlador {
                 controladorActual.limpiarCalendario();
                 controladorActual.actualizarCalendario(calendario);
             } catch (IOException e) {
-                throw new RuntimeException(e); //no tendira que tirar ninguna alerta
+                throw new RuntimeException(e);
             }
         });
     }
@@ -209,7 +202,7 @@ public class Controlador {
         try {
             this.calendario = ProcesadorDeArchivoCalendario.leerCalendarioDeArchivo(fileName);
         } catch (IOException | ClassNotFoundException e) {
-            this.calendario = new Calendario(); //TODO ver si esto va aca o en el Main
+            this.calendario = new Calendario();
         }
     }
 
@@ -234,52 +227,7 @@ public class Controlador {
             
        timer.start();
     }
-/*
 
-    private void ejecutarAlarma(ElementoCalendario el, EfectoAlarma p) {
-        ControladorMostrarNotificacion controlador = new ControladorMostrarNotificacion();
-        switch (p){
-            case NOTIFICACION -> controlador.mostrar_informacion(el);
-            case SONIDO -> sonarAlarma();
-            case MAIL -> mandarMail();
-        }
-
-    }
-    private void mostrarNotificacion(ElementoCalendario el){
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/VentanasExtra/Alarma.fxml"));
-            VBox view = loader.load();
-            final Stage stage = new Stage();
-            Scene scene = new Scene(view);
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
-        }
-        catch (IOException e){
-            cargarAlertaEscenaNoEncontrada();
-        }
-    }*/
-
-    private void sonarAlarma(){
-        Media sonido = new Media(new File(sonidoPath).toURI().toString());//TODO probar alarmas con sonido
-        MediaPlayer reproductor = new MediaPlayer(sonido);
-
-        reproductor.play();
-
-    }
-
-    private void mandarMail(){
-        cargarAlertaMail();
-    }
-
-
-    private void cargarAlertaMail(){
-        String uno= "Todavia no esta disponible la opcion de enviar mails";
-        String dos ="Pruebe con otro efecto";
-        var alerta = new CreadorDeAlerta();
-        alerta.mostrarAlerta("No es posible enviar mails aun", Arrays.asList(uno,dos));
-    }
 
     private LocalDateTime getLocalDateTime(){
         return LocalDateTime.now();
@@ -287,5 +235,4 @@ public class Controlador {
 
 
 
-    //TODO agregar como funciona el calendario
 }

@@ -4,14 +4,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.lang.reflect.Array;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -26,7 +23,7 @@ public class ControladorEscenaCrearEvento {
     private Evento evento;
     private Calendario calendario;
 
-    private ArrayList alarmas;
+    private ArrayList<Alarma> alarmas;
 
     @FXML
     private CheckBox checkDiaCompleto;
@@ -122,11 +119,7 @@ public class ControladorEscenaCrearEvento {
 
     @FXML
     void activarIntervalo(){
-        if(!botonRepeticion.isSelected()) {
-            intervalo.setDisable(true);
-        }
-        else
-            intervalo.setDisable(false);
+        intervalo.setDisable(!botonRepeticion.isSelected());
     }
 
     @FXML
@@ -225,7 +218,7 @@ public class ControladorEscenaCrearEvento {
         var intervalo = convertirStringADuracion(tipoDeIntervalo.getValue(),intervaloAlarma.getValue());
         var efecto = tipoDeEfecto.getValue();
         var alarma = new Alarma(fechaInicial.atTime(horarioInicial), intervalo);
-        alarma.setEfecto(EfectoAlarma.convertirStringAEfectoAlarma(efecto.toString()));
+        alarma.setEfecto(EfectoAlarma.convertirStringAEfectoAlarma(efecto));
         agregarBotonesDeAlarma(alarma);
         }catch (DateTimeParseException e){
             cargarAlertaFormato();
@@ -291,9 +284,9 @@ public class ControladorEscenaCrearEvento {
         tieneRepeticion();
         if(botonRepeticion.isSelected())
             guardarIntervalo();
-        for(Object al : alarmas){
-            calendario.agregarAlarma(evento, ((Alarma) al).getIntervalo());
-            calendario.modificarAlarmaEfecto(evento,((Alarma) al),EfectoAlarma.convertirStringAEfectoAlarma(((Alarma) al).getEfecto().toString()));
+        for(Alarma al : alarmas){
+            calendario.agregarAlarma(evento, al.getIntervalo());
+            calendario.modificarAlarmaEfecto(evento, al,EfectoAlarma.convertirStringAEfectoAlarma(al.getEfecto().toString()));
         }
     }
 

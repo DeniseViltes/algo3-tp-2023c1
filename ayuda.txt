@@ -1,0 +1,13 @@
+¿Como usar el calendario?
+
+Apenas abre el calendario, te vas a encontrar con tus eventos y tareas odernados de forma semanal.
+Si queres cambiar el tipo de visualización del rango horario de tus eventos y tareas, podes hacer
+click en el primer menú (tiene marcado "semana") que se encuentra en la esquina superior derecha, este
+menú ofrece cambiar a vista diaria o mensual.
+Con los botones de navegacion (< y >) podes avanzar o retroceder 1 dia, semana o mes según el tipo de
+visualizacion que esté selecionada, de igual manera, haciendo click en "Hoy" te trasladas al dia actual,
+siempre manteniendo el tipo de vista elegido.
+Haciendo click en crear, podes elegir para crear un evento o tarea nueva. En esta nueva ventana
+podes elegir el nombre y descripción de la actividad, asi como fechas y alarmas. Para que se guarden estos
+cambios es necesario hacer click en guardar.
+
