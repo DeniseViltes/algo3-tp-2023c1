@@ -104,7 +104,7 @@ public abstract class ElementoCalendario implements Serializable {
         return esIgualOEstaEntre(inicio,fin,this.fechaYHoraCaracteristica);
     }
     private boolean esIgualOEstaEntre(LocalDateTime inicio, LocalDateTime fin, LocalDateTime t){
-        return (t.equals(inicio) || t.isAfter(inicio)) && (t.equals(fin) || t.isBefore(fin));
+        return (t.equals(inicio) || t.isAfter(inicio)) && t.isBefore(fin);
     }
 
     abstract void agregarElementoAlSet(Set<ElementoCalendario> elementos, LocalDateTime inicio, LocalDateTime fin);
