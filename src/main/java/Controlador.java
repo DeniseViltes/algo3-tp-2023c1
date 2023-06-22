@@ -2,16 +2,22 @@ import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -20,8 +26,8 @@ public class Controlador {
 
     public Stage stage;
 
-    private final int alturaEscena = 1000;
-    private final int anchoEscena = 1600;
+    private final int alturaEscena = 400;
+    private final int anchoEscena = 600;
     private ControladorTipoDeVista controladorActual;
 
     @FXML
@@ -233,6 +239,28 @@ public class Controlador {
         return LocalDateTime.now();
     }
 
-
+    public void mostrarAyuda(){
+        try {
+           var ayuda = new FileReader("src/main/resources/otros/ayuda.txt");
+            var lector = new LineNumberReader(new BufferedReader(ayuda));
+            String renglon;
+            var contenido = new ArrayList<String>();
+            while((renglon= lector.readLine()) != null) {
+                contenido.add(renglon);
+            }
+            VBox contenedor  = new VBox(10);
+            contenedor.setAlignment(Pos.TOP_CENTER);
+            for (String i : contenido) {
+                contenedor.getChildren().add(new Text(i));
+            }
+            final Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            Scene scene = new Scene(contenedor);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

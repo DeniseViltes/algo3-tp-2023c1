@@ -520,4 +520,12 @@ public class ControladorEscenaMensual implements ControladorTipoDeVista{
 
         diasLabel[(LocalDateTime.now().getDayOfMonth())-1+cant_dias].setStyle(diasLabel[(LocalDateTime.now().getDayOfMonth())+cant_dias].getStyle());
     }
+
+
+    @FXML
+    void mostrarAyuda(ActionEvent event) {
+        controlador.mostrarAyuda();
+    }
+
+
 }

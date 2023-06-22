@@ -23,6 +23,7 @@
             <Font size="30.0" />
          </font>
       </Label>
+      <Button mnemonicParsing="false" onAction="#mostrarAyuda" style="-fx-background-color: white; -fx-background-radius: 20;" text="?" />
       <Button fx:id="btn_hoy" mnemonicParsing="false" prefHeight="40.0" prefWidth="60.0" text="Hoy" textAlignment="CENTER">
          <HBox.margin>
             <Insets top="3.0" />

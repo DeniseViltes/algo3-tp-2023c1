@@ -209,4 +209,11 @@ public class ControladorEscenaDiaria implements ControladorTipoDeVista{
     public void marcarDiaNormal() {
         diaLabel.setStyle(style_normal);
     }
+
+    @FXML
+
+    void mostrarAyuda(ActionEvent event) {
+        controlador.mostrarAyuda();
+    }
+
 }

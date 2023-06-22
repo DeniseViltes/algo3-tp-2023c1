@@ -21,7 +21,6 @@ import java.util.TreeSet;
 public class ControladorEscenaSemanal implements  ControladorTipoDeVista{
 
     private Controlador controlador;
-
     @FXML
     private Button btn_hoy;
 
@@ -371,4 +370,9 @@ public class ControladorEscenaSemanal implements  ControladorTipoDeVista{
             case "DOM" -> diaDomingoLabel.setStyle(diaLunes.getStyle());
         }
     }
+    @FXML
+    void mostrarAyuda(ActionEvent event) {
+        controlador.mostrarAyuda();
+    }
+
 }
