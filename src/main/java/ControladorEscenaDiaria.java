@@ -30,6 +30,8 @@ public class ControladorEscenaDiaria implements ControladorTipoDeVista{
 
     @FXML
     private MenuButton menuFecha;
+    @FXML
+    private Label titulo;
 
     @FXML
     private Button btn_anterior;

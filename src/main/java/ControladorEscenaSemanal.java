@@ -22,6 +22,8 @@ public class ControladorEscenaSemanal implements  ControladorTipoDeVista{
 
     private Controlador controlador;
     @FXML
+    private Label titulo;
+    @FXML
     private Button btn_hoy;
 
     @FXML

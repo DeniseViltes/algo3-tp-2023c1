@@ -69,7 +69,7 @@
          <padding>
             <Insets left="20.0" right="20.0" top="20.0" />
          </padding>
-         <VBox fx:id="dia" alignment="TOP_CENTER" onDragDetected="#mostrarAyuda" prefHeight="906.0" prefWidth="1550.0" spacing="15.0">
+         <VBox fx:id="dia" alignment="TOP_CENTER" prefHeight="906.0" prefWidth="1550.0" spacing="15.0">
             <Label fx:id="diaLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="70.0" textAlignment="CENTER">
                <font>
                   <Font size="17.0" />
