@@ -7,13 +7,6 @@ Franco Tosoni Márquez, 103359
 
 Viltes Denise, 106943
 
-<h2> Info... </h2>
-
-<h3> Patrones </h3>
-Strategy 
-Observer
-
-Mediator? (controlador, con las vistas e informacion detallada)
 
 
 
