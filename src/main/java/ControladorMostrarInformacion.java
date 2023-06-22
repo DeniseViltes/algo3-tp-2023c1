@@ -135,7 +135,7 @@ public class ControladorMostrarInformacion {
         editarEliminar.getChildren().add(botonEditar);
         editarEliminar.getChildren().add(botonEliminar);
         editarEliminar.setSpacing(15);
-        dialogVbox.getChildren().add(editarEliminar);//TODO los puse en cualquier lado para ver como funciona
+        dialogVbox.getChildren().add(editarEliminar);
         Scene dialogScene;
         if(!el.getDescripcion().isEmpty()){
             dialogVbox.getChildren().add(descripcion);

@@ -62,28 +62,31 @@
                   <Insets />
                </VBox.margin>
                 </GridPane>
-            <HBox alignment="CENTER" minWidth="-Infinity" prefHeight="64.0" prefWidth="1300.0" spacing="40.0" translateY="-50.0">
-               <children>
-                  <ImageView fitHeight="30.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" translateX="-200.0">
-                     <image>
-                        <Image url="@../otros/alarma.png" />
-                     </image>
-                  </ImageView>
-                  <ChoiceBox fx:id="tipoDeEfecto" prefWidth="146.0" translateX="-220.0">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin></ChoiceBox>
-                        <Spinner fx:id="intervaloAlarma" editable="true" prefHeight="40.0" prefWidth="90.0" translateX="-115.0">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin></Spinner>
-                        <ChoiceBox fx:id="tipoDeIntervalo" prefHeight="25.0" prefWidth="150.0" translateX="-150.0" />
-                        <Button mnemonicParsing="false" onAction="#agregarAlarma" prefHeight="40.0" prefWidth="60.0" text="+" translateX="-185.0">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin></Button>
-               </children>
-            </HBox>
+                <HBox alignment="CENTER" minWidth="-Infinity" prefHeight="64.0" prefWidth="1300.0" spacing="40.0"
+                      translateY="-50.0">
+                    <ImageView fitHeight="30.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true"
+                               translateX="-200.0">
+                        <Image url="@../otros/alarma.png"/>
+                    </ImageView>
+                    <ChoiceBox fx:id="tipoDeEfecto" prefWidth="146.0" translateX="-220.0">
+                        <HBox.margin>
+                            <Insets/>
+                        </HBox.margin>
+                    </ChoiceBox>
+                    <Spinner fx:id="intervaloAlarma" editable="true" prefHeight="40.0" prefWidth="90.0"
+                             translateX="-115.0">
+                        <HBox.margin>
+                            <Insets/>
+                        </HBox.margin>
+                    </Spinner>
+                    <ChoiceBox fx:id="tipoDeIntervalo" prefHeight="25.0" prefWidth="150.0" translateX="-150.0"/>
+                    <Button mnemonicParsing="false" onAction="#agregarAlarma" prefHeight="40.0" prefWidth="60.0"
+                            text="+" translateX="-185.0">
+                        <HBox.margin>
+                            <Insets/>
+                        </HBox.margin>
+                    </Button>
+                </HBox>
                 <AnchorPane prefHeight="177.0" prefWidth="353.0" translateY="30.0">
                     <HBox alignment="CENTER" layoutY="-22.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="199.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" translateX="135.0" translateY="-70.0">

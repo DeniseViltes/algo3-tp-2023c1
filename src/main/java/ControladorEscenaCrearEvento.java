@@ -211,7 +211,7 @@ public class ControladorEscenaCrearEvento {
 
     void guardarIntervalo() {
         if (intervalo.getValue() == null) {
-            calendario.modificarIntervaloRepeticionDiaria(evento, 1); //TODO agregar alerta
+            calendario.modificarIntervaloRepeticionDiaria(evento, 1);
         }
         calendario.modificarIntervaloRepeticionDiaria(evento, intervalo.getValue());
     }
