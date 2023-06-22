@@ -28,8 +28,6 @@ public class ControladorEscenaCrearTarea {
     private CheckBox checkDiaCompleto;
 
     @FXML
-    private CheckBox checkCompleta;
-    @FXML
     private TextArea descripcionEvento;
 
     @FXML
@@ -40,7 +38,7 @@ public class ControladorEscenaCrearTarea {
 
     @FXML
     private TextField horarioVencimiento;
-    //TODO vale la pena pasar el controlador aca?
+
 
     private final DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
@@ -67,10 +65,6 @@ public class ControladorEscenaCrearTarea {
 
        if(tarea.isEsDeDiaCompleto()){
            checkDiaCompleto.setSelected(true);
-       }
-
-       if(tarea.isEsDeDiaCompleto()){
-           checkCompleta.setSelected(true);
        }
    }
 
@@ -101,15 +95,6 @@ public class ControladorEscenaCrearTarea {
             calendario.marcarDeDiaCompleto(tarea);
         else{
             calendario.desmarcarDeDiaCompleto(tarea);
-        }
-
-    }
-
-    void setearCompleta() {
-        if(checkCompleta.isSelected())
-            calendario.marcarTareaCompleta(tarea);
-        else{
-            calendario.marcarTareaIncompleta(tarea);
         }
 
     }
@@ -239,7 +224,6 @@ public class ControladorEscenaCrearTarea {
         setearDeDiaCompleto();
         modificarDescripcion();
         modificarTitulo();
-        setearCompleta();
         for(Alarma al : alarmas){
             calendario.agregarAlarma(tarea, al.getIntervalo());
             calendario.modificarAlarmaEfecto(tarea, al,EfectoAlarma.convertirStringAEfectoAlarma(al.getEfecto().toString()));

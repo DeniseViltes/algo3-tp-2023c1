@@ -525,7 +525,7 @@ public class ControladorEscenaMensual implements ControladorTipoDeVista{
 
 
     @FXML
-    void mostrarAyuda(ActionEvent event) {
+    public void mostrarAyuda(ActionEvent event) {
         controlador.mostrarAyuda();
     }
 

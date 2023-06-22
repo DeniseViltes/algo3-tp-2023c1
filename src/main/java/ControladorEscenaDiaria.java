@@ -66,6 +66,10 @@ public class ControladorEscenaDiaria implements ControladorTipoDeVista{
 
     private LocalDateTime dia_mostrado;
 
+
+    /*
+    Inicializa los parametros de la escena diaria
+     */
     public void initEscenaDiaria(Controlador controlador, Calendario calendario) {
 
         this.controlador = controlador;
@@ -115,6 +119,7 @@ public class ControladorEscenaDiaria implements ControladorTipoDeVista{
         }
     }
 
+
     public void actualizarCalendario(Calendario calendario){
 
         TreeSet<ElementoCalendario> elementos = calendario.elementosEntreFechas(dia_mostrado, dia_mostrado.plusDays(1));
@@ -128,6 +133,7 @@ public class ControladorEscenaDiaria implements ControladorTipoDeVista{
 
         }
     }
+
 
     public Node setear_texto_dia_completo(ElementoCalendario el, boolean tieneVencimiento){
         if(tieneVencimiento){
@@ -197,10 +203,14 @@ public class ControladorEscenaDiaria implements ControladorTipoDeVista{
         }
     }
 
+
     public void mostrarDia(LocalDateTime dia_mostrado) {
         diaLabel.setText(Dia.valueOf(dia_mostrado.getDayOfWeek().toString()).getDiaEspanol() + '\n' + dia_mostrado.getDayOfMonth());
     }
 
+    /*
+    Marca el dia elegido
+     */
     public void marcarDia(){
         if(style_normal == null){
             style_normal = diaLabel.getStyle();
@@ -213,8 +223,7 @@ public class ControladorEscenaDiaria implements ControladorTipoDeVista{
     }
 
     @FXML
-
-    void mostrarAyuda(ActionEvent event) {
+    public void mostrarAyuda(ActionEvent event) {
         controlador.mostrarAyuda();
     }
 

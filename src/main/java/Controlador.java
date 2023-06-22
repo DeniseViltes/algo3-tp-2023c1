@@ -36,6 +36,11 @@ public class Controlador {
     @FXML
     private SplitMenuButton menuFecha;
 
+    /*
+    Inicializa el contrador principal con la escena de vista semanal
+    ademas, incializa el calendario y subscribe al controlador como
+    un observador de calendario
+     */
     public void init(Stage stage, String pathArchivoCalendario){
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -55,17 +60,27 @@ public class Controlador {
             cargarAlertaEscenaNoEncontrada();
         }
     }
-
+    /*
+    crea el formato de una alerta para cuando no se encuentra o hay problemas con la lectura
+    de algun archivo de escenas
+     */
     private void cargarAlertaEscenaNoEncontrada(){
         String uno= "Hubieron problemas para iniciar el calendario ";
         String dos ="Por favor, revise que esten todos los archivos";
         var alerta = new CreadorDeAlerta();
         alerta.mostrarAlerta("No se encontro el archivo de vista", Arrays.asList(uno,dos));
+        stage.close();
     }
-
+    /*
+    Eliminar un elemento del calendario
+     */
     public void eliminarElementoCalendario (ElementoCalendario elemento){
         calendario.eliminarElementoCalendario(elemento);
     }
+
+    /*
+    Cambia la escena actual, a la escena semanal
+     */
     @FXML
     void setSemana(ActionEvent event){
         try {
@@ -87,6 +102,9 @@ public class Controlador {
         }
     }
 
+    /*
+    Cambia la escena actual, a la escena diaria
+     */
     @FXML
     void setDia(ActionEvent event) {
         try {
@@ -105,7 +123,9 @@ public class Controlador {
             cargarAlertaEscenaNoEncontrada();
         }
     }
-
+    /*
+    Cambia la escena actual, a la escena mensual
+     */
     @FXML
     void setMes(ActionEvent event)  {
         try {
@@ -126,20 +146,26 @@ public class Controlador {
         }
     }
 
-
+    /*
+    Agrega un evento nuevo al calendario
+     */
     @FXML
     void crearEvento(ActionEvent event){
         var evento = calendario.crearEvento();
        modificarEvento(evento);
     }
-
+    /*
+    Agrega una tarea nueva al calendario
+     */
     @FXML
     void crearTarea(ActionEvent event){
         var tarea = calendario.crearTarea();
         modificarTarea(tarea);
     }
 
-
+    /*
+    Carga un stage nuevo para modificar un evento
+     */
     public void modificarEvento(Evento evento){
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -160,19 +186,25 @@ public class Controlador {
         }
     }
 
-
+    /*
+    Cambia el estado (completo o incompleto) de una tarea
+     */
     public void cambiarEstadoTarea(Tarea tarea, boolean estado){
         if (estado)
             calendario.marcarTareaCompleta(tarea);
         else calendario.marcarTareaIncompleta(tarea);
     }
-
+    /*
+    Cambia si es de dia completo o no, a un elemento
+     */
     public void cambiarDiaCompleto(ElementoCalendario el, boolean estado){
         if (estado)
             calendario.marcarDeDiaCompleto(el);
         else calendario.desmarcarDeDiaCompleto(el);
     }
-
+    /*
+    Carga la escena para modificar una tarea
+     */
     public void modificarTarea(Tarea tarea) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -191,7 +223,9 @@ public class Controlador {
             cargarAlertaEscenaNoEncontrada();
         }
     }
-
+    /*
+    subscribe al controlador al calendario
+     */
     private void initListener(String fileName){
         calendario.agregarListener(() -> {
             try {
@@ -203,7 +237,9 @@ public class Controlador {
             }
         });
     }
-
+    /*
+    Carga el calendario, a partir de un archivo, o de no poderse esto, crea uno nuevo
+     */
     public void inicializarCalendario(String fileName) {
         try {
             this.calendario = ProcesadorDeArchivoCalendario.leerCalendarioDeArchivo(fileName);
@@ -211,7 +247,9 @@ public class Controlador {
             this.calendario = new Calendario();
         }
     }
-
+    /*
+    Inicializa el timer para las alarmas
+     */
     private void iniciarTimer(){
         var timer = new AnimationTimer() {
             @Override
@@ -239,6 +277,11 @@ public class Controlador {
         return LocalDateTime.now();
     }
 
+
+    /*
+   Muestra un cartel de ayuda, en este caso, con una explicacion minima del funcionamiento
+   del calendario
+     */
     public void mostrarAyuda(){
         try {
            var ayuda = new FileReader("src/main/resources/otros/ayuda.txt");

@@ -55,7 +55,11 @@ public class ControladorEscenaCrearEvento {
     private final DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
     private final DateTimeFormatter formatterFechaYHora = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
-    void  initElemento ( Calendario calendario,Evento evento){
+
+    /*
+    Inicializa los parametros del controlador de la escena para crear o modificar un evento
+     */
+    void initElemento(Calendario calendario, Evento evento) {
         this.evento = evento;
         this.calendario = calendario;
         tituloEvento.setText(evento.getTitulo());
@@ -69,31 +73,34 @@ public class ControladorEscenaCrearEvento {
         this.horarioFinal.setText(fechaFinalEvento.toLocalTime().format(formatterHora));
         descripcionEvento.setText(evento.getDescripcion());
 
-        var spinnerAlarmas = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,Integer.MAX_VALUE,10);
+        var spinnerAlarmas = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 10);
         this.intervaloAlarma.setValueFactory(spinnerAlarmas);
 
         initChoiceBoxAlarma();
         for (Alarma value : evento.getAlarmas()) agregarBotonesDeAlarma(value);
 
-        if(evento.isEsDeDiaCompleto()){
+        if (evento.isEsDeDiaCompleto()) {
             checkDiaCompleto.setSelected(true);
         }
 
-        var spinnerIntervalo = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE);
-        if(evento.tieneRepeticion()){
+        var spinnerIntervalo = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE);
+        if (evento.tieneRepeticion()) {
             botonRepeticion.setSelected(true);
             intervalo.setDisable(false);
             spinnerIntervalo.setValue(evento.getIntervaloRepeticionDiaria());
 
-        }
-        else{
+        } else {
             botonRepeticion.setSelected(false);
             intervalo.setDisable(true);
         }
         this.intervalo.setValueFactory(spinnerIntervalo);
     }
 
-    private void initChoiceBoxAlarma(){
+
+    /*
+    Inicializa los choice box de alarma
+     */
+    private void initChoiceBoxAlarma() {
         this.tipoDeIntervalo.getItems().add("minutos");
         this.tipoDeIntervalo.getItems().add("horas");
         this.tipoDeIntervalo.getItems().add("dias");
@@ -105,75 +112,86 @@ public class ControladorEscenaCrearEvento {
     }
 
 
-
+    /*
+    Guarda todos los cambios efectuados en la escena y los carga al evento
+     */
     @FXML
-    void guardar(ActionEvent event){
+    void guardar(ActionEvent event) {
         try {
             guardarCambios();
             Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
             stage.close();
-        }catch (DateTimeParseException e){
+        } catch (DateTimeParseException e) {
             cargarAlertaFormato();
         }
     }
 
+    /*
+    Activa los botones de la repeticion
+     */
     @FXML
-    void activarIntervalo(){
+    void activarIntervalo() {
         intervalo.setDisable(!botonRepeticion.isSelected());
     }
 
+    /*
+    Cancela la creacion/modificacion del evento
+     */
     @FXML
-    void cancelar(ActionEvent event){
+    void cancelar(ActionEvent event) {
         try {
             Stage stage = (Stage) checkDiaCompleto.getScene().getWindow();
             stage.close();
-        }catch (DateTimeParseException e){
+        } catch (DateTimeParseException e) {
             cargarAlertaFormato();
         }
     }
 
 
     void setearDeDiaCompleto() {
-        if(checkDiaCompleto.isSelected())
+        if (checkDiaCompleto.isSelected())
             calendario.marcarDeDiaCompleto(evento);
-        else{
+        else {
             calendario.desmarcarDeDiaCompleto(evento);
         }
     }
 
 
     void modificarDescripcion() {
-        if(descripcionEvento.getText()!= null)
-            calendario.modificarDescripcion(evento,descripcionEvento.getText());
-    }
-    void modificarTitulo() {
-        if(tituloEvento.getText()!= null)
-            calendario.modificarTitulo(evento,tituloEvento.getText());
+        if (descripcionEvento.getText() != null)
+            calendario.modificarDescripcion(evento, descripcionEvento.getText());
     }
 
-    void modificarFinal(){
+    void modificarTitulo() {
+        if (tituloEvento.getText() != null)
+            calendario.modificarTitulo(evento, tituloEvento.getText());
+    }
+
+
+    /*
+    Modifica la fecha final del evento
+     */
+    void modificarFinal() {
         var fechaFinal = LocalDate.parse(this.fechaFinal.getText(), formatterFecha);
         var fechaInicial = LocalDate.parse(this.fechaIncio.getText(), formatterFecha);
         var horarioInicial = LocalTime.parse(this.horarioInicio.getText(), formatterHora);
         var horarioFinal = LocalTime.parse(this.horarioFinal.getText(), formatterHora);
-        var duracion = Duration.between(fechaInicial.atTime(horarioInicial),fechaFinal.atTime(horarioFinal));
-        calendario.modificarDuracion(evento,duracion);
+        var duracion = Duration.between(fechaInicial.atTime(horarioInicial), fechaFinal.atTime(horarioFinal));
+        calendario.modificarDuracion(evento, duracion);
     }
 
-    private void cargarAlertaFormato (){
-        String uno= "Para las fechas utilice el formato: yyyy-MM-dd ";
-        String dos ="Para los horarios utilice : HH:mm";
+    private void cargarAlertaFormato() {
+        String uno = "Para las fechas utilice el formato: yyyy-MM-dd ";
+        String dos = "Para los horarios utilice : HH:mm";
         var alerta = new CreadorDeAlerta();
-        alerta.mostrarAlerta("Formato de texto incorrecto", Arrays.asList(uno,dos));
-
+        alerta.mostrarAlerta("Formato de texto incorrecto", Arrays.asList(uno, dos));
     }
 
-    void modificarInicio(){
+    void modificarInicio() {
         var fechaInicial = LocalDate.parse(this.fechaIncio.getText(), formatterFecha);
         var horarioInicial = LocalTime.parse(this.horarioInicio.getText(), formatterHora);
         calendario.modificarFecha(evento, fechaInicial.atTime(horarioInicial));
     }
-
 
 
     @FXML
@@ -181,10 +199,10 @@ public class ControladorEscenaCrearEvento {
 
 
     void tieneRepeticion() {
-        if(!botonRepeticion.isSelected()) {
+        if (!botonRepeticion.isSelected()) {
             intervalo.setDisable(true);
             calendario.eliminarRepeticion(evento);
-        }else {
+        } else {
             intervalo.setDisable(false);
             calendario.agregarRepeticionDiariaEvento(evento);
         }
@@ -192,10 +210,10 @@ public class ControladorEscenaCrearEvento {
 
 
     void guardarIntervalo() {
-        if(intervalo.getValue() == null){
-            calendario.modificarIntervaloRepeticionDiaria(evento,1); //TODO agregar alerta
+        if (intervalo.getValue() == null) {
+            calendario.modificarIntervaloRepeticionDiaria(evento, 1); //TODO agregar alerta
         }
-        calendario.modificarIntervaloRepeticionDiaria(evento,intervalo.getValue());
+        calendario.modificarIntervaloRepeticionDiaria(evento, intervalo.getValue());
     }
 
 
@@ -210,6 +228,9 @@ public class ControladorEscenaCrearEvento {
     @FXML
     private VBox vBoxAlarmas;
 
+    /*
+    Crea una alarma nueva
+     */
     @FXML
     void agregarAlarma(ActionEvent event) {
         try {
@@ -225,6 +246,10 @@ public class ControladorEscenaCrearEvento {
         }
     }
 
+    /*
+    Agrega los botones para ver la alarma
+     */
+
     void agregarBotonesDeAlarma(Alarma alarma){
         HBox contenedor = new HBox();
         var botonAlarma = nodoAlarma(alarma);
@@ -234,6 +259,10 @@ public class ControladorEscenaCrearEvento {
         alarmas.add(alarma);
         vBoxAlarmas.getChildren().add(contenedor);
     }
+
+    /*
+    Crea  un label con los datos de la alarma
+     */
     private Node nodoAlarma(Alarma alarma){
         var label = new Label();
         label.setMinWidth(180);
@@ -244,6 +273,9 @@ public class ControladorEscenaCrearEvento {
         return label;
     }
 
+    /*
+    Crea boton que permite eliminar una alarma
+     */
     private Node nodoEliminar(Alarma alarma, Pane contenedor) {
         Button boton = new Button("X");
         boton.setMinWidth(15);
@@ -256,6 +288,10 @@ public class ControladorEscenaCrearEvento {
         });
         return boton;
     }
+
+    /*
+    Convierte el string a una duracion
+     */
     Duration convertirStringADuracion (String tipo , long intervalo){
         switch (tipo){
             case "minutos" -> {
@@ -275,6 +311,9 @@ public class ControladorEscenaCrearEvento {
         return null;
     }
 
+    /*
+    Guarda todos los cambios efectuados en la escena
+     */
     private void guardarCambios() throws DateTimeParseException{
         modificarFinal();
         modificarInicio();

@@ -20,7 +20,9 @@ public class ControladorMostrarInformacion {
 
     private Controlador controlador;
 
-
+    /*
+    Muestra toda la informacion del elemento en una nueva ventana
+     */
     public void mostrar_informacion(Controlador controlador, ControladorTipoDeVista controladorVista, ElementoCalendario el, Node btn){
         this.controlador = controlador;
         final Stage dialog = new Stage();
@@ -153,7 +155,9 @@ public class ControladorMostrarInformacion {
     private void setearDiaCompleto(CheckBox estado, ElementoCalendario el){
         controlador.cambiarDiaCompleto(el,estado.isSelected());
     }
-
+    /*
+    Agrega el boton para editar el elemento
+     */
     private Button botorEditarElemento(ElementoCalendario elemento, ControladorTipoDeVista controladorVista) {
         Image lapiz = new Image("otros/pencil.png");
         Button editar = new Button();
@@ -177,6 +181,9 @@ public class ControladorMostrarInformacion {
         return editar;
     }
 
+    /*
+    Agrega el boton para eliminar el elemento
+     */
     private Button botonEliminar(ElementoCalendario elemento, ControladorTipoDeVista controladorVista){
         Button eliminar = new Button();
         Image bin = new Image("otros/bin.png");
@@ -184,7 +191,7 @@ public class ControladorMostrarInformacion {
         eliminar.setMinHeight(25);
         eliminar.setGraphic(new ImageView(bin));
         eliminar.setOnAction(event -> {
-            controlador.eliminarElementoCalendario(elemento);//TODO fijarse si se eliminan todos los eventos aveces se buggea
+            controlador.eliminarElementoCalendario(elemento);
             Stage  stageViejo = (Stage) eliminar.getScene().getWindow();
             stageViejo.close();
             controladorVista.limpiarCalendario();
