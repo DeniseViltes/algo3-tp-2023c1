@@ -26,8 +26,8 @@ public class Controlador {
 
     public Stage stage;
 
-    private final int alturaEscena = 400;
-    private final int anchoEscena = 600;
+    private final int alturaEscena = 1000;
+    private final int anchoEscena = 1600;
     private ControladorTipoDeVista controladorActual;
 
     @FXML
